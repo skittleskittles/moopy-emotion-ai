@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="dev.capstonebackend.capstone_project.dao.UserDao">
+
+    <!-- 插入用户 -->
+    <insert id="insertUser" parameterType="dev.capstonebackend.capstone_project.domain.User">
+        INSERT INTO users (username, password)
+        VALUES (#{username}, #{password})
+    </insert>
+
+    <!-- 根据 ID 查询用户 -->
+    <select id="selectUserById" parameterType="java.lang.Long" resultType="dev.capstonebackend.capstone_project.domain.User">
+        SELECT *
+        FROM users
+        WHERE id = #{id}
+    </select>
+
+    <!-- 根据用户名查询用户 -->
+    <select id="selectUserByUserName" parameterType="java.lang.String" resultType="dev.capstonebackend.capstone_project.domain.User">
+        SELECT *
+        FROM users
+        WHERE username = #{username}
+    </select>
+
+    <!-- 更新用户信息 -->
+    <update id="updateUser" parameterType="dev.capstonebackend.capstone_project.domain.User">
+        UPDATE users
+        SET
+        username = #{username},
+        password = #{password},
+        token = #{token}
+        WHERE id = #{id}
+    </update>
+
+    <!-- 根据用户名删除用户 -->
+    <delete id="deleteUserByUserName" parameterType="java.lang.String">
+        DELETE FROM users WHERE username = #{username}
+    </delete>
+
+    <!-- 根据 token 查询用户 -->
+    <select id="selectUserByToken" parameterType="java.lang.String" resultType="dev.capstonebackend.capstone_project.domain.User">
+        SELECT *
+        FROM users
+        WHERE token = #{token}
+    </select>
+
+</mapper>

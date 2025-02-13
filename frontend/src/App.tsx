@@ -1,35 +1,28 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { About } from "./components/homepage/About";
+import { Cta } from "./components/homepage/Cta";
+import { FAQ } from "./components/homepage/FAQ";
+import { Features } from "./components/homepage/Features";
+import { Footer } from "./components/homepage/Footer";
+import { Hero } from "./components/homepage/Hero";
+import { HowItWorks } from "./components/homepage/HowItWorks";
+import { Navbar } from "./components/Navbar";
+import { Newsletter } from "./components/homepage/Newsletter";
+import { Pricing } from "./components/homepage/Pricing";
+import { ScrollToTop } from "./components/homepage/ScrollToTop";
+import { Services } from "./components/homepage/Services";
+import { Sponsors } from "./components/homepage/Sponsors";
+import { Team } from "./components/homepage/Team";
+import { Testimonials } from "./components/homepage/Testimonials";
+import "./App.css";
+import { Outlet } from "react-router-dom";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Navbar />
+      <Outlet />
     </>
-  )
+  );
 }
 
-export default App
+export default App;

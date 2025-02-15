@@ -3,6 +3,7 @@ import { Button } from "../ui/button";
 import { buttonVariants } from "../ui/button";
 import { HeroCards } from "./HeroCards";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
+import { ROUTE_PATHS } from "@/routes/Routes";
 
 export const Hero = () => {
   const navigate = useNavigate();
@@ -32,7 +33,10 @@ export const Hero = () => {
         </p>
 
         <div className="space-y-4 md:space-y-0 md:space-x-4">
-          <Button className="w-full md:w-1/3" onClick={() => navigate("/quiz")}>
+          <Button
+            className="w-full md:w-1/3"
+            onClick={() => navigate(ROUTE_PATHS.SURVEY)}
+          >
             Get Started
           </Button>
 

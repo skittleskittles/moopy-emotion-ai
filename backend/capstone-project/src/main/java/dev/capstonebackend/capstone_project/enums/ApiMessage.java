@@ -17,7 +17,9 @@ public enum ApiMessage {
     SHIP_NOT_EXISTED(7004, "Ship does not exist."),
     PORT_EXISTED(8000, "Port already existed"),
     PORT_ACTIVITY_EXISTED(8001, "Port activity already existed"),
-    PORT_OTHER_EXISTED(8002, "Port other already existed");
+    PORT_OTHER_EXISTED(8002, "Port other already existed"),
+    INVALID_USER_ID(8003, "Invalid user id");
+
 
 
     private int code;

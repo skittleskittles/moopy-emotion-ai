@@ -165,7 +165,7 @@ export default function TermsModal({
           <button
             className={`px-4 py-2 rounded-lg text-white ${
               isScrolledToBottom
-                ? "bg-[#537791] hover:bg-[#769fcd]"
+                ? "bg-[#6782B8] hover:bg-[#769fcd]"
                 : "bg-gray-400 cursor-not-allowed"
             }`}
             onClick={handleAgreeClick}

@@ -31,12 +31,13 @@ const LoginPage = (props: Props) => {
 
     try {
       const res = await login(username, password);
-      if (res.code == 200) {
+      if (res.code == 0) {
         setAuth(res.data.id, res.data.username, res.data.token);
+        console.log("isNewUser: ", location.state?.isNewUser);
         if (location.state?.isNewUser) {
-          navigate(ROUTE_PATHS.SURVEY);
+          navigate(ROUTE_PATHS.SURVEY_QUESTIONS);
         } else {
-          navigate(ROUTE_PATHS.CHAT);
+          navigate(ROUTE_PATHS.SURVEY_QUESTIONS); // todo: navigate to chat
         }
       } else if (res.code === 404) {
         setError("User not found. Redirecting to registration...");
@@ -125,7 +126,7 @@ const LoginPage = (props: Props) => {
             type="submit"
             className={`w-full font-medium py-2 rounded-lg text-white mt-10 ${
               isFormValid && !isLoading
-                ? "bg-[#537791] hover:bg-[#769fcd]"
+                ? "bg-[#6782B8] hover:bg-[#769fcd]"
                 : "bg-gray-400 cursor-not-allowed"
             }`}
             disabled={!isFormValid || isLoading}

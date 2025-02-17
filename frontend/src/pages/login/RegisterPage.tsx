@@ -41,8 +41,9 @@ const RegisterPage = (props: Props) => {
 
     try {
       const res = await register(username, password);
-      if (res.code === 200) {
-        navigate(ROUTE_PATHS.LOGIN), { state: { isNewUser: true } };
+      if (res.code === 0) {
+        navigate(ROUTE_PATHS.LOGIN, { state: { isNewUser: true } });
+        console.log("isNewUser: ", true);
       } else {
         setError(res.msg);
       }
@@ -158,7 +159,7 @@ const RegisterPage = (props: Props) => {
             type="submit"
             className={`w-full font-medium py-2 rounded-lg text-white mt-10 ${
               isFormValid && !isLoading
-                ? "bg-[#537791] hover:bg-[#769fcd]"
+                ? "bg-[#6782B8] hover:bg-[#769fcd]"
                 : "bg-gray-400 cursor-not-allowed"
             }`}
             disabled={!isFormValid || isLoading}

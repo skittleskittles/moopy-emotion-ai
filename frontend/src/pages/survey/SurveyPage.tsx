@@ -1,46 +1,32 @@
-import QuestionCard from "@/components/survey/QuestionCard";
-import { SurveyProvider, useSurvey } from "@/context/SurveyContext";
+import { ROUTE_PATHS } from "@/routes/Routes";
 import React from "react";
+import { Outlet, useNavigate } from "react-router-dom";
 
 interface Props {}
 
 const SurveyPage = (props: Props) => {
-  const { currentIndex, questions, isLoading, error, score, dispatch } =
-    useSurvey();
-
-  if (isLoading)
-    return <p className="text-center text-gray-600">Loading questions...</p>;
-  if (error) return <p className="text-center text-red-600">{error}</p>;
-  if (!questions.length)
-    return <p className="text-center">No questions available.</p>;
-
+  const navigate = useNavigate();
   return (
     <div className="flex flex-col items-center justify-center">
       {/* Banner */}
-      <div className="w-full h-[150px] bg-[#FFD8D8] flex items-center justify-center">
-        <h1 className="text-[55px] leading-[76.8px] font-serif text-[#0F0F0E] tracking-tight">
-          Take our quick test
+      <div className="w-full h-[150px] bg-white flex items-center justify-center">
+        <h1 className="text-[64px] leading-[76.8px] font-newsreader text-black tracking-tight">
+          Change can start with a single step
         </h1>
       </div>
 
-      {/* Banner */}
-      {currentIndex < questions.length ? (
-        <QuestionCard />
-      ) : (
-        <div className="text-center">
-          <h2 className="text-2xl font-bold">Quiz Completed!</h2>
-          <p className="text-lg">Your total score: {score}</p>
-          <button
-            className="mt-4 px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
-            onClick={() => dispatch({ type: "restart" })}
-          >
-            Restart Survey
-          </button>
-        </div>
-      )}
+      <p className="text-[20px] font-nobile text-[#A9A6A6] mb-40">
+        Our online mental health tests can help make sense of your feelings and
+        could be the first step towards getting the right help.
+      </p>
 
-      {/* debug */}
-      <p className="text-lg">Your total score: {score}</p>
+      {/* 按钮 */}
+      <button
+        className="mt-50 w-[410px] h-[149px] bg-[#6782B8] text-white hover:bg-[#7C92BD] text-[48px] font-medium px-8 py-4 rounded-lg  transition"
+        onClick={() => navigate(ROUTE_PATHS.SURVEY_QUESTIONS)}
+      >
+        Take the Quiz
+      </button>
     </div>
   );
 };

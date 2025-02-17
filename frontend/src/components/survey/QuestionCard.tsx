@@ -43,7 +43,7 @@ const QuestionCard = (Props) => {
 
         {/* Next */}
         <button
-          className="mt-4 px-6 py-2 bg-[#537791] text-white rounded-lg hover:bg-[#769fcd] disabled:bg-gray-400"
+          className="mt-4 px-6 py-2 bg-[#6782B8] text-white rounded-lg hover:bg-[#769fcd] disabled:bg-gray-400"
           onClick={() => {
             if (selectedIndex !== null) {
               dispatch({

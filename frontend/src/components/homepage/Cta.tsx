@@ -7,9 +7,8 @@ export const Cta = () => {
         <div className="lg:col-start-1">
           <h2 className="text-3xl md:text-4xl font-bold ">
             All Your
-            <span className="bg-gradient-to-b text-purple-500 text-transparent bg-clip-text">
-              {" "}
-              Ideas{" "}
+            <span className="bg-gradient-to-b from-purple-300 to-[#6782B8] text-transparent bg-clip-text">
+            {" "}Ideas
             </span>
             {/*In One Interface*/}
           </h2>
@@ -19,9 +18,11 @@ export const Cta = () => {
         </div>
 
         <div className="space-y-4 lg:col-start-2">
-          <Button className="w-full md:mr-4 md:w-auto bg-[#6782B8]">Share ideas</Button>
+          <Button className="w-full md:mr-4 md:w-auto bg-[#6782B8]">
+            Share ideas
+          </Button>
           {/*<Button variant="outline" className="w-full md:w-auto">*/}
-            {/*View all features*/}
+          {/*View all features*/}
           {/*</Button>*/}
         </div>
       </div>

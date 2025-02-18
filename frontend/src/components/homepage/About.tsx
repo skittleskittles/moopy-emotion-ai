@@ -11,17 +11,23 @@ export const About = () => {
             alt=""
             className="w-[300px] object-contain rounded-lg"
           />
-          <div className="bg-purple-100 flex flex-col justify-between">
+          <div className="flex flex-col justify-between">
             <div className="pb-6">
-              <h2 className="text-3xl md:text-4xl font-bold">
-                About Us
-              </h2>
+              <h2 className="text-3xl md:text-4xl font-bold">About Us</h2>
               <p className="text-xl text-muted-foreground mt-4">
-                At our platform, we are committed to providing mental health support by assisting users in managing depression, stress, and emotional challenges. Through compassionate conversations and a friendly chatbox, we create a safe space for users to express their feelings. By asking thoughtful questions, we assess their emotional well-being and offer tailored advice to help them feel better, regain balance, and build emotional resilience. Our goal is to empower users on their journey to improved mental health, offering both guidance and support whenever they need it.
+                At our platform, we are committed to providing mental health
+                support by assisting users in managing depression, stress, and
+                emotional challenges. Through compassionate conversations and a
+                friendly chatbot, we create a safe space for users to express
+                their feelings. By asking thoughtful questions, we assess their
+                emotional well-being and offer tailored advice to help them feel
+                better, regain balance, and build emotional resilience. Our goal
+                is to empower users on their journey to improved mental health,
+                offering both guidance and support whenever they need it.
               </p>
             </div>
 
-            <Statistics />
+            {/* <Statistics /> */}
           </div>
         </div>
       </div>

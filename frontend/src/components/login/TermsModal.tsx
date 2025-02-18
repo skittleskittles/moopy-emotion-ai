@@ -76,10 +76,10 @@ export default function TermsModal({
           </p>
           <p>
             This Mental Health Disclaimer Agreement is made and entered into by
-            and between the undersigned party User and AI Medical Assistant. By
-            accessing, using, or participating in any mental health-related
-            content, services, or resources provided by the Provider, the User
-            agrees to the following terms and conditions:
+            and between the undersigned party User and Moopy. By accessing,
+            using, or participating in any mental health-related content,
+            services, or resources provided by the Provider, the User agrees to
+            the following terms and conditions:
           </p>
           <h3 className="font-semibold">
             1. Not a Substitute for Professional Medical Advice

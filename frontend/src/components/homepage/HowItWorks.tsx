@@ -28,7 +28,7 @@ const features: FeatureProps[] = [
     description:
       "By leveraging CNN and various AI algorithms, we accurately assess users' emotional states for personalized support.",
   },
-  
+
   {
     icon: <GiftIcon />,
     title: "Chat with us",
@@ -42,7 +42,7 @@ export const HowItWorks = () => {
     <section id="howItWorks" className="container text-center py-24 sm:py-32">
       <h2 className="text-3xl md:text-4xl font-bold ">
         How It{" "}
-        <span className="bg-gradient-to-b text-purple-500 text-transparent bg-clip-text">
+        <span className="bg-gradient-to-b from-purple-300 to-[#6782B8] text-transparent bg-clip-text">
           Works{" "}
         </span>
         Step-by-Step Guide

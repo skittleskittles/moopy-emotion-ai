@@ -32,7 +32,7 @@ export const HeroCards = () => {
 
         <CardContent>This landing page is awesome!</CardContent>
       </Card>*/}
-        
+
       <Card className="w-full h-full flex flex-col justify-center items-center drop-shadow-xl shadow-black/10 dark:shadow-white/10">
         <CardHeader className="mt-0 flex justify-center items-center pb-0 w-full">
           <img
@@ -48,11 +48,11 @@ export const HeroCards = () => {
           Communicating with code and machines to bring ideas to life is a really cool thing.
           </p>
         </CardContent> */}
-    
-      {/* new person*/}
-      
-      {/* New Team Member */}
-      {/*<Card className="absolute right-[373px] top-[-75px] w-80 drop-shadow-xl shadow-black/10 dark:shadow-white/10">
+
+        {/* new person*/}
+
+        {/* New Team Member */}
+        {/*<Card className="absolute right-[373px] top-[-75px] w-80 drop-shadow-xl shadow-black/10 dark:shadow-white/10">
         <CardHeader className="mt-8 flex justify-center items-center pb-2">
           <img
             src="https://i.pravatar.cc/150?img=59"  // New avatar image
@@ -72,8 +72,7 @@ export const HeroCards = () => {
         </CardContent>
       </Card>*/}
 
-      
-        <CardFooter>
+        {/* <CardFooter>
           <div>
             <a
               rel="noreferrer noopener"
@@ -86,8 +85,8 @@ export const HeroCards = () => {
             >
               <span className="sr-only">Github icon</span>
               <GitHubLogoIcon className="w-5 h-5" />
-            </a>
-            {/*
+            </a> */}
+        {/*
             <a
               rel="noreferrer noopener"
               href="https://twitter.com/leo_mirand4"
@@ -110,7 +109,7 @@ export const HeroCards = () => {
             </a>
             */}
 
-            <a
+        {/* <a
               rel="noreferrer noopener"
               href="https://www.linkedin.com/in/meier-chen/"
               target="_blank"
@@ -123,7 +122,7 @@ export const HeroCards = () => {
               <Linkedin size="20" />
             </a>
           </div>
-        </CardFooter>
+        </CardFooter> */}
       </Card>
 
       {/* Pricing */}
@@ -153,7 +152,7 @@ export const HeroCards = () => {
 
         <CardFooter className="flex">
           <div className="space-y-4">
-            {["4 Team member", "Great Storage", "Mental help-chatbox"].map(
+            {["4 Team member", "Great Storage", "Mental help-chatbot"].map(
               (benefit: string) => (
                 <span key={benefit} className="flex">
                   <Check className="text-green-500" />{" "}

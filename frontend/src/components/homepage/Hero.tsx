@@ -14,27 +14,32 @@ export const Hero = () => {
         <main className="text-5xl md:text-6xl font-bold">
           <h1 className="inline">
             <span className="inline bg-gradient-to-r from-[#75308a]  to-[#aa7e9d] text-transparent bg-clip-text">
-              AI
+              Moopy
             </span>{" "}
-            for
+            -
           </h1>{" "}
           {/*for{" "}*/}
           <h2 className="inline">
-            <span className="inline bg-gradient-to-r from-[#133c47] via-[#1fc0f1] to-[#03a3d7] text-transparent bg-clip-text">
-              Mental Health
+            <span className="inline bg-gradient-to-r from-[#133c47] via-[#8785a2] to-[#6782B8] text-transparent bg-clip-text">
+              Your AI Mood Companion
             </span>{" "}
-            Assistant
           </h2>
         </main>
 
         <p className="text-xl text-muted-foreground md:w-10/12 mx-auto lg:mx-0">
-          Comprehensive mental health counseling with a friendly and engaging interactive experience.
+          An AI-powered comprehensive mental health companion counseling with a
+          friendly and engaging interactive experience. Through professional
+          assessments, an AI conversational chatbot, and a mood tracker, Moopy
+          provides personalized support, helping you better understand and
+          navigate your mental health journey.
         </p>
 
         <div className="space-y-4 md:space-y-0 md:space-x-4">
           <Button
-            className="w-full md:mr-4 md:w-auto bg-[#6782B8]"
-            onClick={() => navigate(ROUTE_PATHS.LOGIN)} /* todo: check login status */
+            className="w-full md:mr-4 md:w-44"
+            onClick={() =>
+              navigate(ROUTE_PATHS.LOGIN)
+            } /* todo: check login status */
           >
             Get Started
           </Button>

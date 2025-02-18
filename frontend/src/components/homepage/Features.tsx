@@ -18,21 +18,21 @@ interface FeatureProps {
 
 const features: FeatureProps[] = [
   {
-    title: "Responsive Design",
+    title: "Professional Assessments",
     description:
-      "Responsive design ensures that a website or application adapts seamlessly to different screen sizes and devices, providing an optimal user experience across all platforms.",
+      "Gain insights into your mental well-being with clinically-backed assessments. Moopy integrates professional mental health evaluations to help you better understand your emotional state and track your progress over time.",
     image: image4,
   },
   {
-    title: "AI-Powered ChatBox",
+    title: "AI-Powered ChatBot",
     description:
-      "AI-powered chatbox uses advanced machine learning algorithms to engage in meaningful conversations, providing instant support and personalized assistance to users.",
+      "Need someone to talk to? Moopy’s AI-powered chatbot provides a safe, judgment-free space where you can express your thoughts, get emotional support, and receive helpful insights tailored to your feelings.",
     image: image3,
   },
   {
-    title: "Intuitive user interface",
+    title: "Mood Tracker",
     description:
-      "An intuitive user interface ensures a seamless and effortless experience, allowing users to navigate and interact with the application or website easily.",
+      "Stay in tune with your emotions. Our intuitive mood tracker allows you to log your daily feelings, identify patterns, and gain deeper self-awareness, empowering you to take charge of your mental health.",
     image: image,
   },
 ];
@@ -54,12 +54,12 @@ export const Features = () => {
     <section id="features" className="container py-24 sm:py-32 space-y-8">
       <h2 className="text-3xl lg:text-4xl font-bold md:text-center">
         Many Great{" "}
-        <span className="bg-gradient-to-b from-purple-300 to-purple-700 text-transparent bg-clip-text">
+        <span className="bg-gradient-to-b from-purple-300 to-[#6782B8] text-transparent bg-clip-text">
           Features
         </span>
       </h2>
 
-      <div className="flex flex-wrap md:justify-center gap-4">
+      {/* <div className="flex flex-wrap md:justify-center gap-4">
         {featureList.map((feature: string) => (
           <div key={feature}>
             <Badge variant="secondary" className="text-sm">
@@ -67,7 +67,7 @@ export const Features = () => {
             </Badge>
           </div>
         ))}
-      </div>
+      </div> */}
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         {features.map(({ title, description, image }: FeatureProps) => (

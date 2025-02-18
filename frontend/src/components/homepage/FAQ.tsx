@@ -13,33 +13,33 @@ interface FAQProps {
 
 const FAQList: FAQProps[] = [
   {
-    question: "Is this template free?",
-    answer: "Yes. It is a free ChadcnUI template.",
+    question: "How mush does it cost?",
+    answer: "Yes, it is completely free of charge.",
     value: "item-1",
   },
   {
-    question: "Lorem ipsum dolor sit amet consectetur adipisicing elit?",
+    question: "What is AI Medical Assistant?",
     answer:
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint labore quidem quam? Consectetur sapiente iste rerum reiciendis animi nihil nostrum sit quo, modi quod.",
+      "At our platform, we are committed to providing mental health support by assisting users in managing depression, stress, and emotional challenges. Through compassionate conversations and a friendly chatbox, we create a safe space for users to express their feelings. By asking thoughtful questions, we assess their emotional well-being and offer tailored advice to help them feel better, regain balance, and build emotional resilience. Our goal is to empower users on their journey to improved mental health, offering both guidance and support whenever they need it.",
     value: "item-2",
   },
   {
     question:
-      "Lorem ipsum dolor sit amet  Consectetur natus dolores minus quibusdam?",
+      "Who will be helping me?",
     answer:
-      "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Labore qui nostrum reiciendis veritatis necessitatibus maxime quis ipsa vitae cumque quo?",
+      "After you sign up, we will prove a short mental test and it will give us basic info. Then, we will match your question with mental haelth data to help you find the resulr. You can ask any questions in chat with me.",
     value: "item-3",
   },
   {
-    question: "Lorem ipsum dolor sit amet, consectetur adipisicing elit?",
-    answer: "Lorem ipsum dolor sit amet consectetur, adipisicing elit.",
+    question: "Can I stay anonymous?",
+    answer: "Yes, users are free to choose any name they prefer. Additionally, all personal information will remain anonymous to ensure privacy.",
     value: "item-4",
   },
   {
     question:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur natus?",
+      "How can I get started with AI Medical Assistant?",
     answer:
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint labore quidem quam? Consectetur sapiente iste rerum reiciendis animi nihil nostrum sit quo, modi quod.",
+      "On the homepage, click on 'Get Started' to begin.",
     value: "item-5",
   },
 ];

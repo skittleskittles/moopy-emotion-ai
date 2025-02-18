@@ -12,25 +12,28 @@ const features: FeatureProps[] = [
     icon: <MedalIcon />,
     title: "Accessibility",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum quas provident cum",
+      "Our platform is designed for easy use, with a simple and clear interface for a smooth user experience.",
   },
+
   {
     icon: <MapIcon />,
     title: "Community",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum quas provident cum",
+      "Engage with the community through anonymous inquiries, ensuring complete privacy and confidentiality.",
   },
+
   {
     icon: <PlaneIcon />,
     title: "Scalability",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum quas provident cum",
+      "By leveraging CNN and various AI algorithms, we accurately assess users' emotional states for personalized support.",
   },
+  
   {
     icon: <GiftIcon />,
-    title: "Gamification",
+    title: "Chat with us",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum quas provident cum",
+      "Our AI-powered chat offers friendly and empathetic conversations to help resolve user concerns and provide guidance.",
   },
 ];
 
@@ -45,8 +48,8 @@ export const HowItWorks = () => {
         Step-by-Step Guide
       </h2>
       <p className="md:w-3/4 mx-auto mt-4 mb-8 text-xl text-muted-foreground">
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Veritatis
-        dolor pariatur sit!
+        {/* Lorem ipsum dolor sit amet consectetur, adipisicing elit. Veritatis
+        dolor pariatur sit! */}
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">

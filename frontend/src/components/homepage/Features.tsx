@@ -20,19 +20,19 @@ const features: FeatureProps[] = [
   {
     title: "Responsive Design",
     description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi nesciunt est nostrum omnis ab sapiente.",
+      "Responsive design ensures that a website or application adapts seamlessly to different screen sizes and devices, providing an optimal user experience across all platforms.",
     image: image4,
+  },
+  {
+    title: "AI-Powered ChatBox",
+    description:
+      "AI-powered chatbox uses advanced machine learning algorithms to engage in meaningful conversations, providing instant support and personalized assistance to users.",
+    image: image3,
   },
   {
     title: "Intuitive user interface",
     description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi nesciunt est nostrum omnis ab sapiente.",
-    image: image3,
-  },
-  {
-    title: "AI-Powered insights",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi nesciunt est nostrum omnis ab sapiente.",
+      "An intuitive user interface ensures a seamless and effortless experience, allowing users to navigate and interact with the application or website easily.",
     image: image,
   },
 ];
@@ -53,9 +53,9 @@ export const Features = () => {
   return (
     <section id="features" className="container py-24 sm:py-32 space-y-8">
       <h2 className="text-3xl lg:text-4xl font-bold md:text-center">
-        Many{" "}
+        Many Great{" "}
         <span className="bg-gradient-to-b from-primary/60 to-primary text-transparent bg-clip-text">
-          Great Features
+          Features
         </span>
       </h2>
 

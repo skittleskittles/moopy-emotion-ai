@@ -20,11 +20,7 @@ export const About = () => {
                 Us
               </h2>
               <p className="text-xl text-muted-foreground mt-4">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit
-                amet, consectetur adipiscing elit.
+                At our platform, we are committed to providing mental health support by assisting users in managing depression, stress, and emotional challenges. Through compassionate conversations and a friendly chatbox, we create a safe space for users to express their feelings. By asking thoughtful questions, we assess their emotional well-being and offer tailored advice to help them feel better, regain balance, and build emotional resilience. Our goal is to empower users on their journey to improved mental health, offering both guidance and support whenever they need it.
               </p>
             </div>
 

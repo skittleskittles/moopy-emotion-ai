@@ -14,7 +14,7 @@ const SurveyQuestionPage = (props: Props) => {
   const [submitError, setSubmitError] = useState("");
 
   useEffect(() => {
-    if (currentIndex === questions.length && user) {
+    if (questions.length > 0 && currentIndex === questions.length && user) {
       submitScore();
     }
   }, [currentIndex, questions.length, user]);

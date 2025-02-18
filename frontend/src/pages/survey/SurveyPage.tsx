@@ -25,7 +25,7 @@ const SurveyPage = (props: Props) => {
         className="mt-50 w-[410px] h-[149px] bg-[#6782B8] text-white hover:bg-[#7C92BD] text-[48px] font-medium px-8 py-4 rounded-lg  transition"
         onClick={() => navigate(ROUTE_PATHS.SURVEY_QUESTIONS)}
       >
-        Take the Quiz
+        Take the Survey
       </button>
     </div>
   );

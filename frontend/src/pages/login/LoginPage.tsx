@@ -35,9 +35,9 @@ const LoginPage = (props: Props) => {
         setAuth(res.data.id, res.data.username, res.data.token);
         console.log("isNewUser: ", location.state?.isNewUser);
         if (location.state?.isNewUser) {
-          navigate(ROUTE_PATHS.SURVEY_QUESTIONS);
+          navigate(ROUTE_PATHS.SURVEY);
         } else {
-          navigate(ROUTE_PATHS.SURVEY_QUESTIONS); // todo: navigate to chat
+          navigate(ROUTE_PATHS.SURVEY); // todo: navigate to chat
         }
       } else if (res.code === 404) {
         setError("User not found. Redirecting to registration...");

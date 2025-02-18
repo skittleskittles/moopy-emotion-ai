@@ -15,7 +15,7 @@ import { GitHubLogoIcon } from "@radix-ui/react-icons";
 
 export const HeroCards = () => {
   return (
-    <div className="hidden lg:flex flex-row flex-wrap gap-8 relative w-[700px] h-[500px]">
+    <div className="w-full h-full flex justify-center items-center">
       {/* Testimonial */}
       {/* <Card className="absolute w-[340px] -top-[15px] drop-shadow-xl shadow-black/10 dark:shadow-white/10">
         <CardHeader className="flex flex-row items-center gap-4 pb-2">
@@ -32,38 +32,34 @@ export const HeroCards = () => {
 
         <CardContent>This landing page is awesome!</CardContent>
       </Card>*/}
-
-      {/* Team */}
-      <Card className="absolute right-[20px] top-4 w-80 flex flex-col justify-center items-center drop-shadow-xl shadow-black/10 dark:shadow-white/10">
-        <CardHeader className="mt-8 flex justify-center items-center pb-2">
+        
+      <Card className="w-full h-full flex flex-col justify-center items-center drop-shadow-xl shadow-black/10 dark:shadow-white/10">
+        <CardHeader className="mt-0 flex justify-center items-center pb-0 w-full">
           <img
-            src="https://i.pravatar.cc/150?img=58"
-            alt="user avatar"
-            className="absolute grayscale-[0%] -top-12 rounded-full w-24 h-24 aspect-square object-cover"
-
+            src="https://scholarlykitchen.sspnet.org/wp-content/uploads/2023/09/iStock-1479494606.jpg"
+            alt="Half Page Image"
+            className="w-full h-[75%] object-cover" // Make the image take up 75% of the height of the right half
           />
-          <CardTitle className="text-center">Meier Chen</CardTitle>
-          <CardDescription className="font-normal text-primary">
-            Frontend Developer
-          </CardDescription>
+          <CardTitle className="text-center"></CardTitle> {/* Optional title */}
         </CardHeader>
 
-        <CardContent className="text-center pb-2">
+        {/*<CardContent className="text-center pb-2">
           <p>
           Communicating with code and machines to bring ideas to life is a really cool thing.
           </p>
-        </CardContent> 
+        </CardContent> */}
+    
       {/* new person*/}
       
       {/* New Team Member */}
-      <Card className="absolute right-[373px] top-[-75px] w-80 drop-shadow-xl shadow-black/10 dark:shadow-white/10">
+      {/*<Card className="absolute right-[373px] top-[-75px] w-80 drop-shadow-xl shadow-black/10 dark:shadow-white/10">
         <CardHeader className="mt-8 flex justify-center items-center pb-2">
           <img
             src="https://i.pravatar.cc/150?img=59"  // New avatar image
             alt="user avatar"
             className="absolute grayscale-[0%] -top-12 rounded-full w-24 h-24 aspect-square object-cover"
           />
-          <CardTitle className="text-center">Yiyan Kong</CardTitle>  {/* New name */}
+          <CardTitle className="text-center">Yiyan Kong</CardTitle>  
           <CardDescription className="font-normal text-primary">
             Backend Developer
           </CardDescription>
@@ -74,9 +70,9 @@ export const HeroCards = () => {
           Programmers are akin to artists, with each line of code representing their mastery in understanding and managing the complexities of a system.
           </p>
         </CardContent>
-      </Card>
-      
+      </Card>*/}
 
+      
         <CardFooter>
           <div>
             <a
@@ -131,7 +127,7 @@ export const HeroCards = () => {
       </Card>
 
       {/* Pricing */}
-      <Card className="absolute top-[200px] left-[50px] w-72  drop-shadow-xl shadow-black/10 dark:shadow-white/10">
+      {/*<Card className="absolute top-[200px] left-[50px] w-72  drop-shadow-xl shadow-black/10 dark:shadow-white/10">
         <CardHeader>
           <CardTitle className="flex item-center justify-between">
             Free
@@ -167,10 +163,10 @@ export const HeroCards = () => {
             )}
           </div>
         </CardFooter>
-      </Card>
+      </Card>*/}
 
       {/* Service */}
-      <Card className="absolute w-[350px] -right-[10px] bottom-[35px]  drop-shadow-xl shadow-black/10 dark:shadow-white/10">
+      {/*<Card className="absolute w-[350px] -right-[10px] bottom-[35px]  drop-shadow-xl shadow-black/10 dark:shadow-white/10">
         <CardHeader className="space-y-1 flex md:flex-row justify-start items-start gap-4">
           <div className="mt-1 bg-primary/20 p-1 rounded-2xl">
             <LightBulbIcon />
@@ -182,7 +178,7 @@ export const HeroCards = () => {
             </CardDescription>
           </div>
         </CardHeader>
-      </Card>
+      </Card>*/}
     </div>
   );
 };

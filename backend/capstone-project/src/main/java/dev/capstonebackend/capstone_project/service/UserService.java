@@ -45,6 +45,7 @@ public class UserService {
         User user = userDao.selectUserByUserName(name);
         if (user == null) {
             throw new ApiException(ApiMessage.LOGIN_ERROR);
+            // 加一个用户不存在
         }
         if (!authService.checkPassword(password, user.getPassword())) {
             throw new ApiException(ApiMessage.LOGIN_ERROR);

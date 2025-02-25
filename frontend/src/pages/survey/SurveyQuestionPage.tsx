@@ -43,7 +43,7 @@ const SurveyQuestionPage = (props: Props) => {
     return <p className="text-center">No questions available.</p>;
 
   return (
-    <div className="flex flex-col items-center justify-center">
+    <div className="flex flex-col h-[calc(100vh-56px)] items-center justify-center">
       {/* Banner */}
       <div className="w-full h-[150px] bg-[#FFD8D8] flex items-center justify-center">
         <h1 className="text-[55px] leading-[76.8px] font-serif text-[#0F0F0E] tracking-tight">

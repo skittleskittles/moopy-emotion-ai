@@ -56,7 +56,7 @@ export const Navbar = () => {
           </NavigationMenuItem>
 
           {/* mobile */}
-          <span className="flex md:hidden">
+          {/* <span className="flex md:hidden">
             <ModeToggle />
 
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -101,7 +101,7 @@ export const Navbar = () => {
                 </nav>
               </SheetContent>
             </Sheet>
-          </span>
+          </span> */}
 
           {/* desktop */}
           <nav className="hidden md:flex gap-2">

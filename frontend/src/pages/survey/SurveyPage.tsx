@@ -7,7 +7,7 @@ interface Props {}
 const SurveyPage = (props: Props) => {
   const navigate = useNavigate();
   return (
-    <div className="flex flex-col items-center justify-center">
+    <div className="flex flex-col h-[calc(100vh-56px)] items-center justify-center">
       {/* Banner */}
       <div className="w-full h-[150px] bg-white flex items-center justify-center">
         <h1 className="text-[64px] leading-[76.8px] font-newsreader text-black tracking-tight">

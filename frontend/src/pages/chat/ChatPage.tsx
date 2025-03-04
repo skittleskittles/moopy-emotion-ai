@@ -2,6 +2,8 @@ import { ROUTE_PATHS } from "@/routes/Routes";
 import React, { useState } from "react";
 import { FaUser, FaRobot, FaTrash, FaHome } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { chat } from "@/services/api";
+import { useAuth } from "@/context/AuthContext";
 
 interface Message {
   sender: string;
@@ -11,6 +13,8 @@ interface Message {
 interface Props {}
 
 const ChatPage = (props: Props) => {
+  const { isLoggedIn } = useAuth();
+  
   const [conversations, setConversations] = useState<
     { id: number; title: string; messages: Message[] }[]
   >([]);
@@ -18,6 +22,7 @@ const ChatPage = (props: Props) => {
     number | null
   >(null);
   const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -27,8 +32,14 @@ const ChatPage = (props: Props) => {
   );
 
   // send messages
-  const handleSendMessage = () => {
-    if (!input.trim()) return;
+  const handleSendMessage = async () => {
+    if (!isLoggedIn()) {
+      alert("Please log in.");
+      return;
+    }
+
+    if (!input.trim() || loading) return;
+    setLoading(true);
 
     let updatedConversations = [...conversations];
     let newConversationId = currentConversationId;
@@ -57,17 +68,30 @@ const ChatPage = (props: Props) => {
     setConversations(updatedConversations);
     setInput("");
 
-    // mock AI response
-    setTimeout(() => {
-      const botReply = { sender: "bot", text: "What can I do for you?" };
+    // send api request
+    try {
+      const response = await chat(input);
+
+      // update conversations
       setConversations((prev) =>
         prev.map((conv) =>
           conv.id === newConversationId
-            ? { ...conv, messages: [...conv.messages, botReply] }
+            ? { ...conv, messages: [...conv.messages, { sender: "bot", text: response.data }] }
             : conv
         )
       );
-    }, 1000);
+    } catch (error) {
+      console.error("Error sending message:", error);
+      setConversations((prev) =>
+        prev.map((conv) =>
+          conv.id === newConversationId
+            ? { ...conv, messages: [...conv.messages, { sender: "bot", text: "Failed to get response. Try again later." }] }
+            : conv
+        )
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleClearConversations = () => {

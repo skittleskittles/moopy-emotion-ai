@@ -9,7 +9,7 @@ interface Props {}
 const SurveyQuestionPage = (props: Props) => {
   const { currentIndex, questions, isLoading, error, score, dispatch } =
     useSurvey();
-  const { user, token } = useAuth();
+  const { user, token, isLoggedIn } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
 
@@ -20,6 +20,11 @@ const SurveyQuestionPage = (props: Props) => {
   }, [currentIndex, questions.length, user]);
 
   const submitScore = async () => {
+    if (!isLoggedIn()) {
+      alert("Please log in.");
+      return;
+    }
+
     if (!user || isSubmitting) return;
     setIsSubmitting(true);
     setSubmitError("");

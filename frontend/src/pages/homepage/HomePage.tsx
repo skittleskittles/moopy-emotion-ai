@@ -1,4 +1,8 @@
 import React from "react";
+import { Button } from "@/components/ui/button"; 
+import { useNavigate } from "react-router-dom";
+import { ROUTE_PATHS } from "@/routes/Routes";
+
 import "./HomePage.css";
 import { Hero } from "@/components/homepage/Hero";
 import { About } from "@/components/homepage/About";
@@ -11,6 +15,8 @@ import { ScrollToTop } from "@/components/homepage/ScrollToTop";
 interface Props {}
 
 const HomePage = (props: Props) => {
+  const navigate = useNavigate();
+
   return (
     <>
       <Hero />
@@ -27,6 +33,11 @@ const HomePage = (props: Props) => {
       <FAQ />
       {/* <Footer /> */}
       <ScrollToTop />
+
+    <div style={{ textAlign: "center", marginTop: "50px" }}>
+      <h1>How are you Feeling Today?</h1>
+      <Button onClick={() => navigate(ROUTE_PATHS.MOOD_TRACKER)}>Mood</Button> 
+    </div>
     </>
   );
 };

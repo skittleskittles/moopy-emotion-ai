@@ -8,6 +8,10 @@ import ProfilePage from "../pages/profile/ProfilePage";
 import { SurveyProvider } from "@/context/SurveyContext";
 import RegisterPage from "@/pages/login/RegisterPage";
 import SurveyPage from "@/pages/survey/SurveyPage";
+//add
+import MoodTracker from "@/components/homepage/MoodTracker";
+import MoodDay from "@/components/homepage/MoodDay";
+import YearTracker from  "@/components/homepage/YearTracker"; 
 
 export const ROUTE_PATHS = {
   HOME: "/",
@@ -17,6 +21,11 @@ export const ROUTE_PATHS = {
   SURVEY_QUESTIONS: "/survey/questions",
   CHAT: "/chat",
   PROFILE: "/profile",
+
+  MOOD_TRACKER: "/mood-tracker", // ➤ Mood 日历页面
+  MOOD_DAY: "/mood-day/:date", // ➤ 具体日期的 Mood 页面
+  YEAR_TRACKER: "/year-tracker",
+  
 };
 
 export const router = createBrowserRouter([
@@ -41,6 +50,11 @@ export const router = createBrowserRouter([
       },
       { path: ROUTE_PATHS.CHAT, element: <ChatPage /> },
       { path: ROUTE_PATHS.PROFILE, element: <ProfilePage /> },
+
+      // ➤ 添加 Mood Tracker 和 MoodDay 页面
+      { path: ROUTE_PATHS.MOOD_TRACKER, element: <MoodTracker /> },
+      { path: ROUTE_PATHS.MOOD_DAY, element: <MoodDay /> },
+      { path: ROUTE_PATHS.YEAR_TRACKER, element: <YearTracker /> },
     ],
   },
 ]);

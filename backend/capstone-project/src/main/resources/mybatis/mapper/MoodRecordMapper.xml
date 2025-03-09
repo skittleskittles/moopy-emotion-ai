@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="dev.capstonebackend.capstone_project.dao.MoodRecordDao">
+
+    <!-- 插入记录 -->
+    <insert id="insertMoodRecord" parameterType="dev.capstonebackend.capstone_project.domain.MoodRecord">
+        INSERT INTO mood_record (user_id, mood_type, mood_diary, day, month, year)
+        VALUES (#{userId}, #{moodType}, #{moodDiary}, #{day}, #{month}, #{year})
+    </insert>
+
+    <select id="selectRecordByYear" resultType="dev.capstonebackend.capstone_project.domain.MoodRecord">
+        SELECT *
+        FROM mood_record
+        WHERE user_id = #{user_id}
+        AND year = #{year}
+    </select>
+
+    <select id="selectRecordByMonth" resultType="dev.capstonebackend.capstone_project.domain.MoodRecord">
+        SELECT *
+        FROM mood_record
+        WHERE user_id = #{user_id}
+        AND year = #{year}
+        AND month = #{month}
+    </select>
+
+
+</mapper>

@@ -4,9 +4,11 @@ import { buttonVariants } from "../ui/button";
 import { HeroCards } from "./HeroCards";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import { ROUTE_PATHS } from "@/routes/Routes";
+import { useAuth } from "@/context/AuthContext";
 
 export const Hero = () => {
   const navigate = useNavigate();
+  const { isLoggedIn, user } = useAuth();
 
   return (
     <section className="container grid lg:grid-cols-2 place-items-center py-20 md:py-32 gap-10">
@@ -37,9 +39,13 @@ export const Hero = () => {
         <div className="space-y-4 md:space-y-0 md:space-x-4">
           <Button
             className="w-full md:mr-4 md:w-44"
-            onClick={() =>
-              navigate(ROUTE_PATHS.LOGIN)
-            } /* todo: check login status */
+            onClick={() => {
+              if (!isLoggedIn()) {
+                navigate(ROUTE_PATHS.LOGIN);
+              } else {
+                navigate(ROUTE_PATHS.CHAT);
+              }
+            }}
           >
             Get Started
           </Button>

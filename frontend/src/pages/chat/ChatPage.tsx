@@ -1,8 +1,12 @@
 import { ROUTE_PATHS } from "@/routes/Routes";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { FaUser, FaRobot, FaTrash, FaHome, FaPlus } from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router-dom";
-import { chat, getChatList } from "@/services/api";
+import { chat, getChatList, saveChatMessage } from "@/services/api";
 import { useAuth } from "@/context/AuthContext";
 
 interface Message {
@@ -20,33 +24,27 @@ interface Props {}
 
 const ChatPage = (props: Props) => {
   const { isLoggedIn, user } = useAuth();
+  const navigate = useNavigate();
+  const chatContainerRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null); // 让输入框支持自动 focus
 
-  const location = useLocation(); // receive first message
-  const initialBotMessage = (location.state as { botMessage?: string })
-    ?.botMessage;
+  // const location = useLocation(); // receive first message
+  // const initialBotMessage = (location.state as { botMessage?: string })
+  //   ?.botMessage;
+  //   const botMessageSavedRef = useRef(false);
 
-  const [conversations, setConversations] = useState<Conversation[]>([]);
+  const [conversations, setConversations] = useState<
+    Record<string, Conversation[]>
+  >({});
   const [currentConversationId, setCurrentConversationId] = useState<
     number | null
   >(null);
+
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const navigate = useNavigate();
-
   // Get chat history
   useEffect(() => {
-    if (initialBotMessage && !currentConversationId) {
-      const tempConversationId = Date.now();
-      const newConversation = {
-        id: tempConversationId,
-        title: "New Conversation",
-        messages: [{ sender: "bot", text: initialBotMessage }],
-      };
-      setConversations([newConversation, ...conversations]);
-      setCurrentConversationId(tempConversationId);
-    }
-
     const fetchChatHistory = async () => {
       if (!isLoggedIn() || !user) return;
 
@@ -55,6 +53,19 @@ const ChatPage = (props: Props) => {
         if (response.code === 0 && Array.isArray(response.data)) {
           const formattedConversations = formatChatData(response.data);
           setConversations(formattedConversations);
+
+          const latestDate = Object.keys(formattedConversations)
+            .sort()
+            .reverse()[0]; // Get the latest date
+          if (latestDate && formattedConversations[latestDate].length > 0) {
+            setCurrentConversationId(formattedConversations[latestDate][0].id);
+            setTimeout(() => {
+              if (chatContainerRef.current) {
+                chatContainerRef.current.scrollTop =
+                  chatContainerRef.current.scrollHeight;
+              }
+            }, 100);
+          }
         }
       } catch (error) {
         console.error("Error fetching chat history:", error);
@@ -62,26 +73,71 @@ const ChatPage = (props: Props) => {
     };
 
     fetchChatHistory();
-  }, [user, initialBotMessage]);
+  }, [user]);
+
+  // 监听 currentConversationId 变化，如果是新对话，自动 focus 到输入框
+  useEffect(() => {
+    if (currentConversationId === null && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [currentConversationId]);
+
+  // useEffect(() => {
+  //   if (initialBotMessage && !botMessageSavedRef.current) {
+  //     handleSaveBotMessage(initialBotMessage);
+  //     botMessageSavedRef.current = true; // 标记为已执行
+  //   }
+  // }, [initialBotMessage]);
+
+  // 存储 `botMessage` 并获取 `conversationId`
+  // const handleSaveBotMessage = async (message: string) => {
+  //   console.log("save!!");
+  //   if (!isLoggedIn() || !user) return;
+
+  //   try {
+  //     const response = await saveChatMessage(0, message);
+
+  //     if (response.code === 0 && response.data) {
+  //       const conversationIdFromApi = response.data; // 后端返回的 conversationId
+
+  //       const newConversation = {
+  //         id: conversationIdFromApi,
+  //         title: message.substring(0, 15) + "...",
+  //         messages: [{ sender: "bot", text: message }],
+  //       };
+
+  //       setConversations([newConversation, ...conversations]);
+  //       setCurrentConversationId(conversationIdFromApi);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error saving initial bot message:", error);
+  //   }
+  // };
 
   const formatChatData = (chatData: any[]) => {
-    const conversationMap: Record<number, Conversation> = {};
+    const groupedConversations: Record<string, Conversation[]> = {};
 
-    chatData.forEach((msg) => {
-      if (!conversationMap[msg.conversationId]) {
-        conversationMap[msg.conversationId] = {
-          id: msg.conversationId,
-          title: msg.message.substring(0, 15) + "...",
-          messages: [],
-        };
+    chatData.forEach((conversation) => {
+      if (conversation.messageList.length === 0) return;
+
+      const firstMessage = conversation.messageList[0];
+      const date = new Date(firstMessage.createdAt).toISOString().split("T")[0]; // Extract YYYY-MM-DD
+
+      if (!groupedConversations[date]) {
+        groupedConversations[date] = [];
       }
-      conversationMap[msg.conversationId].messages.push({
-        sender: msg.userId === user!.id ? "user" : "bot",
-        text: msg.message,
+
+      groupedConversations[date].push({
+        id: conversation.conversationId,
+        title: firstMessage.message.substring(0, 15) + "...",
+        messages: conversation.messageList.map((msg: any) => ({
+          sender: msg.userId === user!.id ? "user" : "bot",
+          text: msg.message,
+        })),
       });
     });
 
-    return Object.values(conversationMap);
+    return groupedConversations;
   };
 
   // select conversation session (left)
@@ -91,17 +147,25 @@ const ChatPage = (props: Props) => {
   };
 
   // get current conversation
-  const currentConversation = conversations.find(
-    (conv) => conv.id === currentConversationId
-  );
+  const currentConversation = Object.values(conversations)
+    .flat() // Flatten to get all conversations
+    .find((conv) => conv.id === currentConversationId);
 
   const handleNewConversation = () => {
-    const newConversation = {
+    const today = new Date().toISOString().split("T")[0]; // Get today's date
+    const newConversation: Conversation = {
       id: null,
       title: "New Conversation",
       messages: [],
     };
-    setConversations([newConversation, ...conversations]);
+
+    setConversations((prev) => ({
+      ...prev,
+      [today]: prev[today]
+        ? [newConversation, ...prev[today]]
+        : [newConversation],
+    }));
+
     setCurrentConversationId(null);
   };
 
@@ -115,33 +179,44 @@ const ChatPage = (props: Props) => {
     if (!input.trim() || loading) return;
     setLoading(true);
 
-    let updatedConversations = [...conversations];
+    const today = new Date().toISOString().split("T")[0]; // Get today's date
     let conversationId = currentConversationId;
     let tempConversationId = Date.now();
 
-    if (currentConversationId === null) {
-      // create new conversation
+    setConversations((prev) => {
+      let updatedConversations = { ...prev };
 
-      const newConversation = {
-        id: tempConversationId,
-        title: input.length < 15 ? input : input.substring(0, 15) + "...",
-        messages: [{ sender: "user", text: input }],
-      };
-      updatedConversations.unshift(newConversation);
-      conversationId = tempConversationId;
-      setCurrentConversationId(tempConversationId);
-    } else {
-      // update current conversation
-      const index = updatedConversations.findIndex(
-        (conv) => conv.id === currentConversationId
-      );
-      updatedConversations[index].messages.push({
-        sender: "user",
-        text: input,
-      });
-    }
+      if (currentConversationId === null) {
+        // Create a new conversation under today's date
+        const newConversation = {
+          id: tempConversationId,
+          title: input.length < 15 ? input : input.substring(0, 15) + "...",
+          messages: [{ sender: "user", text: input }],
+        };
 
-    setConversations(updatedConversations);
+        updatedConversations[today] = updatedConversations[today]
+          ? [newConversation, ...updatedConversations[today]]
+          : [newConversation];
+
+        conversationId = tempConversationId;
+        setCurrentConversationId(tempConversationId);
+      } else {
+        // Find the conversation and add a message
+        Object.keys(updatedConversations).forEach((date) => {
+          updatedConversations[date] = updatedConversations[date].map((conv) =>
+            conv.id === currentConversationId
+              ? {
+                  ...conv,
+                  messages: [...conv.messages, { sender: "user", text: input }],
+                }
+              : conv
+          );
+        });
+      }
+
+      return updatedConversations;
+    });
+
     setInput("");
 
     // send api request
@@ -165,43 +240,56 @@ const ChatPage = (props: Props) => {
         const conversationIdFromApi = response.data.conversationId;
 
         // update conversations
-        setConversations((prev) =>
-          prev.map((conv) => {
-            if (conv.id === conversationId) {
-              return {
-                ...conv,
-                id: conversationIdFromApi, // 更新 conversationId
-                messages: [
-                  ...conv.messages,
-                  { sender: "bot", text: botMessage },
-                ],
-              };
-            }
-            return conv;
-          })
-        );
+
+        setConversations((prev) => {
+          let updatedConversations = { ...prev };
+
+          Object.keys(updatedConversations).forEach((date) => {
+            updatedConversations[date] = updatedConversations[date].map(
+              (conv) =>
+                conv.id === conversationId
+                  ? {
+                      ...conv,
+                      id: conversationIdFromApi, // 更新 conversationId
+                      messages: [
+                        ...conv.messages,
+                        { sender: "bot", text: botMessage },
+                      ],
+                    }
+                  : conv
+            );
+          });
+
+          return updatedConversations;
+        });
 
         // update conversationId
         setCurrentConversationId(conversationIdFromApi);
       }
     } catch (error) {
       console.error("Error sending message:", error);
-      setConversations((prev) =>
-        prev.map((conv) =>
-          conv.id === conversationId
-            ? {
-                ...conv,
-                messages: [
-                  ...conv.messages,
-                  {
-                    sender: "bot",
-                    text: "Failed to get response. Try again later.",
-                  },
-                ],
-              }
-            : conv
-        )
-      );
+      setConversations((prev) => {
+        let updatedConversations = { ...prev };
+
+        Object.keys(updatedConversations).forEach((date) => {
+          updatedConversations[date] = updatedConversations[date].map((conv) =>
+            conv.id === conversationId
+              ? {
+                  ...conv,
+                  messages: [
+                    ...conv.messages,
+                    {
+                      sender: "bot",
+                      text: "Failed to get response. Try again later.",
+                    },
+                  ],
+                }
+              : conv
+          );
+        });
+
+        return updatedConversations;
+      });
     } finally {
       setLoading(false);
     }
@@ -218,22 +306,32 @@ const ChatPage = (props: Props) => {
       <div className="w-64 bg-gray-100 shadow-lg p-4 flex flex-col justify-between">
         <div>
           {/* <h1 className="text-x1 font-semibold text-blue-600">Chatbot</h1> */}
-          <div className="mt-4">
-            {conversations.length === 0 ? (
+          <div className="mt-4 overflow-y-auto max-h-[calc(100vh-200px)] space-y-2">
+            {Object.entries(conversations).length === 0 ? (
               <p className="text-gray-500">No conversations</p>
             ) : (
-              conversations.map((conv) => (
-                <button
-                  key={conv.id}
-                  onClick={() => handleSelectConversation(conv.id)}
-                  className={`w-full flex items-center px-4 py-2 my-1 text-left rounded-lg ${
-                    currentConversationId === conv.id
-                      ? "bg-gray-200"
-                      : "hover:bg-gray-100"
-                  }`}
-                >
-                  {conv.title}
-                </button>
+              Object.entries(conversations).map(([date, convs]) => (
+                <div key={date}>
+                  {/* Date Header */}
+                  <p className="text-gray-500 text-sm font-semibold mt-2 mb-1">
+                    {date}
+                  </p>
+
+                  {/* Conversations for this date */}
+                  {convs.map((conv) => (
+                    <button
+                      key={conv.id}
+                      onClick={() => handleSelectConversation(conv.id!)}
+                      className={`w-full flex items-center px-4 py-2 my-1 text-left rounded-lg ${
+                        currentConversationId === conv.id
+                          ? "bg-gray-200"
+                          : "hover:bg-gray-100"
+                      }`}
+                    >
+                      {conv.title}
+                    </button>
+                  ))}
+                </div>
               ))
             )}
           </div>
@@ -269,7 +367,10 @@ const ChatPage = (props: Props) => {
       <div className="flex flex-col flex-1 h-[calc(100vh-56px)]">
         {/* top: title */}
         {/* conversation content */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-white">
+        <div
+          ref={chatContainerRef}
+          className="flex-1 overflow-y-auto p-4 space-y-4 bg-white"
+        >
           {currentConversation ? (
             currentConversation.messages.map((msg, index) => (
               <div
@@ -289,7 +390,28 @@ const ChatPage = (props: Props) => {
                 <div
                   className={`max-w-md px-4 py-2 rounded-xl bg-gray-300 text-black}`}
                 >
-                  {msg.text}
+                  <ReactMarkdown
+                    remarkPlugins={[remarkGfm]}
+                    components={{
+                      code({ node, inline, className, children, ...props }) {
+                        return !inline ? (
+                          <SyntaxHighlighter
+                            style={oneDark}
+                            language="javascript"
+                            {...props}
+                          >
+                            {String(children).replace(/\n$/, "")}
+                          </SyntaxHighlighter>
+                        ) : (
+                          <code className="bg-gray-200 p-1 rounded" {...props}>
+                            {children}
+                          </code>
+                        );
+                      },
+                    }}
+                  >
+                    {msg.text}
+                  </ReactMarkdown>
                 </div>
 
                 {/* user avatar */}
@@ -301,8 +423,10 @@ const ChatPage = (props: Props) => {
               </div>
             ))
           ) : (
-            <p className="text-gray-500 text-center mt-10">
-              Start a new conversation...
+            <p className="text-2xl font-semibold text-center text-[#393e46] mt-10 px-6">
+              Hi! I’m <span className="text-[#6782B8]">Moopy</span>, your AI
+              Mood Companion. How can I support you today?{" "}
+              <span className="text-yellow-500 text-3xl">😊</span>
             </p>
           )}
         </div>
@@ -311,6 +435,7 @@ const ChatPage = (props: Props) => {
         <div className="flex w-full bg-gray-100 p-4 border-t border-gray-300 shadow-md">
           <input
             type="text"
+            ref={inputRef}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             className="flex-1 min-h-[40px] border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring focus:border-blue-400"

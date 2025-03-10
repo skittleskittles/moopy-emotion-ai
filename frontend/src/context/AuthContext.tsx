@@ -50,7 +50,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const isLoggedIn = () => {
-    return !! user && !!token;
+    return !!user && !!token;
   };
 
   return (

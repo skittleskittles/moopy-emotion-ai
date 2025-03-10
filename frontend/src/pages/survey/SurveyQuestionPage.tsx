@@ -2,7 +2,7 @@ import QuestionCard from "@/components/survey/QuestionCard";
 import { useAuth } from "@/context/AuthContext";
 import { SurveyProvider, useSurvey } from "@/context/SurveyContext";
 import { ROUTE_PATHS } from "@/routes/Routes";
-import { surveySaveRecord } from "@/services/api";
+import { saveChatMessage, surveySaveRecord } from "@/services/api";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -11,15 +11,17 @@ interface Props {}
 const SurveyQuestionPage = (props: Props) => {
   const { currentIndex, questions, isLoading, error, score, dispatch } =
     useSurvey();
-  const { user, token, isLoggedIn } = useAuth();
+  const { user, isLoggedIn } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (questions.length > 0 && currentIndex === questions.length && user) {
+    if (questions.length > 0 && currentIndex === 2 && user) {
+      // todo === questions.length
       submitScore();
+      handleContinue();
     }
   }, [currentIndex, questions.length, user]);
 
@@ -45,18 +47,48 @@ const SurveyQuestionPage = (props: Props) => {
     }
   };
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
     const finalScore = score * 1.25;
-    // 根据分数生成 bot 消息
-    // 这里采用：如果最终得分 >= 80，认为表现优秀，显示 happy 消息，否则显示 sad 消息
-    const botMessage =
-      finalScore >= 80
-        ? "I'm really happy about your performance! Great job!"
-        : "I'm a bit sad about your performance. Keep trying and you'll improve!";
+    let botMessage = "";
+
+    if (finalScore < 50) {
+      botMessage =
+        "Hey there! 😊\n" +
+        "Based on your responses, it looks like you’ve been doing well emotionally—no signs of depression or anxiety. That’s wonderful to hear! 💙 Keep taking care of yourself and maintaining your well-being." +
+        "If you ever need support, I’m always here to chat!";
+    } else if (finalScore >= 50 && finalScore <= 60) {
+      botMessage =
+        "It sounds like you might be going through a bit of a rough patch. 😔\n" +
+        "Sometimes, our emotions can be tricky to navigate, and it’s completely okay to seek support." +
+        "You may have noticed things like feeling heavy in the mornings, unclear thinking, or a loss of interest in things you used to enjoy. 💭\n" +
+        "Small steps—like reaching out to a friend, journaling, or doing something that brings you comfort—can make a big difference. You don’t have to go through this alone." +
+        "If it ever feels too overwhelming, consider talking to someone you trust. I’m here whenever you need a listening ear!";
+    } else if (finalScore >= 61 && finalScore <= 70) {
+      botMessage =
+        "I can tell that you’ve been struggling, and I want you to know that your feelings are completely valid. 💙\n" +
+        "If you’ve been feeling persistently down, anxious, or exhausted—especially if it’s affecting your sleep, energy, or daily life—it might be helpful to **reach out to a professional for guidance**." +
+        "You deserve support, and seeking help is a sign of strength, not weakness. 💡\n" +
+        "You are not alone in this, and there are people who truly care about you.\n" +
+        "If you’d like, I can share some self-care tips or just be here to talk.";
+    } else {
+      botMessage =
+        "I’m really sorry you’ve been feeling this way. 💙\n" +
+        "It seems like you’re carrying a heavy emotional burden, and I want to remind you that you don’t have to go through this alone." +
+        "If you’re experiencing deep sadness, hopelessness, trouble sleeping, or overwhelming thoughts, please consider **reaching out to a mental health professional as soon as possible**.\n" +
+        "Your feelings matter, and you deserve support. There are people who care about you and want to help—please don’t hesitate to seek the guidance you need." +
+        "If there’s anything I can do, I’m always here to listen.";
+    }
 
     // dispatch({ type: "restart" });
+    try {
+      const response = await saveChatMessage(0, botMessage);
 
-    navigate(ROUTE_PATHS.CHAT, { state: { botMessage } });
+      if (response.code === 0 && response.data) {
+        navigate(ROUTE_PATHS.CHAT, { state: { botMessage } });
+      }
+    } catch (error) {
+      console.error("Error saving initial bot message:", error);
+    }
   };
 
   if (isLoading)

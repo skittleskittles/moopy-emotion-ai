@@ -55,3 +55,8 @@ export const getChatList = async (userId: number) => {
   const response = await api.post("/api/messageList", { userId });
   return response.data;
 };
+
+export const saveChatMessage = async (userId: number, message: string) => {
+  const response = await api.post("/api/save", { userId, message });
+  return response.data;
+};

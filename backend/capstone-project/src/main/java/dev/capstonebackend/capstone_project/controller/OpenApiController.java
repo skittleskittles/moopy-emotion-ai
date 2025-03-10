@@ -73,7 +73,7 @@ public class OpenApiController {
         if (Objects.isNull(apiReqBody) || Objects.isNull(apiReqBody.getUserId())) {
             return Boolean.FALSE;
         }
-        if (StringUtils.isEmpty(apiReqBody.getMessage())) {
+        if (StringUtils.isEmpty(apiReqBody.getMessage()) || Objects.isNull(apiReqBody.getSender())) {
             return Boolean.FALSE;
         }
         return Boolean.TRUE;

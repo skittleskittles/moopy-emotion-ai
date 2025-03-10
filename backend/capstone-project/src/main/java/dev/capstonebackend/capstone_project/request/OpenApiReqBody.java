@@ -21,4 +21,7 @@ public class OpenApiReqBody {
     @ApiModelProperty(example = "2131", value = "conversationId", required = true)
     private Long conversationId;
 
+    @ApiModelProperty(example = "1", value = "sender", required = true)
+    private Integer sender;
+
 }

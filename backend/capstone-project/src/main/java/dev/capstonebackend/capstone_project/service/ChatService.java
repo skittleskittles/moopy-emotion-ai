@@ -51,6 +51,7 @@ public class ChatService {
                 .conversationId(conversationId)
                 .message(chatBo.getMessage())
                 .userId(chatBo.getUserId())
+                .sender(chatBo.getSender())
                 .build();
         return messageRecordDao.insertMessage(record);
     }

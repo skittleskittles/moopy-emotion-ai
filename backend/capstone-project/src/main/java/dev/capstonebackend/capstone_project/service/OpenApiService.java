@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import dev.capstonebackend.capstone_project.bo.ChatBo;
 import dev.capstonebackend.capstone_project.config.OpenApi;
 import dev.capstonebackend.capstone_project.domain.MessageRecord;
+import dev.capstonebackend.capstone_project.enums.Sender;
 import dev.capstonebackend.capstone_project.vo.ChatVo;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
@@ -81,6 +82,7 @@ public class OpenApiService {
                         .userId(CHATBOT_ID)
                         .conversationId(chatBo.getConversationId())
                         .message(reply)
+                        .sender(Sender.CHATBOT.getSender())
                         .build();
                 int replyResult = chatService.saveMessageContent(replyBo);
                 if (replyResult == -1) {
@@ -90,6 +92,7 @@ public class OpenApiService {
                         .message(replyBo.getMessage())
                         .userId(replyBo.getUserId())
                         .conversationId(replyBo.getConversationId())
+                        .sender(chatBo.getSender())
                         .build();
                 return chatVo;
             }

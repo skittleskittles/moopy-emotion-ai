@@ -19,6 +19,8 @@ public class ChatVo {
 
     private String message;
 
+    private Integer sender;
+
     private Long userId;
 
     private Long conversationId;

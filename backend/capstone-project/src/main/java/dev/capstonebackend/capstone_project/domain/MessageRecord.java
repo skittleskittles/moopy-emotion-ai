@@ -32,4 +32,6 @@ public class MessageRecord {
     private Date modifiedAt;
 
 
+    private Integer sender;
+
 }

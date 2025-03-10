@@ -22,6 +22,7 @@ public class ChatConverter {
                 .conversationId(openApiReqBody.getConversationId())
                 .message(openApiReqBody.getMessage())
                 .userId(openApiReqBody.getUserId())
+                .sender(openApiReqBody.getSender())
                 .build();
     }
 
@@ -41,6 +42,7 @@ public class ChatConverter {
         List<ConversationVo> conversationVoList = messageList.stream()
                 .collect(Collectors.groupingBy(ChatVo::getConversationId)) // Group by conversationId
                 .entrySet().stream()
+                .sorted((e1, e2) -> e2.getKey().compareTo(e1.getKey()))
                 .map(entry -> ConversationVo.builder()
                         .conversationId(entry.getKey()) // 设置 conversationId
                         .messageList(entry.getValue())  // 设置 messageList

@@ -21,8 +21,8 @@
     </select>
 
     <insert id="insertMessage" parameterType="dev.capstonebackend.capstone_project.domain.MessageRecord">
-        INSERT INTO message_record (user_id, conversation_id, message)
-        VALUES (#{userId}, #{conversationId}, #{message})
+        INSERT INTO message_record (user_id, conversation_id, message, sender)
+        VALUES (#{userId}, #{conversationId}, #{message}, #{sender})
     </insert>
 
     <select id="selectMessagesByConversationIds" parameterType="list" resultType="dev.capstonebackend.capstone_project.domain.MessageRecord">
@@ -31,7 +31,7 @@
         <foreach collection="list" item="conversationId" open="(" separator="," close=")">
             #{conversationId}
         </foreach>
-        ORDER BY created_at ASC
+        ORDER BY created_at DESC
     </select>
 
     <select id="selectRecentMessages" parameterType="list" resultType="dev.capstonebackend.capstone_project.domain.MessageRecord">

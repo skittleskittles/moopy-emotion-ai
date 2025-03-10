@@ -67,16 +67,11 @@ public class ChatService {
         return messageRecordDao.selectMessagesByConversationIds(conversationIdList);
     }
 
-    public List<MessageRecord> selectRecentMessages(Long userId) {
-        List<Long> conversationIdList = Optional.ofNullable(conversationsDao.selectByUserId(userId))
-                .orElse(Collections.emptyList()) // 避免 NullPointerException
-                .stream()
-                .map(Conversation::getId).toList(); // Java 8 兼容
-        if (CollectionUtils.isEmpty(conversationIdList)) {
-            log.error("selectRecentMessages No conversation found for userId={}", userId);
+    public List<MessageRecord> selectRecentMessages(Long conversationId) {
+        if (Objects.isNull(conversationId)) {
             return Collections.emptyList();
         }
-        return messageRecordDao.selectRecentMessages(conversationIdList);
+        return messageRecordDao.selectByConversationId(conversationId);
 
     }
 }

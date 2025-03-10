@@ -16,6 +16,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -39,27 +40,29 @@ public class OpenApiService {
 
     public ChatVo chatWithGPT(String prompt, ChatBo chatBo) {
         try {
+            List<MessageRecord> historicalMessageList = chatService.selectRecentMessages(chatBo.getConversationId());
             int promptResult = chatService.saveMessageContent(chatBo);
             if (promptResult == -1) {
                 log.error("Failed to save prompt message");
             }
             String apiKey = openAIConfig.getApiKey();
-
             ObjectNode requestBody = objectMapper.createObjectNode();
             requestBody.put("model", "gpt-4o");
-
             ArrayNode messages = objectMapper.createArrayNode();
-            List<MessageRecord> messageRecordList =  chatService.selectRecentMessages(chatBo.getUserId());
-            if (CollectionUtils.isEmpty(messageRecordList)) {
-                log.error("No recent messages found");
-                return null;
-            }
-            for(MessageRecord messageRecord : messageRecordList) {
+            for(MessageRecord messageRecord : historicalMessageList) {
                 ObjectNode message = objectMapper.createObjectNode();
-                message.put("role", "user");
+                if (messageRecord.getUserId().equals(CHATBOT_ID)) {
+                    message.put("role", "assistant");
+                } else {
+                    message.put("role", "user");
+                }
                 message.put("content", messageRecord.getMessage());
                 messages.add(message);
             }
+            ObjectNode message = objectMapper.createObjectNode();
+            message.put("role", "user");
+            message.put("content", prompt);
+            messages.add(message);
             requestBody.set("messages", messages);
             Request request = new Request.Builder()
                     .url("https://api.openai.com/v1/chat/completions")
@@ -67,7 +70,6 @@ public class OpenApiService {
                     .addHeader("Content-Type", "application/json")
                     .post(RequestBody.create(requestBody.toString(), MediaType.parse("application/json")))
                     .build();
-
             try (Response response = httpClient.newCall(request).execute()) {
                 if (!response.isSuccessful()) {
                     throw new RuntimeException("调用OpenAI API失败：" + response);

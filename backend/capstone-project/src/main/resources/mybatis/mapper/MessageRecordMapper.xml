@@ -16,6 +16,8 @@
         SELECT *
         FROM message_record
         WHERE conversation_id = #{conversationId}
+        ORDER BY created_at DESC
+        LIMIT 10
     </select>
 
     <insert id="insertMessage" parameterType="dev.capstonebackend.capstone_project.domain.MessageRecord">

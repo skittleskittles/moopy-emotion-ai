@@ -5,6 +5,10 @@ import dev.capstonebackend.capstone_project.bo.ChatBo;
 import dev.capstonebackend.capstone_project.domain.MessageRecord;
 import dev.capstonebackend.capstone_project.request.OpenApiReqBody;
 import dev.capstonebackend.capstone_project.vo.ChatVo;
+import dev.capstonebackend.capstone_project.vo.ConversationVo;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @program: Capstone_Project
@@ -31,6 +35,18 @@ public class ChatConverter {
                 .userId(messageRecord.getUserId())
                 .build();
 
+    }
+
+    public static List<ConversationVo> messageVoToConversationVo(List<ChatVo> messageList) {
+        List<ConversationVo> conversationVoList = messageList.stream()
+                .collect(Collectors.groupingBy(ChatVo::getConversationId)) // Group by conversationId
+                .entrySet().stream()
+                .map(entry -> ConversationVo.builder()
+                        .conversationId(entry.getKey()) // 设置 conversationId
+                        .messageList(entry.getValue())  // 设置 messageList
+                        .build())
+                .collect(Collectors.toList());
+        return conversationVoList;
     }
 
 

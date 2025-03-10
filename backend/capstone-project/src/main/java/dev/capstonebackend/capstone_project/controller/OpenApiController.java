@@ -47,7 +47,7 @@ public class OpenApiController {
         List<MessageRecord> messageList = chatService.selectMessagesByUserId(apiReqBody.getUserId());
         List<ChatVo> voList = Optional.ofNullable(messageList).orElse(Collections.emptyList())
                 .stream().map(ChatConverter::messageRecordToVo).toList();
-        return ResultUtil.success(voList);
+        return ResultUtil.success(ChatConverter.messageVoToConversationVo(voList));
 
     }
 

@@ -31,7 +31,7 @@
         <foreach collection="list" item="conversationId" open="(" separator="," close=")">
             #{conversationId}
         </foreach>
-        ORDER BY created_at DESC
+        ORDER BY created_at ASC
     </select>
 
     <select id="selectRecentMessages" parameterType="list" resultType="dev.capstonebackend.capstone_project.domain.MessageRecord">

@@ -1,7 +1,7 @@
 import { ROUTE_PATHS } from "@/routes/Routes";
 import React, { useEffect, useState } from "react";
-import { FaUser, FaRobot, FaTrash, FaHome } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { FaUser, FaRobot, FaTrash, FaHome, FaPlus } from "react-icons/fa";
+import { useLocation, useNavigate } from "react-router-dom";
 import { chat, getChatList } from "@/services/api";
 import { useAuth } from "@/context/AuthContext";
 
@@ -11,7 +11,7 @@ interface Message {
 }
 
 interface Conversation {
-  id: number;
+  id: number | null;
   title: string;
   messages: Message[];
 }
@@ -20,6 +20,10 @@ interface Props {}
 
 const ChatPage = (props: Props) => {
   const { isLoggedIn, user } = useAuth();
+
+  const location = useLocation(); // receive first message
+  const initialBotMessage = (location.state as { botMessage?: string })
+    ?.botMessage;
 
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [currentConversationId, setCurrentConversationId] = useState<
@@ -32,11 +36,22 @@ const ChatPage = (props: Props) => {
 
   // Get chat history
   useEffect(() => {
+    if (initialBotMessage && !currentConversationId) {
+      const tempConversationId = Date.now();
+      const newConversation = {
+        id: tempConversationId,
+        title: "New Conversation",
+        messages: [{ sender: "bot", text: initialBotMessage }],
+      };
+      setConversations([newConversation, ...conversations]);
+      setCurrentConversationId(tempConversationId);
+    }
+
     const fetchChatHistory = async () => {
-      if (!isLoggedIn()) return;
+      if (!isLoggedIn() || !user) return;
 
       try {
-        const response = await getChatList(user!.id);
+        const response = await getChatList(user.id);
         if (response.code === 0 && Array.isArray(response.data)) {
           const formattedConversations = formatChatData(response.data);
           setConversations(formattedConversations);
@@ -47,7 +62,7 @@ const ChatPage = (props: Props) => {
     };
 
     fetchChatHistory();
-  }, [user]);
+  }, [user, initialBotMessage]);
 
   const formatChatData = (chatData: any[]) => {
     const conversationMap: Record<number, Conversation> = {};
@@ -79,6 +94,16 @@ const ChatPage = (props: Props) => {
   const currentConversation = conversations.find(
     (conv) => conv.id === currentConversationId
   );
+
+  const handleNewConversation = () => {
+    const newConversation = {
+      id: null,
+      title: "New Conversation",
+      messages: [],
+    };
+    setConversations([newConversation, ...conversations]);
+    setCurrentConversationId(null);
+  };
 
   // send messages
   const handleSendMessage = async () => {
@@ -214,8 +239,15 @@ const ChatPage = (props: Props) => {
           </div>
         </div>
 
-        {/* bottom: clear & return to homepage */}
+        {/* bottom: new & clear & return to homepage */}
         <div>
+          <button
+            onClick={handleNewConversation}
+            className="w-full flex items-center px-4 py-2 my-1 text-left rounded-lg hover:bg-gray-100"
+          >
+            <FaPlus className="mr-2" />
+            New Conversation
+          </button>
           <button
             onClick={handleClearConversations}
             className="w-full flex items-center px-4 py-2 my-1 text-left rounded-lg hover:bg-gray-100"

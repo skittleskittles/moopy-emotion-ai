@@ -1,8 +1,10 @@
 import QuestionCard from "@/components/survey/QuestionCard";
 import { useAuth } from "@/context/AuthContext";
 import { SurveyProvider, useSurvey } from "@/context/SurveyContext";
+import { ROUTE_PATHS } from "@/routes/Routes";
 import { surveySaveRecord } from "@/services/api";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface Props {}
 
@@ -12,6 +14,8 @@ const SurveyQuestionPage = (props: Props) => {
   const { user, token, isLoggedIn } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (questions.length > 0 && currentIndex === questions.length && user) {
@@ -39,8 +43,20 @@ const SurveyQuestionPage = (props: Props) => {
     } finally {
       setIsSubmitting(false);
     }
+  };
 
-    // todo fsy: navigate to chatbot
+  const handleContinue = () => {
+    const finalScore = score * 1.25;
+    // 根据分数生成 bot 消息
+    // 这里采用：如果最终得分 >= 80，认为表现优秀，显示 happy 消息，否则显示 sad 消息
+    const botMessage =
+      finalScore >= 80
+        ? "I'm really happy about your performance! Great job!"
+        : "I'm a bit sad about your performance. Keep trying and you'll improve!";
+
+    // dispatch({ type: "restart" });
+
+    navigate(ROUTE_PATHS.CHAT, { state: { botMessage } });
   };
 
   if (isLoading)
@@ -68,7 +84,7 @@ const SurveyQuestionPage = (props: Props) => {
           {submitError && <p className="text-red-500 mt-2">{submitError}</p>}
           <button
             className="mt-4 px-6 py-2 bg-[#6782B8] hover:bg-[#769fcd] text-white rounded-lg"
-            onClick={() => dispatch({ type: "restart" })}
+            onClick={handleContinue}
             disabled={isSubmitting}
           >
             {isSubmitting ? "Submitting..." : "Continue"}

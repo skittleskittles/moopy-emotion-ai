@@ -12,6 +12,7 @@ import dev.capstonebackend.capstone_project.util.ResultUtil;
 import dev.capstonebackend.capstone_project.vo.ChatVo;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,8 +51,28 @@ public class OpenApiController {
 
     }
 
+    @PostMapping("/save")
+    public Result<?> saveMessage(@RequestBody OpenApiReqBody apiReqBody) {
+        if (!saveParamCheck(apiReqBody)) {
+            log.info("Invalid request, recordReqBody={}", apiReqBody.toString());
+            return ResultUtil.error(ApiMessage.ILLEGAL_PARAMS);
+        }
+        ChatBo bo = ChatConverter.openApiReqBodyToBo(apiReqBody);
+        return ResultUtil.success(chatService.saveMessageContent(bo));
+    }
+
     private Boolean retrieveParamCheck(OpenApiReqBody apiReqBody) {
         if (Objects.isNull(apiReqBody) || Objects.isNull(apiReqBody.getUserId())) {
+            return Boolean.FALSE;
+        }
+        return Boolean.TRUE;
+    }
+
+    private Boolean saveParamCheck(OpenApiReqBody apiReqBody) {
+        if (Objects.isNull(apiReqBody) || Objects.isNull(apiReqBody.getUserId())) {
+            return Boolean.FALSE;
+        }
+        if (StringUtils.isEmpty(apiReqBody.getMessage())) {
             return Boolean.FALSE;
         }
         return Boolean.TRUE;

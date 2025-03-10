@@ -34,6 +34,7 @@ public class ChatConverter {
                 .createdAt(messageRecord.getCreatedAt())
                 .modifiedAt(messageRecord.getModifiedAt())
                 .userId(messageRecord.getUserId())
+                .sender(messageRecord.getSender())
                 .build();
 
     }

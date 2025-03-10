@@ -9,6 +9,7 @@ import dev.capstonebackend.capstone_project.domain.MessageRecord;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -59,6 +60,10 @@ public class ChatService {
                 .orElse(Collections.emptyList()) // 避免 NullPointerException
                 .stream()
                 .map(Conversation::getId).toList(); // Java 8 兼容
+        if (CollectionUtils.isEmpty(conversationIdList)) {
+            log.error("selectMessagesByUserId No conversation found for userId={}", userId);
+            return Collections.emptyList();
+        }
         return messageRecordDao.selectMessagesByConversationIds(conversationIdList);
     }
 
@@ -67,6 +72,10 @@ public class ChatService {
                 .orElse(Collections.emptyList()) // 避免 NullPointerException
                 .stream()
                 .map(Conversation::getId).toList(); // Java 8 兼容
+        if (CollectionUtils.isEmpty(conversationIdList)) {
+            log.error("selectRecentMessages No conversation found for userId={}", userId);
+            return Collections.emptyList();
+        }
         return messageRecordDao.selectRecentMessages(conversationIdList);
 
     }

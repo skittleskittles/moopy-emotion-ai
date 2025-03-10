@@ -58,7 +58,8 @@ public class OpenApiController {
             return ResultUtil.error(ApiMessage.ILLEGAL_PARAMS);
         }
         ChatBo bo = ChatConverter.openApiReqBodyToBo(apiReqBody);
-        return ResultUtil.success(chatService.saveMessageContent(bo));
+        int result = chatService.saveMessageContent(bo);
+        return ResultUtil.success(bo.getConversationId());
     }
 
     private Boolean retrieveParamCheck(OpenApiReqBody apiReqBody) {

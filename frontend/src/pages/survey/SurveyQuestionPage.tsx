@@ -39,6 +39,8 @@ const SurveyQuestionPage = (props: Props) => {
     } finally {
       setIsSubmitting(false);
     }
+
+    // todo fsy: navigate to chatbot
   };
 
   if (isLoading)
@@ -69,7 +71,7 @@ const SurveyQuestionPage = (props: Props) => {
             onClick={() => dispatch({ type: "restart" })}
             disabled={isSubmitting}
           >
-            {isSubmitting ? "Submitting..." : "Restart Survey"}
+            {isSubmitting ? "Submitting..." : "Continue"}
           </button>
         </div>
       )}

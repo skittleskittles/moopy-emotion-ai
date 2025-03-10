@@ -1,8 +1,8 @@
 import { ROUTE_PATHS } from "@/routes/Routes";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaUser, FaRobot, FaTrash, FaHome } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import { chat } from "@/services/api";
+import { chat, getChatList } from "@/services/api";
 import { useAuth } from "@/context/AuthContext";
 
 interface Message {
@@ -10,14 +10,18 @@ interface Message {
   text: string;
 }
 
+interface Conversation {
+  id: number;
+  title: string;
+  messages: Message[];
+}
+
 interface Props {}
 
 const ChatPage = (props: Props) => {
-  const { isLoggedIn } = useAuth();
-  
-  const [conversations, setConversations] = useState<
-    { id: number; title: string; messages: Message[] }[]
-  >([]);
+  const { isLoggedIn, user } = useAuth();
+
+  const [conversations, setConversations] = useState<Conversation[]>([]);
   const [currentConversationId, setCurrentConversationId] = useState<
     number | null
   >(null);
@@ -26,6 +30,51 @@ const ChatPage = (props: Props) => {
 
   const navigate = useNavigate();
 
+  // Get chat history
+  useEffect(() => {
+    const fetchChatHistory = async () => {
+      if (!isLoggedIn()) return;
+
+      try {
+        const response = await getChatList(user!.id);
+        if (response.code === 0 && Array.isArray(response.data)) {
+          const formattedConversations = formatChatData(response.data);
+          setConversations(formattedConversations);
+        }
+      } catch (error) {
+        console.error("Error fetching chat history:", error);
+      }
+    };
+
+    fetchChatHistory();
+  }, [user]);
+
+  const formatChatData = (chatData: any[]) => {
+    const conversationMap: Record<number, Conversation> = {};
+
+    chatData.forEach((msg) => {
+      if (!conversationMap[msg.conversationId]) {
+        conversationMap[msg.conversationId] = {
+          id: msg.conversationId,
+          title: msg.message.substring(0, 15) + "...",
+          messages: [],
+        };
+      }
+      conversationMap[msg.conversationId].messages.push({
+        sender: msg.userId === user!.id ? "user" : "bot",
+        text: msg.message,
+      });
+    });
+
+    return Object.values(conversationMap);
+  };
+
+  // select conversation session (left)
+  const handleSelectConversation = (conversationId: number) => {
+    setCurrentConversationId(conversationId);
+    setInput(""); // 切换时清空输入框
+  };
+
   // get current conversation
   const currentConversation = conversations.find(
     (conv) => conv.id === currentConversationId
@@ -33,7 +82,7 @@ const ChatPage = (props: Props) => {
 
   // send messages
   const handleSendMessage = async () => {
-    if (!isLoggedIn()) {
+    if (!isLoggedIn() || !user || !user.id) {
       alert("Please log in.");
       return;
     }
@@ -42,18 +91,20 @@ const ChatPage = (props: Props) => {
     setLoading(true);
 
     let updatedConversations = [...conversations];
-    let newConversationId = currentConversationId;
+    let conversationId = currentConversationId;
+    let tempConversationId = Date.now();
 
     if (currentConversationId === null) {
       // create new conversation
+
       const newConversation = {
-        id: Date.now(),
+        id: tempConversationId,
         title: input.length < 15 ? input : input.substring(0, 15) + "...",
         messages: [{ sender: "user", text: input }],
       };
       updatedConversations.unshift(newConversation);
-      newConversationId = newConversation.id;
-      setCurrentConversationId(newConversation.id);
+      conversationId = tempConversationId;
+      setCurrentConversationId(tempConversationId);
     } else {
       // update current conversation
       const index = updatedConversations.findIndex(
@@ -70,22 +121,59 @@ const ChatPage = (props: Props) => {
 
     // send api request
     try {
-      const response = await chat(input);
+      const requestData: {
+        message: string;
+        userId: number;
+        conversationId?: number;
+      } = {
+        message: input,
+        userId: user.id,
+      };
+      if (currentConversationId !== null) {
+        requestData.conversationId = currentConversationId;
+      }
 
-      // update conversations
-      setConversations((prev) =>
-        prev.map((conv) =>
-          conv.id === newConversationId
-            ? { ...conv, messages: [...conv.messages, { sender: "bot", text: response.data }] }
-            : conv
-        )
-      );
+      const response = await chat(requestData);
+
+      if (response.code === 0 && response.data) {
+        const botMessage = response.data.message;
+        const conversationIdFromApi = response.data.conversationId;
+
+        // update conversations
+        setConversations((prev) =>
+          prev.map((conv) => {
+            if (conv.id === conversationId) {
+              return {
+                ...conv,
+                id: conversationIdFromApi, // 更新 conversationId
+                messages: [
+                  ...conv.messages,
+                  { sender: "bot", text: botMessage },
+                ],
+              };
+            }
+            return conv;
+          })
+        );
+
+        // update conversationId
+        setCurrentConversationId(conversationIdFromApi);
+      }
     } catch (error) {
       console.error("Error sending message:", error);
       setConversations((prev) =>
         prev.map((conv) =>
-          conv.id === newConversationId
-            ? { ...conv, messages: [...conv.messages, { sender: "bot", text: "Failed to get response. Try again later." }] }
+          conv.id === conversationId
+            ? {
+                ...conv,
+                messages: [
+                  ...conv.messages,
+                  {
+                    sender: "bot",
+                    text: "Failed to get response. Try again later.",
+                  },
+                ],
+              }
             : conv
         )
       );
@@ -112,7 +200,7 @@ const ChatPage = (props: Props) => {
               conversations.map((conv) => (
                 <button
                   key={conv.id}
-                  onClick={() => setCurrentConversationId(conv.id)}
+                  onClick={() => handleSelectConversation(conv.id)}
                   className={`w-full flex items-center px-4 py-2 my-1 text-left rounded-lg ${
                     currentConversationId === conv.id
                       ? "bg-gray-200"

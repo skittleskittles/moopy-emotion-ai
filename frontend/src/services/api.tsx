@@ -28,7 +28,30 @@ export const surveySaveRecord = async (userId: number, score: number) => {
 };
 
 /* Chat */
-export const chat = async (message: string) => {
-  const response = await api.post("/api/chat", { message });
+export const chat = async ({
+  message,
+  userId,
+  conversationId,
+}: {
+  message: string;
+  userId: number;
+  conversationId?: number;
+}) => {
+  try {
+    const response = await api.post("/api/chat", {
+      message,
+      userId,
+      ...(conversationId !== undefined && { conversationId }), // 仅当 conversationId 存在时才包含
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("Error in chat API:", error);
+    throw error;
+  }
+};
+
+export const getChatList = async (userId: number) => {
+  const response = await api.post("/api/messageList", { userId });
   return response.data;
 };

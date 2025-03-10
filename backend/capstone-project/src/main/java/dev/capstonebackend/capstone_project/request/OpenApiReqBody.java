@@ -15,4 +15,10 @@ public class OpenApiReqBody {
     @ApiModelProperty(example = "What color is your Mclaren 600lt", value = "message", required = true)
     private String message;
 
+    @ApiModelProperty(example = "2313", value = "userId", required = true)
+    private Long userId;
+
+    @ApiModelProperty(example = "2131", value = "conversationId", required = true)
+    private Long conversationId;
+
 }

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="dev.capstonebackend.capstone_project.dao.MessageRecordDao">
+
+    <insert id="batchInsert" parameterType="java.util.List">
+        INSERT INTO message_record (user_id, conversation_id, message)
+        VALUES
+        <foreach collection="messageList" item="message" separator=",">
+            (#{message.userId}, #{message.conversationId}, #{message.message})
+        </foreach>
+    </insert>
+
+    <select id="selectByConversationId" resultType="dev.capstonebackend.capstone_project.domain.MessageRecord">
+        SELECT *
+        FROM message_record
+        WHERE conversation_id = #{conversationId}
+    </select>
+
+    <insert id="insertMessage" parameterType="dev.capstonebackend.capstone_project.domain.MessageRecord">
+        INSERT INTO message_record (user_id, conversation_id, message)
+        VALUES (#{userId}, #{conversationId}, #{message})
+    </insert>
+
+    <select id="selectMessagesByConversationIds" parameterType="list" resultType="dev.capstonebackend.capstone_project.domain.MessageRecord">
+        SELECT * FROM message_record
+        WHERE conversation_id IN
+        <foreach collection="list" item="conversationId" open="(" separator="," close=")">
+            #{conversationId}
+        </foreach>
+        ORDER BY created_at ASC
+    </select>
+
+
+</mapper>

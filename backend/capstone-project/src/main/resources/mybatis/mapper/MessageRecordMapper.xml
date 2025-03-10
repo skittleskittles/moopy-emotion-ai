@@ -32,5 +32,15 @@
         ORDER BY created_at ASC
     </select>
 
+    <select id="selectRecentMessages" parameterType="list" resultType="dev.capstonebackend.capstone_project.domain.MessageRecord">
+        SELECT * FROM message_record
+        WHERE conversation_id IN
+        <foreach collection="list" item="conversationId" open="(" separator="," close=")">
+            #{conversationId}
+        </foreach>
+        ORDER BY created_at DESC
+        LIMIT 10
+    </select>
+
 
 </mapper>

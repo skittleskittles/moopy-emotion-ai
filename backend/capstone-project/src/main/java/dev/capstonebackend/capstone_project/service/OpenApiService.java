@@ -6,10 +6,16 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import dev.capstonebackend.capstone_project.bo.ChatBo;
 import dev.capstonebackend.capstone_project.config.OpenApi;
+import dev.capstonebackend.capstone_project.domain.MessageRecord;
+import dev.capstonebackend.capstone_project.vo.ChatVo;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+
+import java.util.Collections;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -23,6 +29,7 @@ public class OpenApiService {
     private final OkHttpClient httpClient = new OkHttpClient();
     private final ObjectMapper objectMapper = new ObjectMapper();
 
+    private static final Long CHATBOT_ID = 0L;
 
     public OpenApi callGPT() {
         String apiKey = openAIConfig.getApiKey();
@@ -30,7 +37,7 @@ public class OpenApiService {
         return null;
     }
 
-    public String chatWithGPT(String prompt, ChatBo chatBo) {
+    public ChatVo chatWithGPT(String prompt, ChatBo chatBo) {
         try {
             int promptResult = chatService.saveMessageContent(chatBo);
             if (promptResult == -1) {
@@ -42,12 +49,18 @@ public class OpenApiService {
             requestBody.put("model", "gpt-4o");
 
             ArrayNode messages = objectMapper.createArrayNode();
-            ObjectNode message = objectMapper.createObjectNode();
-            message.put("role", "user");
-            message.put("content", prompt);
-            messages.add(message);
+            List<MessageRecord> messageRecordList =  chatService.selectRecentMessages(chatBo.getUserId());
+            if (CollectionUtils.isEmpty(messageRecordList)) {
+                log.error("No recent messages found");
+                return null;
+            }
+            for(MessageRecord messageRecord : messageRecordList) {
+                ObjectNode message = objectMapper.createObjectNode();
+                message.put("role", "user");
+                message.put("content", messageRecord.getMessage());
+                messages.add(message);
+            }
             requestBody.set("messages", messages);
-
             Request request = new Request.Builder()
                     .url("https://api.openai.com/v1/chat/completions")
                     .addHeader("Authorization", "Bearer " + apiKey)
@@ -62,7 +75,8 @@ public class OpenApiService {
                 JsonNode jsonNode = objectMapper.readTree(response.body().string());
                 String reply = jsonNode.get("choices").get(0).get("message").get("content").asText();
                 ChatBo replyBo = ChatBo.builder()
-                        .userId(chatBo.getUserId())
+                        // chatbot userid默认为0
+                        .userId(CHATBOT_ID)
                         .conversationId(chatBo.getConversationId())
                         .message(reply)
                         .build();
@@ -70,7 +84,12 @@ public class OpenApiService {
                 if (replyResult == -1) {
                     log.error("Failed to save reply message");
                 }
-                return jsonNode.get("choices").get(0).get("message").get("content").asText();
+                ChatVo chatVo = ChatVo.builder()
+                        .message(replyBo.getMessage())
+                        .userId(replyBo.getUserId())
+                        .conversationId(replyBo.getConversationId())
+                        .build();
+                return chatVo;
             }
         } catch (Exception e) {
             throw new RuntimeException("调用OpenAI API异常：" + e.getMessage(), e);

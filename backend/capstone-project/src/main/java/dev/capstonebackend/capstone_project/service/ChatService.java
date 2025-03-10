@@ -61,4 +61,13 @@ public class ChatService {
                 .map(Conversation::getId).toList(); // Java 8 兼容
         return messageRecordDao.selectMessagesByConversationIds(conversationIdList);
     }
+
+    public List<MessageRecord> selectRecentMessages(Long userId) {
+        List<Long> conversationIdList = Optional.ofNullable(conversationsDao.selectByUserId(userId))
+                .orElse(Collections.emptyList()) // 避免 NullPointerException
+                .stream()
+                .map(Conversation::getId).toList(); // Java 8 兼容
+        return messageRecordDao.selectRecentMessages(conversationIdList);
+
+    }
 }

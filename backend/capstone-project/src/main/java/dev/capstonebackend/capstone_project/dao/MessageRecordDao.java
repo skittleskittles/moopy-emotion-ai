@@ -19,4 +19,6 @@ public interface MessageRecordDao {
 
     List<MessageRecord> selectMessagesByConversationIds(@Param("list") List<Long> conversationIdList);
 
+    List<MessageRecord> selectRecentMessages(@Param("list") List<Long> conversationIdList);
+
 }

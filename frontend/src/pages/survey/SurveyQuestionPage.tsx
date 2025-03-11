@@ -42,7 +42,7 @@ const SurveyQuestionPage = (props: Props) => {
       await saveBotMsg(); // 确保 bot 消息保存后才跳转
 
       setTimeout(() => {
-        navigate(ROUTE_PATHS.CHAT);
+        navigate(ROUTE_PATHS.CHAT, { state: { fromSurvey: true } });
       }, 1000); // 延迟 1 秒再跳转，增强过渡效果
     } catch (error) {
       setSubmitError("Failed to submit score. Please try again.");

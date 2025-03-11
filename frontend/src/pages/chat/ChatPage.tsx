@@ -28,10 +28,8 @@ const ChatPage = (props: Props) => {
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null); // 让输入框支持自动 focus
 
-  // const location = useLocation(); // receive first message
-  // const initialBotMessage = (location.state as { botMessage?: string })
-  //   ?.botMessage;
-  //   const botMessageSavedRef = useRef(false);
+  const location = useLocation();
+  const jumpFromSurvey = location.state?.fromSurvey || false;
 
   const [conversations, setConversations] = useState<
     Record<string, Conversation[]>
@@ -54,17 +52,21 @@ const ChatPage = (props: Props) => {
           const formattedConversations = formatChatData(response.data);
           setConversations(formattedConversations);
 
-          const latestDate = Object.keys(formattedConversations)
-            .sort()
-            .reverse()[0]; // Get the latest date
-          if (latestDate && formattedConversations[latestDate].length > 0) {
-            setCurrentConversationId(formattedConversations[latestDate][0].id);
-            setTimeout(() => {
-              if (chatContainerRef.current) {
-                chatContainerRef.current.scrollTop =
-                  chatContainerRef.current.scrollHeight;
-              }
-            }, 100);
+          if (jumpFromSurvey) {
+            const latestDate = Object.keys(formattedConversations)
+              .sort()
+              .reverse()[0]; // Get the latest date
+            if (latestDate && formattedConversations[latestDate].length > 0) {
+              setCurrentConversationId(
+                formattedConversations[latestDate][0].id
+              );
+              setTimeout(() => {
+                if (chatContainerRef.current) {
+                  chatContainerRef.current.scrollTop =
+                    chatContainerRef.current.scrollHeight;
+                }
+              }, 100);
+            }
           }
         }
       } catch (error) {
@@ -82,37 +84,14 @@ const ChatPage = (props: Props) => {
     }
   }, [currentConversationId]);
 
-  // useEffect(() => {
-  //   if (initialBotMessage && !botMessageSavedRef.current) {
-  //     handleSaveBotMessage(initialBotMessage);
-  //     botMessageSavedRef.current = true; // 标记为已执行
-  //   }
-  // }, [initialBotMessage]);
-
-  // 存储 `botMessage` 并获取 `conversationId`
-  // const handleSaveBotMessage = async (message: string) => {
-  //   console.log("save!!");
-  //   if (!isLoggedIn() || !user) return;
-
-  //   try {
-  //     const response = await saveChatMessage(0, message);
-
-  //     if (response.code === 0 && response.data) {
-  //       const conversationIdFromApi = response.data; // 后端返回的 conversationId
-
-  //       const newConversation = {
-  //         id: conversationIdFromApi,
-  //         title: message.substring(0, 15) + "...",
-  //         messages: [{ sender: "bot", text: message }],
-  //       };
-
-  //       setConversations([newConversation, ...conversations]);
-  //       setCurrentConversationId(conversationIdFromApi);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error saving initial bot message:", error);
-  //   }
-  // };
+  // 监听 conversations 变化，每次有变更滚动到底部
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      setTimeout(() => {
+        chatContainerRef.current!.scrollTop = chatContainerRef.current!.scrollHeight;
+      }, 100); // 确保在DOM更新后执行
+    }
+  }, [conversations]); 
 
   const formatToLocalDate = (utcString: string) => {
     const date = new Date(utcString);
@@ -138,7 +117,10 @@ const ChatPage = (props: Props) => {
 
       groupedConversations[date].push({
         id: conversation.conversationId,
-        title: firstMessage.message.substring(0, 20) + "...",
+        title:
+          firstMessage.message.length < 20
+            ? firstMessage.message
+            : firstMessage.message.substring(0, 20) + "...",
         messages: conversation.messageList.map((msg: any) => ({
           sender: msg.sender === 1 ? "user" : "bot",
           text: msg.message,
@@ -161,19 +143,39 @@ const ChatPage = (props: Props) => {
     .find((conv) => conv.id === currentConversationId);
 
   const handleNewConversation = () => {
-    const today = new Date().toISOString().split("T")[0]; // Get today's date
+    const today = formatToLocalDate(new Date().toISOString()); // Get today's date
+
+    let existingNullConversation = conversations[today]?.find(
+      (conv) => conv.id === null
+    );
+    if (existingNullConversation) {
+      setCurrentConversationId(existingNullConversation.id);
+      return;
+    }
+
     const newConversation: Conversation = {
       id: null,
       title: "New Conversation",
       messages: [],
     };
 
-    setConversations((prev) => ({
-      ...prev,
-      [today]: prev[today]
-        ? [newConversation, ...prev[today]]
-        : [newConversation],
-    }));
+    setConversations((prev) => {
+      let updatedConversations = { ...prev };
+
+      // 插入新的会话
+      updatedConversations[today] = updatedConversations[today]
+        ? [newConversation, ...updatedConversations[today]]
+        : [newConversation];
+
+      // 对 updatedConversations 的 keys（日期）进行排序（从最新到最旧）
+      const sortedConversations = Object.fromEntries(
+        Object.entries(updatedConversations).sort(([dateA], [dateB]) =>
+          dateB.localeCompare(dateA)
+        )
+      );
+
+      return sortedConversations;
+    });
 
     setCurrentConversationId(null);
   };
@@ -188,43 +190,60 @@ const ChatPage = (props: Props) => {
     if (!input.trim() || loading) return;
     setLoading(true);
 
-    const today = new Date().toISOString().split("T")[0]; // Get today's date
+    const today = formatToLocalDate(new Date().toISOString()); // Get today's date
     let conversationId = currentConversationId;
     let tempConversationId = Date.now();
+    let updatedConversations = { ...conversations };
 
-    setConversations((prev) => {
-      let updatedConversations = { ...prev };
-
-      if (currentConversationId === null) {
-        // Create a new conversation under today's date
+    let existingNullConversation = updatedConversations[today]?.find(
+      (conv) => conv.id === null
+    );
+    if (currentConversationId === null) {
+      if (existingNullConversation) {
+        // **如果已有 `id: null` 的对话，修改该对话**
+        console.log("existingNullConversation");
+        existingNullConversation.id = tempConversationId;
+        existingNullConversation.title =
+          input.length < 20 ? input : input.substring(0, 20) + "...";
+        existingNullConversation.messages.push({
+          sender: "user",
+          text: input,
+        });
+      } else {
+        // **否则创建新的对话**
         const newConversation = {
           id: tempConversationId,
-          title: input.length < 15 ? input : input.substring(0, 15) + "...",
+          title: input.length < 20 ? input : input.substring(0, 20) + "...",
           messages: [{ sender: "user", text: input }],
         };
 
         updatedConversations[today] = updatedConversations[today]
-          ? [newConversation, ...updatedConversations[today]]
+          ? [newConversation, ...updatedConversations[today]] // **追加到列表**
           : [newConversation];
 
-        conversationId = tempConversationId;
-        setCurrentConversationId(tempConversationId);
-      } else {
-        // Find the conversation and add a message
-        Object.keys(updatedConversations).forEach((date) => {
-          updatedConversations[date] = updatedConversations[date].map((conv) =>
-            conv.id === currentConversationId
-              ? {
-                  ...conv,
-                  messages: [...conv.messages, { sender: "user", text: input }],
-                }
-              : conv
-          );
-        });
+        updatedConversations = Object.fromEntries(
+          Object.entries(updatedConversations).sort(([dateA], [dateB]) =>
+            dateB.localeCompare(dateA)
+          )
+        );
       }
+      conversationId = tempConversationId;
+      setCurrentConversationId(conversationId);
+    } else {
+      // Find the conversation and add a message
+      Object.keys(updatedConversations).forEach((date) => {
+        updatedConversations[date] = updatedConversations[date].map((conv) =>
+          conv.id === currentConversationId
+            ? {
+                ...conv,
+                messages: [...conv.messages, { sender: "user", text: input }],
+              }
+            : conv
+        );
+      });
+    }
 
-      return updatedConversations;
-    });
+    setConversations(updatedConversations);
 
     setInput("");
 
@@ -251,7 +270,6 @@ const ChatPage = (props: Props) => {
         const conversationIdFromApi = response.data.conversationId;
 
         // update conversations
-
         setConversations((prev) => {
           let updatedConversations = { ...prev };
 
@@ -274,8 +292,18 @@ const ChatPage = (props: Props) => {
           return updatedConversations;
         });
 
+        console.log(
+          "conversationIdFromApi:",
+          conversationIdFromApi,
+          "tempConversationId:",
+          tempConversationId,
+          "currentConversationId:",
+          currentConversationId
+        );
         // update conversationId
-        setCurrentConversationId(conversationIdFromApi);
+        setTimeout(() => {
+          setCurrentConversationId(conversationIdFromApi);
+        }, 0);
       }
     } catch (error) {
       console.error("Error sending message:", error);
@@ -417,7 +445,7 @@ const ChatPage = (props: Props) => {
           ) : (
             <p className="text-2xl font-semibold text-center text-[#393e46] mt-10 px-6">
               Hi! I’m <span className="text-[#6782B8]">Moopy</span>, your AI
-              Mood Companion. How can I support you today?{" "}
+              Mood Companion. How are you feeling today?{" "}
               <span className="text-yellow-500 text-3xl">😊</span>
             </p>
           )}

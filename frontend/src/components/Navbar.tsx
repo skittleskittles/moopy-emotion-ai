@@ -14,6 +14,8 @@ import { LogoIcon } from "../components/homepage/Icons";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 
+import moopy from "../assets/moopy.png";
+
 interface RouteProps {
   href: string;
   label: string;
@@ -86,26 +88,32 @@ export const Navbar = () => {
             <a
               rel="noreferrer noopener"
               href="/"
-              className="ml-2 font-bold text-xl flex"
+              className="ml-2 flex items-center "
             >
               <LogoIcon />
-              Moopy
+              <img src={moopy} alt="Moopy Logo" className="h-[40px] mt-2" />
             </a>
           </NavigationMenuItem>
 
           <nav className="hidden md:flex gap-2">
-            {routeList.map((route: RouteProps, i) => (
-              <a
-                rel="noreferrer noopener"
-                href={route.href}
-                key={i}
-                className={`text-[17px] ${buttonVariants({
-                  variant: "ghost",
-                })}`}
-              >
-                {route.label}
-              </a>
-            ))}
+            {routeList.map((route, i) => {
+              // 判断当前路径是否与菜单项匹配
+              const isActive = location.pathname === route.href;
+
+              return (
+                <a
+                  rel="noreferrer noopener"
+                  href={route.href}
+                  key={i}
+                  className={`text-[17px] ${buttonVariants({
+                    variant: "ghost",
+                  })} ${isActive ? "bg-gray-200" : ""}
+                  `}
+                >
+                  {route.label}
+                </a>
+              );
+            })}
           </nav>
 
           <div className="hidden md:flex gap-4 items-center relative">
@@ -126,15 +134,11 @@ export const Navbar = () => {
               <div className="relative">
                 <button
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                  className={`flex items-center ${buttonVariants(
-                    {
-                      variant: "default",
-                    }
-                  )}`}
+                  className={`flex items-center ${buttonVariants({
+                    variant: "default",
+                  })}`}
                 >
-                  <span>
-                    {user?.username}
-                  </span>
+                  <span>{user?.username}</span>
                   <svg
                     className={`w-4 h-4 ml-1 transition-transform ${
                       isDropdownOpen ? "rotate-180" : ""

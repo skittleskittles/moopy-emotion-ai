@@ -60,7 +60,7 @@ const QuestionCard = (Props) => {
           }}
           disabled={selectedIndex === null || isSubmitted}
         >
-          Next
+          {currentIndex + 1 === questions.length ? "Finish" : "Next"}
         </button>
       </div>
 

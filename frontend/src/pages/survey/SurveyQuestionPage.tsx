@@ -20,7 +20,6 @@ const SurveyQuestionPage = (props: Props) => {
   useEffect(() => {
     if (questions.length > 0 && currentIndex === questions.length && user) {
       submitScore();
-      saveBotMsg();
     }
   }, [currentIndex, questions.length, user]);
 
@@ -39,6 +38,12 @@ const SurveyQuestionPage = (props: Props) => {
       if (res.code !== 0) {
         throw new Error("Failed to save score");
       }
+
+      await saveBotMsg(); // 确保 bot 消息保存后才跳转
+
+      setTimeout(() => {
+        navigate(ROUTE_PATHS.CHAT);
+      }, 1000); // 延迟 1 秒再跳转，增强过渡效果
     } catch (error) {
       setSubmitError("Failed to submit score. Please try again.");
     } finally {
@@ -57,14 +62,14 @@ const SurveyQuestionPage = (props: Props) => {
     if (finalScore < 50) {
       botMessage =
         "Hey there! 😊\n" +
-        "Based on your responses, it looks like you’ve been doing well emotionally—no signs of depression or anxiety. That’s wonderful to hear! 💙 Keep taking care of yourself and maintaining your well-being." +
+        "Based on your responses, it looks like you’ve been doing well emotionally—no signs of depression or anxiety. That’s wonderful to hear! 💙 Keep taking care of yourself and maintaining your well-being. " +
         "If you ever need support, I’m always here to chat!";
     } else if (finalScore >= 50 && finalScore <= 60) {
       botMessage =
         "It sounds like you might be going through a bit of a rough patch. 😔\n" +
-        "Sometimes, our emotions can be tricky to navigate, and it’s completely okay to seek support." +
+        "Sometimes, our emotions can be tricky to navigate, and it’s completely okay to seek support. " +
         "You may have noticed things like feeling heavy in the mornings, unclear thinking, or a loss of interest in things you used to enjoy. 💭\n" +
-        "Small steps—like reaching out to a friend, journaling, or doing something that brings you comfort—can make a big difference. You don’t have to go through this alone." +
+        "Small steps—like reaching out to a friend, journaling, or doing something that brings you comfort—can make a big difference. You don’t have to go through this alone. " +
         "If it ever feels too overwhelming, consider talking to someone you trust. I’m here whenever you need a listening ear!";
     } else if (finalScore >= 61 && finalScore <= 70) {
       botMessage =
@@ -76,7 +81,7 @@ const SurveyQuestionPage = (props: Props) => {
     } else {
       botMessage =
         "I’m really sorry you’ve been feeling this way. 💙\n" +
-        "It seems like you’re carrying a heavy emotional burden, and I want to remind you that you don’t have to go through this alone." +
+        "It seems like you’re carrying a heavy emotional burden, and I want to remind you that you don’t have to go through this alone. " +
         "If you’re experiencing deep sadness, hopelessness, trouble sleeping, or overwhelming thoughts, please consider **reaching out to a mental health professional as soon as possible**.\n" +
         "Your feelings matter, and you deserve support. There are people who care about you and want to help—please don’t hesitate to seek the guidance you need." +
         "If there’s anything I can do, I’m always here to listen.";
@@ -84,11 +89,7 @@ const SurveyQuestionPage = (props: Props) => {
 
     // dispatch({ type: "restart" });
     try {
-      const response = await saveChatMessage(user.id, botMessage, 0);
-
-      if (response.code === 0 && response.data) {
-        navigate(ROUTE_PATHS.CHAT, { state: { botMessage } });
-      }
+      await saveChatMessage(user.id, botMessage, 0);
     } catch (error) {
       console.error("Error saving initial bot message:", error);
     }
@@ -101,7 +102,7 @@ const SurveyQuestionPage = (props: Props) => {
     return <p className="text-center">No questions available.</p>;
 
   return (
-    <div className="flex flex-col h-[calc(100vh-56px)] items-center justify-center">
+    <div className="flex flex-col items-center justify-center">
       {/* Banner */}
       <div className="w-full h-[150px] bg-[#FFD8D8] flex items-center justify-center">
         <h1 className="text-[55px] leading-[76.8px] font-serif text-[#0F0F0E] tracking-tight">
@@ -110,25 +111,17 @@ const SurveyQuestionPage = (props: Props) => {
       </div>
 
       {/* QuestionCard */}
-      <QuestionCard />
-      
-      {/* {currentIndex < questions.length ? (
+      {currentIndex < questions.length ? (
         <QuestionCard />
       ) : (
-        <div className="text-center">
-          <h2 className="text-2xl font-bold">Quiz Completed!</h2>
-          <p className="text-lg">Your total score: {score * 1.25}</p>
-          {submitError && <p className="text-red-500 mt-2">{submitError}</p>}
-          <button
-            className="mt-4 px-6 py-2 bg-[#6782B8] hover:bg-[#769fcd] text-white rounded-lg"
-            onClick={handleContinue}
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? "Submitting..." : "Continue"}
-          </button>
+        <div className="absolute inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center">
+            <p className="text-lg font-semibold">Calculating results...</p>
+            <div className="mt-4 w-12 h-12 border-4 border-blue-500 border-dashed rounded-full animate-spin"></div>
+          </div>
         </div>
       )}
-      <p className="text-lg">(Debug Info): Your total score: {score * 1.25}</p> */}
+      {/* <p className="text-lg">(Debug Info): Your total score: {score * 1.25}</p> */}
     </div>
   );
 };

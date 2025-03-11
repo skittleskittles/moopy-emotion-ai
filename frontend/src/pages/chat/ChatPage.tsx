@@ -310,7 +310,7 @@ const ChatPage = (props: Props) => {
   };
 
   return (
-    <div className="flex h-[calc(100vh-56px)] bg-gray-100 overflow-hidden">
+    <div className="flex h-[calc(100vh-60px)] bg-gray-100 overflow-hidden">
       {/* left part: conversation records */}
       <div className="w-64 bg-gray-100 shadow-lg p-4 flex flex-col justify-between">
         <div>
@@ -373,7 +373,7 @@ const ChatPage = (props: Props) => {
       </div>
 
       {/* right part: conversation window */}
-      <div className="flex flex-col flex-1 h-[calc(100vh-56px)]">
+      <div className="flex flex-col flex-1 h-[calc(100vh-60px)]">
         {/* top: title */}
         {/* conversation content */}
         <div

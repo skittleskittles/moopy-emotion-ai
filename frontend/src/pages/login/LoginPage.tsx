@@ -53,7 +53,7 @@ const LoginPage = (props: Props) => {
   };
 
   return (
-    <div className="flex flex-col h-[calc(100vh-56px)] items-center justify-center">
+    <div className="flex flex-col h-[calc(100vh-60px)] items-center justify-center">
       {/* Banner */}
       <div className="w-full h-[150px] bg-white flex items-center justify-center">
         <h1 className="text-[55px] leading-[76.8px] font-serif text-black tracking-tight">

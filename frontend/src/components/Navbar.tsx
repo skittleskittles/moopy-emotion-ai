@@ -11,7 +11,8 @@ import { Menu } from "lucide-react";
 import { ModeToggle } from "../components/homepage/mode-toggle";
 import { LogoIcon } from "../components/homepage/Icons";
 
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "@/context/AuthContext";
 
 interface RouteProps {
   href: string;
@@ -45,7 +46,6 @@ const ROUTE_PATHS = {
   MOOD_TRACKER: "/mood-tracker", // ➤ Mood 日历页面
   MOOD_DAY: "/mood-day/:date", // ➤ 具体日期的 Mood 页面
   YEAR_TRACKER: "/year-tracker",
-  
 };
 
 const featureRoutes: RouteProps[] = [
@@ -56,12 +56,27 @@ const featureRoutes: RouteProps[] = [
 ];
 
 export const Navbar = () => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const { user, isLoggedIn, logout } = useAuth();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const location = useLocation();
+  const navigate = useNavigate();
 
-  const isHomePage = location.pathname === "/";
-  const routeList = isHomePage ? homeRoutes : featureRoutes;
+  const isAuthPage =
+    location.pathname === ROUTE_PATHS.LOGIN ||
+    location.pathname === ROUTE_PATHS.REGISTER;
+  const isHomePage = location.pathname === ROUTE_PATHS.HOME;
+  const routeList = isAuthPage
+    ? [{ href: ROUTE_PATHS.HOME, label: "HomePage" }]
+    : isHomePage
+    ? homeRoutes
+    : featureRoutes;
+
+  const handleLogout = () => {
+    logout();
+    setIsDropdownOpen(false);
+    navigate(ROUTE_PATHS.HOME);
+  };
 
   return (
     <header className="sticky border-b-[1px] top-0 z-40 w-full bg-white dark:border-b-slate-700 dark:bg-background">
@@ -78,55 +93,6 @@ export const Navbar = () => {
             </a>
           </NavigationMenuItem>
 
-          {/* mobile */}
-          {/* <span className="flex md:hidden">
-            <ModeToggle />
-
-            <Sheet open={isOpen} onOpenChange={setIsOpen}>
-              <SheetTrigger className="px-2">
-                <Menu
-                  className="flex md:hidden h-5 w-5"
-                  onClick={() => setIsOpen(true)}
-                >
-                  <span className="sr-only">Menu Icon</span>
-                </Menu>
-              </SheetTrigger>
-
-              <SheetContent side={"left"}>
-                <SheetHeader>
-                  <SheetTitle className="font-bold text-xl">
-                    Shadcn/React
-                  </SheetTitle>
-                </SheetHeader>
-                <nav className="flex flex-col justify-center items-center gap-2 mt-4">
-                  {routeList.map(({ href, label }: RouteProps) => (
-                    <a
-                      rel="noreferrer noopener"
-                      key={label}
-                      href={href}
-                      onClick={() => setIsOpen(false)}
-                      className={buttonVariants({ variant: "ghost" })}
-                    >
-                      {label}
-                    </a>
-                  ))}
-                  <a
-                    rel="noreferrer noopener"
-                    href="https://github.com/leoMirandaa/shadcn-landing-page.git"
-                    target="_blank"
-                    className={`w-[110px] border ${buttonVariants({
-                      variant: "secondary",
-                    })}`}
-                  >
-                    <GitHubLogoIcon className="mr-2 w-5 h-5" />
-                    Github
-                  </a>
-                </nav>
-              </SheetContent>
-            </Sheet>
-          </span> */}
-
-          {/* desktop */}
           <nav className="hidden md:flex gap-2">
             {routeList.map((route: RouteProps, i) => (
               <a
@@ -142,18 +108,71 @@ export const Navbar = () => {
             ))}
           </nav>
 
-          <div className="hidden md:flex gap-2">
-            {/* <a
-              rel="noreferrer noopener"
-              href="https://github.com/leoMirandaa/shadcn-landing-page.git"
-              target="_blank"
-              className={`border ${buttonVariants({ variant: "secondary" })}`}
-            >
-              <GitHubLogoIcon className="mr-2 w-5 h-5" />
-              Github
-            </a> */}
+          <div className="hidden md:flex gap-4 items-center relative">
+            {/* <ModeToggle /> */}
 
-            <ModeToggle />
+            {/* 如果用户未登录，显示 “Login” 按钮 */}
+            {!isLoggedIn() ? (
+              <button
+                onClick={() => navigate(ROUTE_PATHS.LOGIN)}
+                className={`px-4 py-2 ${buttonVariants({
+                  variant: "default",
+                })}`}
+              >
+                Login
+              </button>
+            ) : (
+              // 用户已登录，显示用户名和下拉菜单
+              <div className="relative">
+                <button
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                  className={`flex items-center ${buttonVariants(
+                    {
+                      variant: "default",
+                    }
+                  )}`}
+                >
+                  <span>
+                    {user?.username}
+                  </span>
+                  <svg
+                    className={`w-4 h-4 ml-1 transition-transform ${
+                      isDropdownOpen ? "rotate-180" : ""
+                    }`}
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </button>
+
+                {/* 用户下拉菜单 */}
+                {isDropdownOpen && (
+                  <div className="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-lg shadow-lg">
+                    {/* todo: Profile */}
+                    {/* <button
+                      onClick={() => navigate(ROUTE_PATHS.PROFILE)}
+                      className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                    >
+                      Profile
+                    </button> */}
+                    <button
+                      onClick={handleLogout}
+                      className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-red-600"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </NavigationMenuList>
       </NavigationMenu>

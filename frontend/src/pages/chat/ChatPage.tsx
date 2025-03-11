@@ -138,7 +138,7 @@ const ChatPage = (props: Props) => {
 
       groupedConversations[date].push({
         id: conversation.conversationId,
-        title: firstMessage.message.substring(0, 15) + "...",
+        title: firstMessage.message.substring(0, 20) + "...",
         messages: conversation.messageList.map((msg: any) => ({
           sender: msg.sender === 1 ? "user" : "bot",
           text: msg.message,

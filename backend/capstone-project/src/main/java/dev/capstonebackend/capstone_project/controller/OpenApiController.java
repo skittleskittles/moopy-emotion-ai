@@ -33,6 +33,10 @@ public class OpenApiController {
 
     @PostMapping("/chat")
     public Result<?> chat(@RequestBody OpenApiReqBody apiReqBody) {
+        if (!saveParamCheck(apiReqBody)) {
+            log.info("OpenApiController chat Invalid request, recordReqBody={}", apiReqBody.toString());
+            return ResultUtil.error(ApiMessage.ILLEGAL_PARAMS);
+        }
         String prompt = apiReqBody.getMessage();
         ChatBo bo = ChatConverter.openApiReqBodyToBo(apiReqBody);
         return ResultUtil.success(openApiService.chatWithGPT(prompt, bo));
@@ -41,7 +45,7 @@ public class OpenApiController {
     @PostMapping("/messageList")
     public Result<?> retrieveMessage(@RequestBody OpenApiReqBody apiReqBody) {
         if (!retrieveParamCheck(apiReqBody)) {
-            log.info("Invalid request, recordReqBody={}", apiReqBody.toString());
+            log.info("OpenApiController retrieveMessage Invalid request, recordReqBody={}", apiReqBody.toString());
             return ResultUtil.error(ApiMessage.ILLEGAL_PARAMS);
         }
         List<MessageRecord> messageList = chatService.selectMessagesByUserId(apiReqBody.getUserId());
@@ -54,7 +58,7 @@ public class OpenApiController {
     @PostMapping("/save")
     public Result<?> saveMessage(@RequestBody OpenApiReqBody apiReqBody) {
         if (!saveParamCheck(apiReqBody)) {
-            log.info("Invalid request, recordReqBody={}", apiReqBody.toString());
+            log.info("OpenApiController saveMessage Invalid request, recordReqBody={}", apiReqBody.toString());
             return ResultUtil.error(ApiMessage.ILLEGAL_PARAMS);
         }
         ChatBo bo = ChatConverter.openApiReqBodyToBo(apiReqBody);

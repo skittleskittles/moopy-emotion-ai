@@ -31,7 +31,6 @@ public class MessageRecord {
     @JsonFormat(shape = JsonFormat.Shape.NUMBER)
     private Date modifiedAt;
 
-
     private Integer sender;
 
 }

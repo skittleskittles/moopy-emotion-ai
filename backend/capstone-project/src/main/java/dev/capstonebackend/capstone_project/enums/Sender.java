@@ -12,5 +12,8 @@ public enum Sender {
 
     private String desc;
 
-    Sender(Integer sender, String desc) {}
+    Sender(Integer sender, String desc) {
+        this.sender = sender;
+        this.desc = desc;
+    }
 }

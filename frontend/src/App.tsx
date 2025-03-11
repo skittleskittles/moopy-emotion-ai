@@ -1,4 +1,5 @@
 import "./App.css";
+import { ROUTE_PATHS } from "@/routes/Routes";
 import { Navbar } from "./components/Navbar";
 import { Outlet } from "react-router-dom";
 
@@ -12,15 +13,3 @@ function App() {
 }
 
 export default App;
-
-
-
-
-
-
-
-
-
-
-
-

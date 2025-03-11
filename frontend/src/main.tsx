@@ -1,8 +1,8 @@
+import { router } from "./routes/Routes.tsx";
 import React from "react";
-import ReactDOM from "react-dom/client";
+import ReactDOM from "react-dom/client";;
 import { ThemeProvider } from "@/context/ThemeContext.tsx";
 import { RouterProvider } from "react-router-dom";
-import { router } from "./routes/Routes.tsx";
 import "./index.css";
 import { AuthProvider } from "./context/AuthContext.tsx";
 

@@ -114,6 +114,15 @@ const ChatPage = (props: Props) => {
   //   }
   // };
 
+  const formatToLocalDate = (utcString: string) => {
+    const date = new Date(utcString);
+    return date.toLocaleDateString(undefined, {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    });
+  };
+
   const formatChatData = (chatData: any[]) => {
     const groupedConversations: Record<string, Conversation[]> = {};
 
@@ -121,7 +130,7 @@ const ChatPage = (props: Props) => {
       if (conversation.messageList.length === 0) return;
 
       const firstMessage = conversation.messageList[0];
-      const date = new Date(firstMessage.createdAt).toISOString().split("T")[0]; // Extract YYYY-MM-DD
+      const date = formatToLocalDate(firstMessage.createdAt);
 
       if (!groupedConversations[date]) {
         groupedConversations[date] = [];
@@ -131,7 +140,7 @@ const ChatPage = (props: Props) => {
         id: conversation.conversationId,
         title: firstMessage.message.substring(0, 15) + "...",
         messages: conversation.messageList.map((msg: any) => ({
-          sender: msg.userId === user!.id ? "user" : "bot",
+          sender: msg.sender === 1 ? "user" : "bot",
           text: msg.message,
         })),
       });
@@ -296,7 +305,7 @@ const ChatPage = (props: Props) => {
   };
 
   const handleClearConversations = () => {
-    setConversations([]);
+    setConversations({});
     setCurrentConversationId(null);
   };
 
@@ -390,27 +399,8 @@ const ChatPage = (props: Props) => {
                 <div
                   className={`max-w-md px-4 py-2 rounded-xl bg-gray-300 text-black}`}
                 >
-                  <ReactMarkdown
-                    remarkPlugins={[remarkGfm]}
-                    components={{
-                      code({ node, inline, className, children, ...props }) {
-                        return !inline ? (
-                          <SyntaxHighlighter
-                            style={oneDark}
-                            language="javascript"
-                            {...props}
-                          >
-                            {String(children).replace(/\n$/, "")}
-                          </SyntaxHighlighter>
-                        ) : (
-                          <code className="bg-gray-200 p-1 rounded" {...props}>
-                            {children}
-                          </code>
-                        );
-                      },
-                    }}
-                  >
-                    {msg.text}
+                  <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                    {msg.text.replace(/\n/g, "  \n")}
                   </ReactMarkdown>
                 </div>
 

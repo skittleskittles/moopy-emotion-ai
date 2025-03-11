@@ -18,10 +18,9 @@ const SurveyQuestionPage = (props: Props) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (questions.length > 0 && currentIndex === 2 && user) {
-      // todo === questions.length
+    if (questions.length > 0 && currentIndex === questions.length && user) {
       submitScore();
-      handleContinue();
+      saveBotMsg();
     }
   }, [currentIndex, questions.length, user]);
 
@@ -47,7 +46,11 @@ const SurveyQuestionPage = (props: Props) => {
     }
   };
 
-  const handleContinue = async () => {
+  const saveBotMsg = async () => {
+    if (!isLoggedIn || !user) {
+      return;
+    }
+
     const finalScore = score * 1.25;
     let botMessage = "";
 
@@ -81,7 +84,7 @@ const SurveyQuestionPage = (props: Props) => {
 
     // dispatch({ type: "restart" });
     try {
-      const response = await saveChatMessage(0, botMessage);
+      const response = await saveChatMessage(user.id, botMessage, 0);
 
       if (response.code === 0 && response.data) {
         navigate(ROUTE_PATHS.CHAT, { state: { botMessage } });
@@ -106,13 +109,15 @@ const SurveyQuestionPage = (props: Props) => {
         </h1>
       </div>
 
-      {/* Banner */}
-      {currentIndex < questions.length ? (
+      {/* QuestionCard */}
+      <QuestionCard />
+      
+      {/* {currentIndex < questions.length ? (
         <QuestionCard />
       ) : (
         <div className="text-center">
           <h2 className="text-2xl font-bold">Quiz Completed!</h2>
-          {/* <p className="text-lg">Your total score: {score * 1.25}</p> */}
+          <p className="text-lg">Your total score: {score * 1.25}</p>
           {submitError && <p className="text-red-500 mt-2">{submitError}</p>}
           <button
             className="mt-4 px-6 py-2 bg-[#6782B8] hover:bg-[#769fcd] text-white rounded-lg"
@@ -123,9 +128,7 @@ const SurveyQuestionPage = (props: Props) => {
           </button>
         </div>
       )}
-
-      {/* debug */}
-      <p className="text-lg">(Debug Info): Your total score: {score * 1.25}</p>
+      <p className="text-lg">(Debug Info): Your total score: {score * 1.25}</p> */}
     </div>
   );
 };

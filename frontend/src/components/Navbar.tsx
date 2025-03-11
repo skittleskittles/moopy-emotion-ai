@@ -4,13 +4,6 @@ import {
   NavigationMenuItem,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
 
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import { buttonVariants } from "../components/ui/button";
@@ -18,12 +11,14 @@ import { Menu } from "lucide-react";
 import { ModeToggle } from "../components/homepage/mode-toggle";
 import { LogoIcon } from "../components/homepage/Icons";
 
+import { useLocation } from "react-router-dom";
+
 interface RouteProps {
   href: string;
   label: string;
 }
 
-const routeList: RouteProps[] = [
+const homeRoutes: RouteProps[] = [
   {
     href: "#about",
     label: "About Us",
@@ -38,8 +33,36 @@ const routeList: RouteProps[] = [
   },
 ];
 
+const ROUTE_PATHS = {
+  HOME: "/",
+  LOGIN: "/login",
+  REGISTER: "/register",
+  SURVEY: "/survey",
+  SURVEY_QUESTIONS: "/survey/questions",
+  CHAT: "/chat",
+  PROFILE: "/profile",
+
+  MOOD_TRACKER: "/mood-tracker", // ➤ Mood 日历页面
+  MOOD_DAY: "/mood-day/:date", // ➤ 具体日期的 Mood 页面
+  YEAR_TRACKER: "/year-tracker",
+  
+};
+
+const featureRoutes: RouteProps[] = [
+  { href: ROUTE_PATHS.HOME, label: "HomePage" },
+  { href: ROUTE_PATHS.SURVEY, label: "Survey" }, // todo: hide in production mode
+  { href: ROUTE_PATHS.CHAT, label: "ChatBot" },
+  { href: ROUTE_PATHS.MOOD_TRACKER, label: "MoodTracker" },
+];
+
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const location = useLocation();
+
+  const isHomePage = location.pathname === "/";
+  const routeList = isHomePage ? homeRoutes : featureRoutes;
+
   return (
     <header className="sticky border-b-[1px] top-0 z-40 w-full bg-white dark:border-b-slate-700 dark:bg-background">
       <NavigationMenu className="mx-auto">

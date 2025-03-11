@@ -86,6 +86,11 @@ public class OpenApiService {
                 if (replyResult == -1) {
                     log.error("Failed to save reply message");
                 }
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 ChatVo chatVo = ChatVo.builder()
                         .message(replyBo.getMessage())
                         .userId(replyBo.getUserId())

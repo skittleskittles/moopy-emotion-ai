@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import dev.capstonebackend.capstone_project.bo.ChatBo;
 import dev.capstonebackend.capstone_project.config.OpenApi;
+import dev.capstonebackend.capstone_project.constant.ChatConstant;
 import dev.capstonebackend.capstone_project.domain.MessageRecord;
 import dev.capstonebackend.capstone_project.enums.Sender;
 import dev.capstonebackend.capstone_project.vo.ChatVo;
@@ -32,6 +33,7 @@ public class OpenApiService {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     private static final Long CHATBOT_ID = 0L;
+
 
     public OpenApi callGPT() {
         String apiKey = openAIConfig.getApiKey();
@@ -71,6 +73,27 @@ public class OpenApiService {
                     .addHeader("Content-Type", "application/json")
                     .post(RequestBody.create(requestBody.toString(), MediaType.parse("application/json")))
                     .build();
+            if (prompt.equals(ChatConstant.FIXED_PROMPT)) {
+                String reply = ChatConstant.AUTO_REPLY;
+                ChatBo replyBo = ChatBo.builder()
+                        // chatbot userid默认为0
+                        .userId(CHATBOT_ID)
+                        .conversationId(chatBo.getConversationId())
+                        .message(reply)
+                        .sender(Sender.CHATBOT.getSender())
+                        .build();
+                int replyResult = chatService.saveMessageContent(replyBo);
+                if (replyResult == -1) {
+                    log.error("Failed to save reply message");
+                }
+                ChatVo chatVo = ChatVo.builder()
+                        .message(replyBo.getMessage())
+                        .userId(replyBo.getUserId())
+                        .conversationId(replyBo.getConversationId())
+                        .sender(chatBo.getSender())
+                        .build();
+                return chatVo;
+            }
             try (Response response = httpClient.newCall(request).execute()) {
                 if (!response.isSuccessful()) {
                     throw new RuntimeException("调用OpenAI API失败：" + response);

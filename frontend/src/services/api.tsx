@@ -31,6 +31,7 @@ export const surveySaveRecord = async (userId: number, score: number) => {
 export const chat = async ({
   message,
   userId,
+  sender,
   conversationId,
 }: {
   message: string;
@@ -41,6 +42,7 @@ export const chat = async ({
     const response = await api.post("/api/chat", {
       message,
       userId,
+      sender,
       ...(conversationId !== undefined && { conversationId }), // 仅当 conversationId 存在时才包含
     });
 

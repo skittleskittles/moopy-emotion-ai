@@ -233,10 +233,12 @@ const ChatPage = (props: Props) => {
       const requestData: {
         message: string;
         userId: number;
+        sender: number;
         conversationId?: number;
       } = {
         message: input,
         userId: user.id,
+        sender: 1,
       };
       if (currentConversationId !== null) {
         requestData.conversationId = currentConversationId;

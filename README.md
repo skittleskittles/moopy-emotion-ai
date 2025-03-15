@@ -1,5 +1,5 @@
 # Moopy - Your AI Mood Companion
-An AI-Powered Emotional Support
+An AI-Powered Emotional Support Assistant
 
 SpringBoot + React (TypeScript)
 

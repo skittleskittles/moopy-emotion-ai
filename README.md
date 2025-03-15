@@ -1,4 +1,4 @@
-# Capstone_Project
+# Moopy - Your AI Mood Companion
 An AI-Powered Emotional Support
 
 SpringBoot + React (TypeScript)

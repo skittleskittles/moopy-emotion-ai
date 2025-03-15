@@ -1,12 +1,12 @@
 import { useAuth } from "@/context/AuthContext";
 import { ROUTE_PATHS } from "@/routes/Routes";
 import { login } from "@/services/api";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 interface Props {}
 
-const LoginPage = (props: Props) => {
+const LoginPage = (_: Props) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);

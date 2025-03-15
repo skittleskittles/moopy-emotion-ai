@@ -1,22 +1,25 @@
-
-
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getDaysInMonth, format, startOfMonth } from "date-fns";
-import { ROUTE_PATHS } from "@/routes/Routes";  // 确保 ROUTE_PATHS 里有 YearTracker 的路由
+import { getDaysInMonth, format } from "date-fns";
+import { ROUTE_PATHS } from "@/routes/Routes"; // 确保 ROUTE_PATHS 里有 YearTracker 的路由
 
 const MoodTracker: React.FC = () => {
   const navigate = useNavigate();
   const currentMonth = new Date();
   const daysInMonth = getDaysInMonth(currentMonth);
-  const startOfCurrentMonth = startOfMonth(currentMonth);
-  const [moodData, setMoodData] = useState<{ [key: string]: { emoji: string; color: string } }>({});
+  // const startOfCurrentMonth = startOfMonth(currentMonth);
+  const [moodData, setMoodData] = useState<{
+    [key: string]: { emoji: string; color: string };
+  }>({});
 
   useEffect(() => {
     // 读取本地存储的 Mood 数据
     const newMoodData: { [key: string]: { emoji: string; color: string } } = {};
     for (let day = 1; day <= daysInMonth; day++) {
-      const dateKey = format(new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day), "yyyy-MM-dd");
+      const dateKey = format(
+        new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day),
+        "yyyy-MM-dd"
+      );
       const savedMood = localStorage.getItem(`mood-${dateKey}`);
       if (savedMood) {
         newMoodData[dateKey] = JSON.parse(savedMood);
@@ -58,7 +61,14 @@ const MoodTracker: React.FC = () => {
       </button>
 
       {/* 日历 */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: "10px", marginTop: "20px" }}>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(7, 1fr)",
+          gap: "10px",
+          marginTop: "20px",
+        }}
+      >
         {/* 星期 */}
         {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
           <div key={day} style={{ fontWeight: "bold" }}>
@@ -69,7 +79,10 @@ const MoodTracker: React.FC = () => {
         {/* 显示日历 */}
         {[...Array(daysInMonth)].map((_, index) => {
           const day = index + 1;
-          const dateKey = format(new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day), "yyyy-MM-dd");
+          const dateKey = format(
+            new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day),
+            "yyyy-MM-dd"
+          );
           const mood = moodData[dateKey];
 
           return (
@@ -95,13 +108,3 @@ const MoodTracker: React.FC = () => {
 };
 
 export default MoodTracker;
-
-
-
-
-
-
-
-
-
-

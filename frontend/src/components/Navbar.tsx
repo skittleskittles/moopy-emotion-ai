@@ -5,10 +5,7 @@ import {
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
 
-import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import { buttonVariants } from "../components/ui/button";
-import { Menu } from "lucide-react";
-import { ModeToggle } from "../components/homepage/mode-toggle";
 import { LogoIcon } from "../components/homepage/Icons";
 
 import { useLocation, useNavigate } from "react-router-dom";

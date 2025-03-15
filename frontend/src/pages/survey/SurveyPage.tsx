@@ -1,10 +1,8 @@
 import { ROUTE_PATHS } from "@/routes/Routes";
-import React from "react";
-import { Outlet, useNavigate } from "react-router-dom";
 
-interface Props {}
+import { useNavigate } from "react-router-dom";
 
-const SurveyPage = (props: Props) => {
+const SurveyPage = () => {
   const navigate = useNavigate();
   return (
     <div className="flex flex-col items-center justify-center">

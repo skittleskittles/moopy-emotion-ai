@@ -1,12 +1,10 @@
 import { ROUTE_PATHS } from "@/routes/Routes";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { FaUser, FaRobot, FaTrash, FaHome, FaPlus } from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router-dom";
-import { chat, getChatList, saveChatMessage } from "@/services/api";
+import { chat, getChatList } from "@/services/api";
 import { useAuth } from "@/context/AuthContext";
 
 interface Message {
@@ -22,7 +20,7 @@ interface Conversation {
 
 interface Props {}
 
-const ChatPage = (props: Props) => {
+const ChatPage = (_: Props) => {
   const { isLoggedIn, user } = useAuth();
   const navigate = useNavigate();
   const chatContainerRef = useRef<HTMLDivElement>(null);
@@ -88,10 +86,11 @@ const ChatPage = (props: Props) => {
   useEffect(() => {
     if (chatContainerRef.current) {
       setTimeout(() => {
-        chatContainerRef.current!.scrollTop = chatContainerRef.current!.scrollHeight;
+        chatContainerRef.current!.scrollTop =
+          chatContainerRef.current!.scrollHeight;
       }, 100); // 确保在DOM更新后执行
     }
-  }, [conversations]); 
+  }, [conversations]);
 
   const formatToLocalDate = (utcString: string) => {
     const date = new Date(utcString);

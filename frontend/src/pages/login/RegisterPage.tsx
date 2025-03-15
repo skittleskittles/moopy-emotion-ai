@@ -1,12 +1,12 @@
 import TermsModal from "@/components/login/TermsModal";
 import { ROUTE_PATHS } from "@/routes/Routes";
 import { register } from "@/services/api";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 interface Props {}
 
-const RegisterPage = (props: Props) => {
+const RegisterPage = (_: Props) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");

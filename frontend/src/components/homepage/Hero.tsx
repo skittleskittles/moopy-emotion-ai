@@ -8,7 +8,7 @@ import { useAuth } from "@/context/AuthContext";
 
 export const Hero = () => {
   const navigate = useNavigate();
-  const { isLoggedIn, user } = useAuth();
+  const { isLoggedIn } = useAuth();
 
   return (
     <section className="container grid lg:grid-cols-2 place-items-center py-20 md:py-32 gap-10">

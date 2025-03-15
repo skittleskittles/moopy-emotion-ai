@@ -1,4 +1,3 @@
-import React from "react";
 import { Button } from "@/components/ui/button"; 
 import { useNavigate } from "react-router-dom";
 import { ROUTE_PATHS } from "@/routes/Routes";
@@ -14,7 +13,7 @@ import { ScrollToTop } from "@/components/homepage/ScrollToTop";
 
 interface Props {}
 
-const HomePage = (props: Props) => {
+const HomePage = (_: Props) => {
   const navigate = useNavigate();
 
   return (

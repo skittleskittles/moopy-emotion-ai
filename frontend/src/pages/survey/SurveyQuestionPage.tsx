@@ -1,19 +1,16 @@
 import QuestionCard from "@/components/survey/QuestionCard";
 import { useAuth } from "@/context/AuthContext";
-import { SurveyProvider, useSurvey } from "@/context/SurveyContext";
+import { useSurvey } from "@/context/SurveyContext";
 import { ROUTE_PATHS } from "@/routes/Routes";
 import { saveChatMessage, surveySaveRecord } from "@/services/api";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-interface Props {}
-
-const SurveyQuestionPage = (props: Props) => {
-  const { currentIndex, questions, isLoading, error, score, dispatch } =
-    useSurvey();
+const SurveyQuestionPage = () => {
+  const { currentIndex, questions, isLoading, error, score } = useSurvey();
   const { user, isLoggedIn } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitError, setSubmitError] = useState("");
+  const [_, setSubmitError] = useState("");
 
   const navigate = useNavigate();
 

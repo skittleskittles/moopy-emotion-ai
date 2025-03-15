@@ -1,6 +1,4 @@
 import axios from "axios";
-import { UserToken } from "../models/User";
-import { handleError } from "../lib/utils";
 
 const api = axios.create({
   baseURL: "http://localhost:8080/",
@@ -36,6 +34,7 @@ export const chat = async ({
 }: {
   message: string;
   userId: number;
+  sender: number;
   conversationId?: number;
 }) => {
   try {

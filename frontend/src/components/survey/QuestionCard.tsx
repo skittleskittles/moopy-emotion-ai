@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useSurvey } from "../../context/SurveyContext";
 
 interface Props {}
 
-const QuestionCard = (Props) => {
+const QuestionCard = (_: Props) => {
   const { questions, currentIndex, dispatch } = useSurvey();
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);

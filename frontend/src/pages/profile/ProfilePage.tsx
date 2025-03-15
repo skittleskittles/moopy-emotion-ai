@@ -1,8 +1,6 @@
-import React from "react";
-
 interface Props {}
 
-const ProfilePage = (props: Props) => {
+const ProfilePage = (_: Props) => {
   return <div>ProfilePage</div>;
 };
 

@@ -461,9 +461,11 @@ const ChatPage = (_: Props) => {
                     </div>
                   ) : (
                     // {/* message content */}
-                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                      {msg.text.replace(/\n/g, "  \n")}
-                    </ReactMarkdown>
+                    <div className="break-words">
+                      <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                        {msg.text.replace(/\n/g, "  \n")}
+                      </ReactMarkdown>
+                    </div>
                   )}
                 </div>
 

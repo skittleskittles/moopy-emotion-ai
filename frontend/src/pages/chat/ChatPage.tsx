@@ -10,6 +10,7 @@ import { useAuth } from "@/context/AuthContext";
 interface Message {
   sender: string;
   text: string;
+  loading: boolean;
 }
 
 interface Conversation {
@@ -207,13 +208,14 @@ const ChatPage = (_: Props) => {
         existingNullConversation.messages.push({
           sender: "user",
           text: input,
+          loading: false,
         });
       } else {
         // **否则创建新的对话**
         const newConversation = {
           id: tempConversationId,
           title: input.length < 20 ? input : input.substring(0, 20) + "...",
-          messages: [{ sender: "user", text: input }],
+          messages: [{ sender: "user", text: input, loading: false }],
         };
 
         updatedConversations[today] = updatedConversations[today]
@@ -235,15 +237,32 @@ const ChatPage = (_: Props) => {
           conv.id === currentConversationId
             ? {
                 ...conv,
-                messages: [...conv.messages, { sender: "user", text: input }],
+                messages: [
+                  ...conv.messages,
+                  { sender: "user", text: input, loading: false },
+                ],
               }
             : conv
         );
       });
     }
 
-    setConversations(updatedConversations);
+    // Bot 的 loading 状态
+    Object.keys(updatedConversations).forEach((date) => {
+      updatedConversations[date] = updatedConversations[date].map((conv) =>
+        conv.id === conversationId
+          ? {
+              ...conv,
+              messages: [
+                ...conv.messages,
+                { sender: "bot", text: "", loading: true }, // Bot 的 loading 状态
+              ],
+            }
+          : conv
+      );
+    });
 
+    setConversations(updatedConversations);
     setInput("");
 
     // send api request
@@ -279,10 +298,11 @@ const ChatPage = (_: Props) => {
                   ? {
                       ...conv,
                       id: conversationIdFromApi, // 更新 conversationId
-                      messages: [
-                        ...conv.messages,
-                        { sender: "bot", text: botMessage },
-                      ],
+                      messages: conv.messages.map((msg) =>
+                        msg.loading
+                          ? { sender: "bot", text: botMessage, loading: false } // 替换 loading
+                          : msg
+                      ),
                     }
                   : conv
             );
@@ -314,13 +334,15 @@ const ChatPage = (_: Props) => {
             conv.id === conversationId
               ? {
                   ...conv,
-                  messages: [
-                    ...conv.messages,
-                    {
-                      sender: "bot",
-                      text: "Failed to get response. Try again later.",
-                    },
-                  ],
+                  messages: conv.messages.map((msg) =>
+                    msg.loading
+                      ? {
+                          sender: "bot",
+                          text: "Failed to get response. Try again later.",
+                          loading: false,
+                        }
+                      : msg
+                  ),
                 }
               : conv
           );
@@ -426,11 +448,23 @@ const ChatPage = (_: Props) => {
 
                 {/* bubble */}
                 <div
-                  className={`max-w-md px-4 py-2 rounded-xl bg-gray-300 text-black}`}
+                  className={`flex items-center space-x-2 max-w-md px-4 py-2 rounded-xl  ${
+                    msg.loading ? "bg-gray-300" : "bg-gray-300 text-black"
+                  }`}
                 >
-                  <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                    {msg.text.replace(/\n/g, "  \n")}
-                  </ReactMarkdown>
+                  {/* loading */}
+                  {msg.loading ? (
+                    <div className="flex space-x-2 items-center justify-center">
+                      <span className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"></span>
+                      <span className="w-2 h-2 bg-gray-500 rounded-full animate-bounce [animation-delay:200ms]"></span>
+                      <span className="w-2 h-2 bg-gray-500 rounded-full animate-bounce [animation-delay:400ms]"></span>
+                    </div>
+                  ) : (
+                    // {/* message content */}
+                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                      {msg.text.replace(/\n/g, "  \n")}
+                    </ReactMarkdown>
+                  )}
                 </div>
 
                 {/* user avatar */}
@@ -458,11 +492,15 @@ const ChatPage = (_: Props) => {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             className="flex-1 min-h-[40px] border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring focus:border-blue-400"
-            placeholder="Type your message..."
+            placeholder={loading ? "Loading..." : "Type your message..."}
+            disabled={loading}
           />
           <button
             onClick={handleSendMessage}
-            className="ml-2 bg-[#6782B8] hover:bg-[#769fcd] text-white px-4 py-2 rounded-lg"
+            className={`ml-2 bg-[#6782B8] hover:bg-[#769fcd] text-white px-4 py-2 rounded-lg ${
+              loading ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+            disabled={loading}
           >
             Send
           </button>

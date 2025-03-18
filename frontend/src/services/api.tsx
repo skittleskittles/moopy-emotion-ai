@@ -58,7 +58,6 @@ export const getChatList = async (userId: number) => {
   return response.data;
 };
 
-<<<<<<< HEAD
 export const saveChatMessage = async (
   userId: number,
   message: string,
@@ -67,7 +66,6 @@ export const saveChatMessage = async (
   const response = await api.post("/api/save", { userId, message, sender });
   return response.data;
 };
-=======
 /* moods for a month*/
 export const getMonthlyMoods = async (userId: string, year: number, month: number) => {
   const response = await api.get("/moods/month", {
@@ -115,4 +113,3 @@ export const deleteMood = async (userId: string, date: string) => {
   });
   return response.data;
 };
->>>>>>> f6410a7 (new change)

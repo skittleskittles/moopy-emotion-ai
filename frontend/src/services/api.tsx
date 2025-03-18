@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:8080/",
+  // baseURL: "http://localhost:8080/",
+  baseURL: "http://106.55.105.246:6262",
   headers: { "Content-Type": "application/json" },
 });
 
@@ -57,7 +58,11 @@ export const getChatList = async (userId: number) => {
   return response.data;
 };
 
-export const saveChatMessage = async (userId: number, message: string, sender: number) => {
+export const saveChatMessage = async (
+  userId: number,
+  message: string,
+  sender: number
+) => {
   const response = await api.post("/api/save", { userId, message, sender });
   return response.data;
 };

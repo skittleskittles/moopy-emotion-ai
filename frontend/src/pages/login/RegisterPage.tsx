@@ -85,6 +85,7 @@ const RegisterPage = (_: Props) => {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleRegister()}
+              required
             />
           </div>
 
@@ -99,6 +100,7 @@ const RegisterPage = (_: Props) => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleRegister()}
+                required
               />
               <button
                 type="button"

@@ -19,6 +19,8 @@ import MoodTracker from "@/components/homepage/MoodTracker";
 import MoodDay from "@/components/homepage/MoodDay";
 import YearTracker from "@/components/homepage/YearTracker";
 
+import TherapistDashboardPage from "@/pages/dashboard/TherapistDashboardPage";
+
 export const ROUTE_PATHS = {
   HOME: "/",
   LOGIN: "/login",
@@ -75,6 +77,11 @@ export const router = createBrowserRouter([
       { path: ROUTE_PATHS.MOOD_TRACKER, element: <MoodTracker /> },
       { path: ROUTE_PATHS.MOOD_DAY, element: <MoodDay /> },
       { path: ROUTE_PATHS.YEAR_TRACKER, element: <YearTracker /> },
+
+      {
+        path: ROUTE_PATHS.THERAPIST_DASHBOARD,
+        element: <TherapistDashboardPage />,
+      },
     ],
   },
 ]);

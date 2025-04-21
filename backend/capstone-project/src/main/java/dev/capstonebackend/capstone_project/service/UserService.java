@@ -17,6 +17,7 @@ import dev.capstonebackend.capstone_project.enums.ApiMessage;
 import dev.capstonebackend.capstone_project.exception.ApiException;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.regex.Pattern;
@@ -132,6 +133,10 @@ public class UserService {
         }
         newConnection.setClientName(connectReqBody.getClientName());
         return userConnectionDao.insertUserConnection(newConnection);
+    }
+
+    public int deleteConnection(Long therapistId, Long clientId) {
+        return userConnectionDao.deleteUserConnection(therapistId, clientId);
     }
 
 }

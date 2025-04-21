@@ -9,20 +9,16 @@ import lombok.Setter;
 /**
  * @program: Capstone_Project
  * @author: Yiyan Kong
- * @create: 2025-04-20 21:06
+ * @create: 2025-04-21 01:57
  **/
 @Data
 @Getter
 @Setter
-@ApiModel(value = "ConnectReqBody", description =  "")
-public class ConnectReqBody {
+@ApiModel(value = "DisconnectReqBody", description =  "")
+public class DisconnectReqBody {
 
-    private String currentUserCode;
+    private Long therapistId;
 
-    private String connectCode;
-
-    private String clientName;
-
-    private Integer connectType;
+    private Long clientId;
 
 }

@@ -2,8 +2,7 @@ package dev.capstonebackend.capstone_project.controller;
 
 import dev.capstonebackend.capstone_project.enums.ApiMessage;
 import dev.capstonebackend.capstone_project.enums.ConnectType;
-import dev.capstonebackend.capstone_project.request.ConnectReqBody;
-import dev.capstonebackend.capstone_project.request.UpdateRoleReqBody;
+import dev.capstonebackend.capstone_project.request.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -11,8 +10,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import dev.capstonebackend.capstone_project.domain.Result;
-import dev.capstonebackend.capstone_project.request.LoginReqBody;
-import dev.capstonebackend.capstone_project.request.RegisterReqBody;
 import dev.capstonebackend.capstone_project.service.UserService;
 import dev.capstonebackend.capstone_project.util.ResultUtil;
 
@@ -86,5 +83,17 @@ public class UserController {
         }
         return Boolean.TRUE;
     }
+
+    @ApiOperation(value = "")
+    @PostMapping("/disconnect")
+    public Result<?> deleteConnection(@RequestBody DisconnectReqBody disconnectReqBody) {
+        return ResultUtil.success(userService.deleteConnection(disconnectReqBody.getTherapistId(), disconnectReqBody.getClientId()));
+    }
+
+//    @ApiOperation(value = "")
+//    @PostMapping("/listConnection")
+//    public Result<?> listConnection(@RequestBody DisconnectReqBody disconnectReqBody) {
+//        return ResultUtil.success(userService.deleteConnection(disconnectReqBody.getTherapistId(), disconnectReqBody.getClientId()));
+//    }
 }
 

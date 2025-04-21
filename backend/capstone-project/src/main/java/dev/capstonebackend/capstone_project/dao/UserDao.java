@@ -13,6 +13,7 @@ public interface UserDao {
     int updateUser(User record);
     int deleteUserByUserName(@Param("username") String username);
     User selectUserByToken(@Param("token") String token);
+    User selectUserByCode(@Param("userCode") String userCode);
 
 
 }

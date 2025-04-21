@@ -10,6 +10,8 @@ public enum ApiMessage {
     EMAIL_ALREADY_REG(5000, "This email address has already been registered."),
     EMAIL_FORMAT_INVALID(5001, "This email format is invalid."),
     LOGIN_ERROR(6000, "Email or Password Incorrect."),
+    PASSWORD_INCORRECT(6001, "Password is incorrect."),
+    USER_NOT_EXIST(6001, "User does not exist"),
     SHIP_EXISTED(7000, "Ship already existed"),
     SHIP_MANAGEMENT_EXISTED(7001, "Ship Management already existed"),
     SHIP_MISSION_LOCATION_EXISTED(7002, "Ship with mission's location already existed"),
@@ -18,7 +20,8 @@ public enum ApiMessage {
     PORT_EXISTED(8000, "Port already existed"),
     PORT_ACTIVITY_EXISTED(8001, "Port activity already existed"),
     PORT_OTHER_EXISTED(8002, "Port other already existed"),
-    INVALID_USER_ID(8003, "Invalid user id");
+    INVALID_USER_ID(8003, "Invalid user id"),
+    INVALID_USER_CODE(8004, "Invalid user code");
 
 
 

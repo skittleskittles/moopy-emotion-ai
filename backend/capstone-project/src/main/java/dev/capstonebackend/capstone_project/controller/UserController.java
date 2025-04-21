@@ -1,7 +1,13 @@
 package dev.capstonebackend.capstone_project.controller;
 
+import dev.capstonebackend.capstone_project.enums.ApiMessage;
+import dev.capstonebackend.capstone_project.enums.ConnectType;
+import dev.capstonebackend.capstone_project.request.ConnectReqBody;
+import dev.capstonebackend.capstone_project.request.UpdateRoleReqBody;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import dev.capstonebackend.capstone_project.domain.Result;
@@ -10,10 +16,13 @@ import dev.capstonebackend.capstone_project.request.RegisterReqBody;
 import dev.capstonebackend.capstone_project.service.UserService;
 import dev.capstonebackend.capstone_project.util.ResultUtil;
 
+import java.util.Objects;
+
 @RestController
 @Api(tags = {"User Module"})
 @RequestMapping(value = "/user")
 @CrossOrigin // allow frontend running on different port
+@Slf4j
 public class UserController {
 
     @Autowired
@@ -41,6 +50,41 @@ public class UserController {
     @PostMapping("/delete-by-username")
     public Result<?> delete(@RequestParam String username) {
         return ResultUtil.success(userService.deleteUserByUserName(username));
+    }
+
+    @ApiOperation(value = "update user's role")
+    @PostMapping("/updateRole")
+    public Result<?> updateRole(@RequestBody UpdateRoleReqBody reqBody) {
+        if (Objects.isNull(reqBody.getUserId()) || Objects.isNull(reqBody.getRole())) {
+            log.info("Invalid request, recordReqBody={}", reqBody.toString());
+            return ResultUtil.error(ApiMessage.ILLEGAL_PARAMS);
+        }
+        return ResultUtil.success(userService.updateRole(reqBody.getUserId(), reqBody.getRole()));
+    }
+
+    @ApiOperation(value = "")
+    @PostMapping("/connect")
+    public Result<?> connectWithCode(@RequestBody ConnectReqBody connectReqBody) {
+        if (!paramCheckConnect(connectReqBody)) {
+            log.info("Invalid request, moodRecordReqBody={}", connectReqBody.toString());
+            return ResultUtil.error(ApiMessage.ILLEGAL_PARAMS);
+        }
+        return ResultUtil.success(userService.connectWithCode(connectReqBody));
+    }
+
+    private Boolean paramCheckConnect(ConnectReqBody connectReqBody) {
+        if (Objects.isNull(connectReqBody) || Objects.isNull(connectReqBody.getConnectType())
+                || StringUtils.isEmpty(connectReqBody.getClientName())) {
+            return Boolean.FALSE;
+        }
+        if (Objects.isNull(ConnectType.getConnectType(connectReqBody.getConnectType()))) {
+            return Boolean.FALSE;
+        }
+        if (StringUtils.isEmpty(connectReqBody.getCurrentUserCode())
+                || StringUtils.isEmpty(connectReqBody.getConnectCode())) {
+            return Boolean.FALSE;
+        }
+        return Boolean.TRUE;
     }
 }
 

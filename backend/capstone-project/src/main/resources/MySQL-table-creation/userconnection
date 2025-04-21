@@ -1,0 +1,9 @@
+CREATE TABLE user_connections (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    therapist_id BIGINT NOT NULL,
+    client_id BIGINT NOT NULL,
+    client_name VARCHAR(255) DEFAULT '',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    UNIQUE KEY `uniq_therapist_client` (`therapist_id`,`client_id`)
+);

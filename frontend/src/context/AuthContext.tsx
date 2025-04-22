@@ -10,7 +10,13 @@ import {
 interface AuthContextType {
   user: User | null;
   token: string | null;
-  login: (id: number, username: string, token: string) => void;
+  login: (
+    id: number,
+    username: string,
+    role: number,
+    userCode: string,
+    token: string
+  ) => void;
   logout: () => void;
   isLoggedIn: () => boolean;
 }
@@ -31,10 +37,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  const login = (id: number, username: string, token: string) => {
+  const login = (
+    id: number,
+    username: string,
+    role: number,
+    userCode: string,
+    token: string
+  ) => {
     const userObj = {
       id: id,
       username: username,
+      userCode: userCode,
+      role: role,
     };
     setUser(userObj!);
     setToken(token);

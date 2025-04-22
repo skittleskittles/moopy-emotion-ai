@@ -1,4 +1,5 @@
 import axios from "axios";
+import { ConnectType } from "@/models/User";
 
 const api = axios.create({
   baseURL: "http://localhost:8080/",
@@ -17,6 +18,28 @@ export const login = async (username: string, password: string) => {
 
 export const register = async (name: string, password: string) => {
   const response = await api.post("/user/register", { name, password });
+  return response.data;
+};
+
+/* Role */
+export const updateRole = async (userId: number, role: number) => {
+  const response = await api.post("/user/updateRole", { userId, role });
+  return response.data;
+};
+
+/* Connect */
+export const connect = async (
+  currentUserCode: string,
+  connectCode: string,
+  clientName: string,
+  connectType: ConnectType
+) => {
+  const response = await api.post("/user/connect", {
+    currentUserCode,
+    connectCode,
+    clientName,
+    connectType,
+  });
   return response.data;
 };
 
@@ -67,7 +90,11 @@ export const saveChatMessage = async (
   return response.data;
 };
 /* moods for a month*/
-export const getMonthlyMoods = async (userId: string, year: number, month: number) => {
+export const getMonthlyMoods = async (
+  userId: string,
+  year: number,
+  month: number
+) => {
   const response = await api.get("/moods/month", {
     params: { userId, year, month },
   });
@@ -83,7 +110,13 @@ export const getYearlyMoods = async (userId: string, year: number) => {
 };
 
 /* Save mood*/
-export const saveMood = async (userId: string, date: string, emoji: string, color: string, description: string) => {
+export const saveMood = async (
+  userId: string,
+  date: string,
+  emoji: string,
+  color: string,
+  description: string
+) => {
   const response = await api.post("/moods", {
     userId,
     date,
@@ -95,7 +128,13 @@ export const saveMood = async (userId: string, date: string, emoji: string, colo
 };
 
 /* Update */
-export const updateMood = async (userId: string, date: string, emoji: string, color: string, description: string) => {
+export const updateMood = async (
+  userId: string,
+  date: string,
+  emoji: string,
+  color: string,
+  description: string
+) => {
   const response = await api.put("/moods", {
     userId,
     date,

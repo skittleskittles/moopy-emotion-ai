@@ -12,6 +12,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 
 import moopy from "../assets/moopy.png";
+import copyIcon from "../assets/copy.png";
+import checkIcon from "../assets/check.png";
 
 interface RouteProps {
   href: string;
@@ -57,6 +59,8 @@ const featureRoutes: RouteProps[] = [
 export const Navbar = () => {
   const { user, isLoggedIn, logout } = useAuth();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const [copied, setCopied] = useState(false);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -164,6 +168,36 @@ export const Navbar = () => {
                     >
                       Profile
                     </button> */}
+
+                    {/* userCode */}
+                    <div className="px-4 py-2 text-sm text-gray-700 border-b break-all">
+                      <div className="flex justify-between items-center mb-1">
+                        <span className="font-semibold">Your Code</span>
+                        <button
+                          onClick={() => {
+                            if (user?.userCode) {
+                              navigator.clipboard.writeText(user.userCode);
+                              setCopied(true);
+                              setTimeout(() => setCopied(false), 1500);
+                            }
+                          }}
+                          className="shrink-0 hover:opacity-80"
+                          title={copied ? "Copied!" : "Copy to clipboard"}
+                        >
+                          <img
+                            src={copied ? checkIcon : copyIcon}
+                            alt={copied ? "Copied" : "Copy"}
+                            className="w-4 h-4"
+                          />
+                        </button>
+                      </div>
+
+                      <div className="text-xs text-gray-700 break-all">
+                        {user?.userCode ?? "N/A"}
+                      </div>
+                    </div>
+
+                    {/* Log out */}
                     <button
                       onClick={handleLogout}
                       className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-red-600"

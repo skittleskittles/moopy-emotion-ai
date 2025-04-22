@@ -1,36 +1,33 @@
-import React from "react";
 import therapistImg from "../../assets/therapist.png";
 import clientImg from "../../assets/client.png";
 import { useAuth } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { ROUTE_PATHS } from "@/routes/Routes";
+import { updateRole } from "@/services/api";
+import { UserRole } from "@/models/User";
 
 const RoleSelectionPage = () => {
   const { user, token } = useAuth();
   const navigate = useNavigate();
 
-  const handleRoleSelect = async (role: "therapist" | "client") => {
+  const handleRoleSelect = async (role: UserRole) => {
     if (!user || !token) {
       console.error("User not logged in");
       return;
     }
 
     try {
-      // await axios.put(
-      //   `/api/users/${user.id}`, // todo
-      //   { role },
-      //   {
-      //     headers: {
-      //       Authorization: `Bearer ${token}`,
-      //     },
-      //   }
-      // );
+      const res = await updateRole(user.id, role);
+      if (res.code !== 0) {
+        throw new Error("Failed to update role ");
+      }
+
       // Role updated successfully
       console.log(`Role set to ${role}`);
-      if (role == "therapist") {
-        navigate(ROUTE_PATHS.THERAPIST_CREDENTIALS); // todo
-      } else {
-        navigate(ROUTE_PATHS.CLIENT_CONNECT_THERAPIST); // todo
+      if (role == UserRole.Therapist) {
+        navigate(ROUTE_PATHS.THERAPIST_CREDENTIALS);
+      } else if (role == UserRole.Client) {
+        navigate(ROUTE_PATHS.CLIENT_CONNECT_THERAPIST);
       }
     } catch (error) {
       console.error("Failed to update role:", error);
@@ -52,7 +49,7 @@ const RoleSelectionPage = () => {
       <div className="flex justify-center gap-32">
         {/* Therapist Card */}
         <div
-          onClick={() => handleRoleSelect("therapist")}
+          onClick={() => handleRoleSelect(UserRole.Therapist)}
           className="bg-[#fafaf5] rounded-xl shadow-md p-6 w-[395px] h-[444px] cursor-pointer hover:shadow-xl transition"
         >
           <div className="flex justify-center">
@@ -72,7 +69,7 @@ const RoleSelectionPage = () => {
 
         {/* Client Card */}
         <div
-          onClick={() => handleRoleSelect("client")}
+          onClick={() => handleRoleSelect(UserRole.Client)}
           className="bg-[#fafaf5] rounded-xl shadow-md p-6 w-[395px] h-[444px] cursor-pointer hover:shadow-xl transition"
         >
           <div className="flex justify-center">

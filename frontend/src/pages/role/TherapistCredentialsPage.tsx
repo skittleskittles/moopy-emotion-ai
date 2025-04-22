@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
-import licenseTypes from "licenseTypes.json";
-import states from "states.json";
 import { ROUTE_PATHS } from "@/routes/Routes";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 
 const TherapistCredentialsPage = () => {
-  const { user, token, isLoggedIn } = useAuth();
+  const { user, isLoggedIn } = useAuth();
   const [licenseTypes, setLicenseTypes] = useState<string[]>([]);
   const [states, setStates] = useState<{ name: string; code: string }[]>([]);
   const [formData, setFormData] = useState({
@@ -71,7 +69,7 @@ const TherapistCredentialsPage = () => {
   };
 
   const handleSubmit = async () => {
-    if (!isLoggedIn()) return;
+    if (!user || !isLoggedIn()) return;
     if (!isFormValid) {
       setError("Please complete all fields.");
       return;

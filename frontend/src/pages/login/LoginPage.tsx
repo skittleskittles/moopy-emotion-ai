@@ -1,4 +1,5 @@
 import { useAuth } from "@/context/AuthContext";
+import { UserRole } from "@/models/User";
 import { ROUTE_PATHS } from "@/routes/Routes";
 import { login } from "@/services/api";
 import { useState } from "react";
@@ -32,12 +33,20 @@ const LoginPage = (_: Props) => {
     try {
       const res = await login(username, password);
       if (res.code == 0) {
-        setAuth(res.data.id, res.data.username, res.data.token);
+        setAuth(
+          res.data.id,
+          res.data.username,
+          res.data.role,
+          res.data.userCode,
+          res.data.token
+        );
         console.log("isNewUser: ", location.state?.isNewUser);
-        if (location.state?.isNewUser) {
-          navigate(ROUTE_PATHS.SURVEY);
-        } else {
+        if (res.data.role == UserRole.Therapist) {
+          navigate(ROUTE_PATHS.THERAPIST_DASHBOARD);
+        } else if (res.data.role == UserRole.Client) {
           navigate(ROUTE_PATHS.CHAT);
+        } else if (res.data.role == UserRole.Unspecified) {
+          navigate(ROUTE_PATHS.ROLE_SELECTION);
         }
       } else if (res.code === 404) {
         setError("User not found. Redirecting to registration...");

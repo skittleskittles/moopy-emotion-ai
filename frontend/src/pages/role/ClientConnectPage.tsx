@@ -1,14 +1,14 @@
 import { ROUTE_PATHS } from "@/routes/Routes";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
+import { connect } from "@/services/api";
+import { ConnectType } from "@/models/User";
 
-type Props = {};
-
-const ClientConnectPage = (props: Props) => {
+const ClientConnectPage = () => {
   const [fullName, setFullName] = useState("");
   const [therapistCode, setTherapistCode] = useState("");
-  const { user, token, isLoggedIn } = useAuth();
+  const { user, isLoggedIn } = useAuth();
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -18,7 +18,7 @@ const ClientConnectPage = (props: Props) => {
 
   const handleSubmit = async () => {
     if (!isLoggedIn()) return;
-    if (!isFormValid) {
+    if (!user || !isFormValid) {
       setError("Please complete all fields.");
       return;
     }
@@ -27,16 +27,16 @@ const ClientConnectPage = (props: Props) => {
     setError("");
 
     try {
-      //   await axios.post(
-      //     `/api/users/${user.id}/connect-therapist`,
-      //     {
-      //       name,
-      //       therapistCode: code,
-      //     },
-      //     {
-      //       headers: { Authorization: `Bearer ${token}` },
-      //     }
-      //   );
+      const res = await connect(
+        user?.userCode,
+        therapistCode,
+        fullName,
+        ConnectType.Client_Connect_Therapist
+      );
+      if (res.code !== 0) {
+        throw new Error("Failed to connect therapist");
+      }
+
       navigate(ROUTE_PATHS.SURVEY);
     } catch (err) {
       setError("Connection failed");

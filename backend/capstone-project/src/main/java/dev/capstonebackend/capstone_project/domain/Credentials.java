@@ -10,6 +10,7 @@ import java.util.Date;
 @Setter
 public class Credentials {
     private Long id;
+    private Long userId;
     private String fullName;
     private String licenseType;
     private String licenseNumber;

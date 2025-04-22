@@ -10,6 +10,8 @@ import lombok.Setter;
 @ApiModel(value = "CredentialsReqBody", description = "Request body for inserting credential info")
 public class CredentialsReqBody {
 
+    private Long userId;
+
     private String fullName;
 
     private String licenseType;
@@ -19,4 +21,5 @@ public class CredentialsReqBody {
     private String issuingState;
 
     private String licenseExpirationDate; // 格式应为 MM/dd/yyyy
+
 }

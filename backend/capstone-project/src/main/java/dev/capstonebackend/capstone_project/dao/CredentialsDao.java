@@ -9,4 +9,6 @@ public interface CredentialsDao {
     int insertCredential(Credentials credentials);
 
     Credentials selectById(Long id);
+
+    Credentials selectByUserId(String userId);
 }

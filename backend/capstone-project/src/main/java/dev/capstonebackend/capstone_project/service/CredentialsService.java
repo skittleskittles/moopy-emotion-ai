@@ -3,6 +3,7 @@ package dev.capstonebackend.capstone_project.service;
 import dev.capstonebackend.capstone_project.dao.CredentialsDao;
 import dev.capstonebackend.capstone_project.dao.UserDao;
 import dev.capstonebackend.capstone_project.domain.Credentials;
+import dev.capstonebackend.capstone_project.domain.User;
 import dev.capstonebackend.capstone_project.enums.ApiMessage;
 import dev.capstonebackend.capstone_project.exception.ApiException;
 import lombok.extern.slf4j.Slf4j;
@@ -19,12 +20,18 @@ public class CredentialsService {
 
     @Autowired
     private CredentialsDao credentialsDao;
-    public int insertCredential(String fullName,
+
+    @Autowired
+    private UserDao userDao;
+
+    public int insertCredential(Long userId,
+                                String fullName,
                                 String licenseType,
                                 String licenseNumber,
                                 String issuingState,
                                 String licenseExpirationDateStr) {
         Credentials credential = new Credentials();
+        credential.setUserId(userId);
         credential.setFullName(fullName);
         credential.setLicenseType(licenseType);
         credential.setLicenseNumber(licenseNumber);
@@ -40,7 +47,9 @@ public class CredentialsService {
         }
 
         credential.setCreatedAt(new Date());
-
+        User user = userDao.selectUserById(userId);
+        user.setFullName(fullName);
+        userDao.updateUser(user);
         return credentialsDao.insertCredential(credential);
     }
 }

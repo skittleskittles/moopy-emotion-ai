@@ -26,6 +26,7 @@ public class CredentialsController {
     @PostMapping("/insert")
     public Result<?> insert(@RequestBody CredentialsReqBody credential) {
         int result = credentialsService.insertCredential(
+                credential.getUserId(),
                 credential.getFullName(),
                 credential.getLicenseType(),
                 credential.getLicenseNumber(),

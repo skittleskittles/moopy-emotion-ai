@@ -21,7 +21,8 @@ public enum ApiMessage {
     PORT_ACTIVITY_EXISTED(8001, "Port activity already existed"),
     PORT_OTHER_EXISTED(8002, "Port other already existed"),
     INVALID_USER_ID(8003, "Invalid user id"),
-    INVALID_USER_CODE(8004, "Invalid user code");
+    INVALID_USER_CODE(8004, "Invalid user code"),
+    CREDENTIAL_ERROR(9000, "Credential expiration date error");
 
 
 

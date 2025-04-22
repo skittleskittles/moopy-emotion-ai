@@ -1,0 +1,32 @@
+Manifest-Version: 1.0
+Main-Class: dev.capstonebackend.capstone_project.CapstoneProjectApplicat
+ ion
+Class-Path: spring-boot-starter-tomcat-3.4.2.jar kotlin-stdlib-1.9.25.ja
+ r spring-boot-starter-3.4.2.jar mybatis-spring-3.0.3.jar okio-jvm-3.6.0
+ .jar spring-boot-autoconfigure-3.4.2.jar fastjson-1.2.83.jar spring-boo
+ t-3.4.2.jar kotlin-stdlib-common-1.9.25.jar spring-webmvc-6.2.2.jar myb
+ atis-3.5.6.jar slf4j-api-2.0.16.jar jbcrypt-0.4.jar snakeyaml-2.3.jar o
+ kio-3.6.0.jar tomcat-embed-websocket-10.1.34.jar annotations-13.0.jar m
+ icrometer-commons-1.14.3.jar spring-context-6.2.2.jar jakarta.validatio
+ n-api-3.0.2.jar spring-beans-6.2.2.jar mysql-connector-j-9.1.0.jar spri
+ ng-boot-starter-validation-3.4.2.jar jjwt-jackson-0.11.2.jar okhttp-4.1
+ 2.0.jar logback-core-1.5.16.jar kotlin-stdlib-jdk7-1.9.25.jar jackson-a
+ nnotations-2.18.2.jar swagger-annotations-1.6.2.jar spring-web-6.2.2.ja
+ r spring-expression-6.2.2.jar spring-core-6.2.2.jar jul-to-slf4j-2.0.16
+ .jar spring-boot-starter-logging-3.4.2.jar spring-jdbc-6.2.2.jar jackso
+ n-core-2.18.2.jar jsqlparser-4.5.jar spring-boot-devtools-3.4.2.jar jac
+ kson-databind-2.17.0.jar spring-boot-starter-json-3.4.2.jar logback-cla
+ ssic-1.5.16.jar jackson-datatype-jdk8-2.18.2.jar byte-buddy-1.15.11.jar
+  pagehelper-spring-boot-autoconfigure-1.4.6.jar tomcat-embed-core-10.1.
+ 34.jar HikariCP-5.1.0.jar spring-boot-starter-jdbc-3.4.2.jar mybatis-sp
+ ring-boot-starter-3.0.3.jar spring-jcl-6.2.2.jar jjwt-api-0.11.2.jar jj
+ wt-impl-0.11.2.jar lombok-1.18.36.jar tomcat-embed-el-10.1.34.jar kotli
+ n-stdlib-jdk8-1.9.25.jar jboss-logging-3.6.1.Final.jar spring-aop-6.2.2
+ .jar mybatis-spring-boot-autoconfigure-3.0.3.jar pagehelper-5.3.2.jar l
+ og4j-to-slf4j-2.24.3.jar pagehelper-spring-boot-starter-1.4.6.jar sprin
+ g-tx-6.2.2.jar classmate-1.7.0.jar jackson-module-parameter-names-2.18.
+ 2.jar jakarta.annotation-api-2.1.1.jar spring-boot-starter-web-3.4.2.ja
+ r hibernate-validator-8.0.2.Final.jar jackson-datatype-jsr310-2.18.2.ja
+ r micrometer-observation-1.14.3.jar commons-lang3-3.17.0.jar log4j-api-
+ 2.24.3.jar
+

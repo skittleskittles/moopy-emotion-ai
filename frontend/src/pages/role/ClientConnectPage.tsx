@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { connect } from "@/services/api";
-import { ConnectType } from "@/models/User";
+import { ConnectType } from "@/models/Connection";
 
 const ClientConnectPage = () => {
   const [fullName, setFullName] = useState("");

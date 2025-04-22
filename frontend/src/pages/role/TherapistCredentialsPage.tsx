@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { ROUTE_PATHS } from "@/routes/Routes";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
+import { credentialInsert } from "@/services/api";
 
 const TherapistCredentialsPage = () => {
   const { user, isLoggedIn } = useAuth();
@@ -87,9 +88,19 @@ const TherapistCredentialsPage = () => {
     if (formData.document) data.append("document", formData.document);
 
     try {
-      //   await axios.post(`/api/users/${user.id}/verify-license`, data, {
-      //     headers: { Authorization: `Bearer ${token}` },
-      //   });
+      const [year, month, day] = formData.expirationDate.split("-");
+      const formattedExpirationDate = `${month}/${day}/${year}`;
+      const res = await credentialInsert(
+        user.id,
+        formData.name,
+        formData.licenseType,
+        formData.licenseNumber,
+        formData.issuingState,
+        formattedExpirationDate
+      );
+      if (res.code !== 0) {
+        throw new Error("Failed to insert credentials.");
+      }
       navigate(ROUTE_PATHS.THERAPIST_DASHBOARD);
     } catch (error) {
       setError("Verification failed");

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ConnectType } from "@/models/User";
+import { ConnectType, ConnectionListResponse } from "@/models/Connection";
 
 const api = axios.create({
   baseURL: "http://localhost:8080/",
@@ -40,6 +40,41 @@ export const connect = async (
     clientName,
     connectType,
   });
+  return response.data;
+};
+
+/* Credentials */
+export const credentialInsert = async (
+  userId: number,
+  fullName: string,
+  licenseType: string,
+  licenseNumber: string,
+  issuingState: string,
+  licenseExpirationDate: string
+) => {
+  const response = await api.post("/credential/insert", {
+    userId,
+    fullName,
+    licenseType,
+    licenseNumber,
+    issuingState,
+    licenseExpirationDate,
+  });
+  return response.data;
+};
+
+/* Connection List */
+export const connectionList = async (
+  therapistId: number,
+  clientId: number
+): Promise<ConnectionListResponse> => {
+  const response = await api.post<ConnectionListResponse>(
+    "/user/listConnection",
+    {
+      therapistId,
+      clientId,
+    }
+  );
   return response.data;
 };
 

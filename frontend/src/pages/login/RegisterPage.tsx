@@ -42,8 +42,7 @@ const RegisterPage = (_: Props) => {
     try {
       const res = await register(username, password);
       if (res.code === 0) {
-        navigate(ROUTE_PATHS.LOGIN, { state: { isNewUser: true } });
-        console.log("isNewUser: ", true);
+        navigate(ROUTE_PATHS.LOGIN);
       } else {
         setError(res.msg);
       }

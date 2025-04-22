@@ -5,6 +5,8 @@ import {
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
 
+import { UserRole } from "@/models/User";
+
 import { buttonVariants } from "../components/ui/button";
 import { LogoIcon } from "../components/homepage/Icons";
 
@@ -169,10 +171,34 @@ export const Navbar = () => {
                       Profile
                     </button> */}
 
+                    {/* userRole */}
+                    <div className="px-4 py-2 text-sm text-gray-700 border-b">
+                      <div className="flex items-center justify-between">
+                        <span className="font-semibold">Role</span>
+                        {user?.role === UserRole.Therapist && (
+                          <span className="inline-block px-2 py-1 rounded text-xs bg-gray-200 text-blue-700">
+                            therapist
+                          </span>
+                        )}
+
+                        {user?.role === UserRole.Client && (
+                          <span className="inline-block px-2 py-1 rounded text-xs bg-gray-200 text-green-700">
+                            client
+                          </span>
+                        )}
+
+                        {user?.role === UserRole.Unspecified && (
+                          <span className="inline-block px-2 py-1 rounded text-xs bg-gray-200 text-green-700">
+                            none
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
                     {/* userCode */}
                     <div className="px-4 py-2 text-sm text-gray-700 border-b break-all">
                       <div className="flex justify-between items-center mb-1">
-                        <span className="font-semibold">Your Code</span>
+                        <span className="font-semibold">Code</span>
                         <button
                           onClick={() => {
                             if (user?.userCode) {

@@ -1,9 +1,9 @@
 import { useAuth } from "@/context/AuthContext";
 import { UserRole } from "@/models/User";
 import { ROUTE_PATHS } from "@/routes/Routes";
-import { login } from "@/services/api";
+import { connectionList, login } from "@/services/api";
 import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 interface Props {}
 
@@ -16,7 +16,6 @@ const LoginPage = (_: Props) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
-  const location = useLocation();
   const { login: setAuth } = useAuth();
 
   const isFormValid = username.trim() !== "" && password.trim() !== "";
@@ -32,22 +31,32 @@ const LoginPage = (_: Props) => {
 
     try {
       const res = await login(username, password);
-      if (res.code == 0) {
-        setAuth(
-          res.data.id,
-          res.data.username,
-          res.data.role,
-          res.data.userCode,
-          res.data.token
-        );
-        console.log("isNewUser: ", location.state?.isNewUser);
-        if (res.data.role == UserRole.Therapist) {
-          navigate(ROUTE_PATHS.THERAPIST_DASHBOARD);
-        } else if (res.data.role == UserRole.Client) {
-          navigate(ROUTE_PATHS.CHAT);
-        } else if (res.data.role == UserRole.Unspecified) {
-          navigate(ROUTE_PATHS.ROLE_SELECTION);
+      if (res.code != 0) {
+        throw new Error("Failed to login");
+      }
+      setAuth(
+        res.data.id,
+        res.data.username,
+        res.data.role,
+        res.data.userCode,
+        res.data.token
+      );
+      if (res.data.role == UserRole.Therapist) {
+        navigate(ROUTE_PATHS.THERAPIST_DASHBOARD);
+      } else if (res.data.role == UserRole.Client) {
+        // check if client has already connected with therapist
+        const connectionRes = await connectionList(0, res.data.id);
+        if (connectionRes.code != 0) {
+          throw new Error("Failed to check connection res");
         }
+        if (!connectionRes.data || connectionRes.data.length === 0) {
+          // no connection yet
+          navigate(ROUTE_PATHS.CLIENT_CONNECT_THERAPIST);
+        } else {
+          navigate(ROUTE_PATHS.CHAT);
+        }
+      } else if (res.data.role == UserRole.Unspecified) {
+        navigate(ROUTE_PATHS.ROLE_SELECTION);
       } else if (res.code === 404) {
         setError("User not found. Redirecting to registration...");
         setTimeout(() => navigate(ROUTE_PATHS.REGISTER), 2000);

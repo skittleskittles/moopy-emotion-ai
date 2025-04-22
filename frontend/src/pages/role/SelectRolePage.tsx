@@ -19,7 +19,7 @@ const RoleSelectionPage = () => {
     try {
       const res = await updateRole(user.id, role);
       if (res.code !== 0) {
-        throw new Error("Failed to update role ");
+        throw new Error("Failed to update role");
       }
 
       // Role updated successfully

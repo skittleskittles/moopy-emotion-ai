@@ -122,7 +122,13 @@ public class UserService {
         User currentUser = userDao.selectUserByCode(connectReqBody.getCurrentUserCode());
         User connectUser = userDao.selectUserByCode(connectReqBody.getConnectCode());
         if (Objects.isNull(currentUser) || Objects.isNull(connectUser)) {
-            log.error("");
+            if (connectType.equals(ConnectType.CLIENT_CONNECT_WITH_THERAPIST)) {
+                log.error("invalid user code, clientCode={}, therapistCode={}"
+                        , connectReqBody.getCurrentUserCode(), connectReqBody.getConnectCode());
+            } else {
+                log.error("invalid user code, therapistCode={}, clientCode={}"
+                        , connectReqBody.getCurrentUserCode(), connectReqBody.getConnectCode());
+            }
             throw new ApiException(ApiMessage.INVALID_USER_CODE);
         }
         UserConnection newConnection = new UserConnection();
@@ -148,13 +154,16 @@ public class UserService {
     public List<UserConnectionBo> listConnectionByCondition(ListConnectionReqBody listConnectionReqBody) {
         List<UserConnection> connectionList = userConnectionDao.selectUserConnections(listConnectionReqBody.getTherapistId(), listConnectionReqBody.getClientId());
         if (CollectionUtils.isEmpty(connectionList)) {
+            log.info("empty connection list, clientId={}, therapistId={}"
+                    , listConnectionReqBody.getClientId(), listConnectionReqBody.getTherapistId());
             return new ArrayList<>();
         }
         List<Long> userIdList = connectionList.stream()
                 .flatMap(conn -> Stream.of(conn.getClientId(), conn.getTherapistId()))
                 .collect(Collectors.toList());
         if (CollectionUtils.isEmpty(userIdList)) {
-            log.error("");
+            log.error("invalid user id, clientId={}, therapistId={}"
+                    , listConnectionReqBody.getClientId(), listConnectionReqBody.getTherapistId());
             return new ArrayList<>();
         }
         List<User> userList = userDao.selectUserByIdList(userIdList);
@@ -165,7 +174,8 @@ public class UserService {
             User client = userMap.get(connection.getClientId());
             User therapist = userMap.get(connection.getTherapistId());
             if (Objects.isNull(client) || Objects.isNull(therapist)) {
-                log.error("");
+                log.error("invalid clientId or therapistId, clientId={}, therapistId={}"
+                        , connection.getClientId(), connection.getTherapistId());
                 continue;
             }
             UserConnectionBo bo = UserConnectionBo.builder()

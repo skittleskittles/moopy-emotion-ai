@@ -17,6 +17,7 @@ import dev.capstonebackend.capstone_project.dao.UserDao;
 import dev.capstonebackend.capstone_project.domain.User;
 import dev.capstonebackend.capstone_project.enums.ApiMessage;
 import dev.capstonebackend.capstone_project.exception.ApiException;
+import org.springframework.util.CollectionUtils;
 
 import java.util.*;
 import java.util.regex.Pattern;
@@ -146,10 +147,18 @@ public class UserService {
 
     public List<UserConnectionBo> listConnectionByCondition(ListConnectionReqBody listConnectionReqBody) {
         List<UserConnection> connectionList = userConnectionDao.selectUserConnections(listConnectionReqBody.getTherapistId(), listConnectionReqBody.getClientId());
+        if (CollectionUtils.isEmpty(connectionList)) {
+            return new ArrayList<>();
+        }
         List<Long> userIdList = connectionList.stream()
                 .flatMap(conn -> Stream.of(conn.getClientId(), conn.getTherapistId()))
                 .collect(Collectors.toList());
+        if (CollectionUtils.isEmpty(userIdList)) {
+            log.error("");
+            return new ArrayList<>();
+        }
         List<User> userList = userDao.selectUserByIdList(userIdList);
+
         Map<Long, User> userMap = userList.stream().collect(Collectors.toMap(User::getId, user -> user));
         List<UserConnectionBo> connectionBoList = new ArrayList<>();
         for (UserConnection connection : connectionList) {

@@ -1,6 +1,11 @@
 package dev.capstonebackend.capstone_project.vo;
 
 
+import lombok.Builder;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.Date;
 
 /**
@@ -8,7 +13,16 @@ import java.util.Date;
  * @author: Yiyan Kong
  * @create: 2025-04-21 02:06
  **/
-public class ConnectionVO {
+@Builder
+@Setter
+@Getter
+public class ConnectionVo {
+
+    private Long therapistId;
+
+    private String therapistName;
+
+    private String therapistCode;
 
     private Long clientId;
 
@@ -19,5 +33,6 @@ public class ConnectionVO {
     private Date connectDate;
 
     private Date lastActiveDate;
+
 
 }

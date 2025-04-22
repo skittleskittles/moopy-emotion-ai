@@ -18,4 +18,6 @@ import lombok.Setter;
 public class ListConnectionReqBody {
 
     private Long therapistId;
+
+    private Long clientId;
 }

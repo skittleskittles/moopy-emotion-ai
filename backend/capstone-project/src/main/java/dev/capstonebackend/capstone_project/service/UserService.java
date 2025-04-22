@@ -1,9 +1,11 @@
 package dev.capstonebackend.capstone_project.service;
 
+import dev.capstonebackend.capstone_project.bo.UserConnectionBo;
 import dev.capstonebackend.capstone_project.dao.UserConnectionDao;
 import dev.capstonebackend.capstone_project.domain.UserConnection;
 import dev.capstonebackend.capstone_project.enums.ConnectType;
 import dev.capstonebackend.capstone_project.request.ConnectReqBody;
+import dev.capstonebackend.capstone_project.request.ListConnectionReqBody;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
@@ -16,11 +18,10 @@ import dev.capstonebackend.capstone_project.domain.User;
 import dev.capstonebackend.capstone_project.enums.ApiMessage;
 import dev.capstonebackend.capstone_project.exception.ApiException;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @Slf4j
@@ -127,9 +128,13 @@ public class UserService {
         if (connectType.equals(ConnectType.CLIENT_CONNECT_WITH_THERAPIST)) {
             newConnection.setClientId(currentUser.getId());
             newConnection.setTherapistId(connectUser.getId());
+            currentUser.setFullName(connectReqBody.getClientName());
+            userDao.updateUser(currentUser);
         } else {
             newConnection.setClientId(connectUser.getId());
             newConnection.setTherapistId(currentUser.getId());
+            connectUser.setFullName(connectReqBody.getClientName());
+            userDao.updateUser(connectUser);
         }
         newConnection.setClientName(connectReqBody.getClientName());
         return userConnectionDao.insertUserConnection(newConnection);
@@ -137,6 +142,36 @@ public class UserService {
 
     public int deleteConnection(Long therapistId, Long clientId) {
         return userConnectionDao.deleteUserConnection(therapistId, clientId);
+    }
+
+    public List<UserConnectionBo> listConnectionByCondition(ListConnectionReqBody listConnectionReqBody) {
+        List<UserConnection> connectionList = userConnectionDao.selectUserConnections(listConnectionReqBody.getTherapistId(), listConnectionReqBody.getClientId());
+        List<Long> userIdList = connectionList.stream()
+                .flatMap(conn -> Stream.of(conn.getClientId(), conn.getTherapistId()))
+                .collect(Collectors.toList());
+        List<User> userList = userDao.selectUserByIdList(userIdList);
+        Map<Long, User> userMap = userList.stream().collect(Collectors.toMap(User::getId, user -> user));
+        List<UserConnectionBo> connectionBoList = new ArrayList<>();
+        for (UserConnection connection : connectionList) {
+            User client = userMap.get(connection.getClientId());
+            User therapist = userMap.get(connection.getTherapistId());
+            if (Objects.isNull(client) || Objects.isNull(therapist)) {
+                log.error("");
+                continue;
+            }
+            UserConnectionBo bo = UserConnectionBo.builder()
+                    .therapistId(therapist.getId())
+                    .therapistName(therapist.getFullName())
+                    .therapistCode(therapist.getUserCode())
+                    .clientId(client.getId())
+                    .clientName(client.getFullName())
+                    .clientCode(client.getUserCode())
+                    .connectDate(connection.getCreatedAt())
+                    .build();
+            connectionBoList.add(bo);
+        }
+        return connectionBoList;
+
     }
 
 }

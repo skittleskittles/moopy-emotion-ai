@@ -4,6 +4,8 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import dev.capstonebackend.capstone_project.domain.User;
 
+import java.util.List;
+
 @Repository
 public interface UserDao {
 
@@ -14,6 +16,8 @@ public interface UserDao {
     int deleteUserByUserName(@Param("username") String username);
     User selectUserByToken(@Param("token") String token);
     User selectUserByCode(@Param("userCode") String userCode);
+
+    List<User> selectUserByIdList(@Param("idList") List<Long> idList);
 
 
 }

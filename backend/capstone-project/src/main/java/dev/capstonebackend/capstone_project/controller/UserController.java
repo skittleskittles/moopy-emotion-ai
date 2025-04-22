@@ -1,5 +1,7 @@
 package dev.capstonebackend.capstone_project.controller;
 
+import dev.capstonebackend.capstone_project.bo.UserConnectionBo;
+import dev.capstonebackend.capstone_project.converter.UserConverter;
 import dev.capstonebackend.capstone_project.enums.ApiMessage;
 import dev.capstonebackend.capstone_project.enums.ConnectType;
 import dev.capstonebackend.capstone_project.request.*;
@@ -13,6 +15,7 @@ import dev.capstonebackend.capstone_project.domain.Result;
 import dev.capstonebackend.capstone_project.service.UserService;
 import dev.capstonebackend.capstone_project.util.ResultUtil;
 
+import java.util.List;
 import java.util.Objects;
 
 @RestController
@@ -90,10 +93,12 @@ public class UserController {
         return ResultUtil.success(userService.deleteConnection(disconnectReqBody.getTherapistId(), disconnectReqBody.getClientId()));
     }
 
-//    @ApiOperation(value = "")
-//    @PostMapping("/listConnection")
-//    public Result<?> listConnection(@RequestBody DisconnectReqBody disconnectReqBody) {
-//        return ResultUtil.success(userService.deleteConnection(disconnectReqBody.getTherapistId(), disconnectReqBody.getClientId()));
-//    }
+    @ApiOperation(value = "")
+    @PostMapping("/listConnection")
+    public Result<?> listConnectionByCondition(@RequestBody ListConnectionReqBody listConnectionReqBody) {
+        List<UserConnectionBo> userConnectionBoList = userService.listConnectionByCondition(listConnectionReqBody);
+        return ResultUtil.success(UserConverter.connectionBoToVo(userConnectionBoList));
+    }
+
 }
 

@@ -23,7 +23,7 @@ export const Hero = () => {
           {/*for{" "}*/}
           <h2 className="inline">
             <span className="inline bg-gradient-to-r from-[#133c47] via-[#8785a2] to-[#6782B8] text-transparent bg-clip-text">
-              Your AI Mood Companion
+              Your AI Psychologist Assistant
             </span>{" "}
           </h2>
         </main>

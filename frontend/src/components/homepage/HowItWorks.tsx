@@ -9,32 +9,29 @@ interface FeatureProps {
 
 const features: FeatureProps[] = [
   {
-    icon: <MedalIcon />,
-    title: "Accessibility",
+    //icon: <MedalIcon />,
+    icon: <img src="https://th.bing.com/th/id/OIP.WwXHao8bmSDkY7WRv5eECgHaHa?rs=1&pid=ImgDetMain" alt="medal" style={{ width: 70, height: 70 }} />,
+    title: "Psychological Assessment",
     description:
-      "Our platform is designed for easy use, with a simple and clear interface for a smooth user experience.",
+      "Gain insights into your mental well-being through clinically validated questionnaires designed to evaluate emotional and psychological states for personalized care.",
   },
 
   {
-    icon: <MapIcon />,
+    //icon: <MapIcon />,
+    icon: <img src="https://movebettergwent.nhs.wales/wp-content/uploads/2021/09/Move-better-step-2.png" alt="medal" style={{ width: 70, height: 70 }} />,
     title: "Community",
     description:
-      "Engage with the community through anonymous inquiries, ensuring complete privacy and confidentiality.",
+      "Connect with mental health professionals through real-time chat for emotional support, expert guidance, and timely interventions.",
   },
 
   {
-    icon: <PlaneIcon />,
-    title: "Scalability",
+    //icon: <PlaneIcon />,
+    icon: <img src="https://movebettergwent.nhs.wales/wp-content/uploads/2021/09/Move-better-step-3.png" alt="medal" style={{ width: 70, height: 70 }} />,
+    title: "Records",
     description:
-      "By leveraging CNN and various AI algorithms, we accurately assess users' emotional states for personalized support.",
+      "Automatically track and store assessment results and communication history, enabling comprehensive monitoring of your mental health progress over time.",
   },
 
-  {
-    icon: <GiftIcon />,
-    title: "Chat with us",
-    description:
-      "Our AI-powered chat offers friendly and empathetic conversations to help resolve user concerns and provide guidance.",
-  },
 ];
 
 export const HowItWorks = () => {
@@ -45,7 +42,7 @@ export const HowItWorks = () => {
         <span className="bg-gradient-to-b from-purple-300 to-[#6782B8] text-transparent bg-clip-text">
           Works{" "}
         </span>
-        Step-by-Step Guide
+        
       </h2>
       <p className="md:w-3/4 mx-auto mt-4 mb-8 text-xl text-muted-foreground">
         {/* Lorem ipsum dolor sit amet consectetur, adipisicing elit. Veritatis

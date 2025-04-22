@@ -48,6 +48,7 @@ const MoodDay: React.FC = () => {
         padding: "20px",
         borderRadius: "8px",
         minHeight: "100vh",
+        //paddingBottom: "60px",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",

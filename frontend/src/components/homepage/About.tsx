@@ -14,15 +14,7 @@ export const About = () => {
             <div className="pb-6">
               <h2 className="text-3xl md:text-4xl font-bold">About Us</h2>
               <p className="text-xl text-muted-foreground mt-4">
-                At our platform, we are committed to providing mental health
-                support by assisting users in managing depression, stress, and
-                emotional challenges. Through compassionate conversations and a
-                friendly chatbot, we create a safe space for users to express
-                their feelings. By asking thoughtful questions, we assess their
-                emotional well-being and offer tailored advice to help them feel
-                better, regain balance, and build emotional resilience. Our goal
-                is to empower users on their journey to improved mental health,
-                offering both guidance and support whenever they need it.
+              Our platform is dedicated to supporting mental health by helping users manage depression, stress, and emotional challenges through compassionate conversations and an intelligent, friendly chatbot. We provide a safe space for users to express their emotions, assess their emotional well-being through thoughtful interactions, and offer personalized guidance to foster resilience and balance. Additionally, we aim to strengthen communication between mental health professionals and users by giving therapists access to mood records and user-submitted concerns, enabling a deeper understanding and more effective support. Our mission is to empower individuals on their path to emotional wellness while equipping professionals with meaningful tools to enhance care.
               </p>
             </div>
 

@@ -19,21 +19,37 @@ const features: FeatureProps[] = [
   {
     title: "Professional Assessments",
     description:
-      "Gain insights into your mental well-being with clinically-backed assessments. Moopy integrates professional mental health evaluations to help you better understand your emotional state and track your progress over time.",
-    image: image4,
+      "Gain valuable insights into your mental well-being with clinically validated assessments. Moopy integrates professional mental health evaluations, providing you with a deeper understanding of your emotional state and enabling you to track your progress over time. This allows healthcare professionals to easily monitor and assess patient conditions.",
+    //image: image4,
+    image: "https://media.istockphoto.com/photos/assessment-and-analysis-by-professional-auditing-consultant-concept-picture-id1162629597?k=6&m=1162629597&s=170667a&w=0&h=rJGFR0BrEOpnsZzl3BqnLPcT0iK_fsj7M9v-6FWIiqI=",
   },
   {
     title: "AI-Powered ChatBot",
     description:
       "Need someone to talk to? Moopy’s AI-powered chatbot provides a safe, judgment-free space where you can express your thoughts, get emotional support, and receive helpful insights tailored to your feelings.",
-    image: image3,
+    //image: image3,
+    image: "https://www.cioinsight.com/wp-content/uploads/2022/08/Chatbots-in-Machine-Learning-2048x1365.jpeg",
   },
   {
     title: "Mood Tracker",
     description:
       "Stay in tune with your emotions. Our intuitive mood tracker allows you to log your daily feelings, identify patterns, and gain deeper self-awareness, empowering you to take charge of your mental health.",
-    image: image,
+    //image: image,
+    image: "https://i2.wp.com/101planners.com/wp-content/uploads/2020/03/Mood-Tracker-13-1187x1536.jpeg",
   },
+  {
+    title: "Real doctor",
+    description:
+      "Your mental health professional will provide online support, addressing your concerns and circumstances, offering emotional reassurance, and delivering timely treatment.",
+    image: "https://th.bing.com/th/id/OIP.UEF6BYjO44FOGtSMSJnv_AHaHa?rs=1&pid=ImgDetMain",
+  },
+  {
+    title: "Online Reservation",
+    description:
+      "Users can schedule appointments with doctors online, and doctors can access their calendar to view, modify, or update appointment details.",
+    image: "https://www.singhead.com/uploads/20221031/2022103109164362072333_800%C3%97607.jpg",
+  },
+
 ];
 
 // const featureList: string[] = [

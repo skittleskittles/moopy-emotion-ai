@@ -19,6 +19,8 @@ public interface UserDao {
 
     List<User> selectUserByIdList(@Param("idList") List<Long> idList);
 
+    int updateLastLoginTime(@Param("userId") Long userId);
+
 
 }
 

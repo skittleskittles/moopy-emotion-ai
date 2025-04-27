@@ -14,6 +14,7 @@
         <result column="created_at" property="createdAt" />
         <result column="modified_at" property="modifiedAt" />
         <result column="token" property="token" />
+        <result column="last_login_at" property="lastLoginAt" />
     </resultMap>
 
     <!-- 插入用户 -->
@@ -23,7 +24,7 @@
     </insert>
 
     <!-- 根据 ID 查询用户 -->
-    <select id="selectUserById" parameterType="java.lang.Long" resultType="dev.capstonebackend.capstone_project.domain.User">
+    <select id="selectUserById" parameterType="java.lang.Long" resultMap="UserResultMap">
         SELECT *
         FROM users
         WHERE id = #{id}
@@ -74,5 +75,11 @@
             #{id}
         </foreach>
     </select>
+
+    <update id="updateLastLoginTime" parameterType="java.lang.Long">
+        UPDATE users
+        SET last_login_at = CURRENT_TIMESTAMP
+        WHERE id = #{userId}
+    </update>
 
 </mapper>

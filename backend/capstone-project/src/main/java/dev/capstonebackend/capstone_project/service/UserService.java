@@ -1,11 +1,14 @@
 package dev.capstonebackend.capstone_project.service;
 
+import dev.capstonebackend.capstone_project.bo.ClientDetailBo;
 import dev.capstonebackend.capstone_project.bo.UserConnectionBo;
 import dev.capstonebackend.capstone_project.dao.UserConnectionDao;
-import dev.capstonebackend.capstone_project.domain.UserConnection;
+import dev.capstonebackend.capstone_project.domain.*;
 import dev.capstonebackend.capstone_project.enums.ConnectType;
 import dev.capstonebackend.capstone_project.request.ConnectReqBody;
+import dev.capstonebackend.capstone_project.request.GetClientDetailReqBody;
 import dev.capstonebackend.capstone_project.request.ListConnectionReqBody;
+import dev.capstonebackend.capstone_project.vo.ClientDetailVo;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
@@ -14,13 +17,11 @@ import org.springframework.stereotype.Service;
 import dev.capstonebackend.capstone_project.vo.UserVo;
 import dev.capstonebackend.capstone_project.config.AuthToken;
 import dev.capstonebackend.capstone_project.dao.UserDao;
-import dev.capstonebackend.capstone_project.domain.User;
 import dev.capstonebackend.capstone_project.enums.ApiMessage;
 import dev.capstonebackend.capstone_project.exception.ApiException;
 import org.springframework.util.CollectionUtils;
 
 import java.util.*;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -36,6 +37,15 @@ public class UserService {
 
     @Autowired
     private UserConnectionDao userConnectionDao;
+
+    @Autowired
+    private QuestionRecordService questionRecordService;
+
+    @Autowired
+    private ChatService chatService;
+
+    @Autowired
+    private MoodRecordService moodRecordService;
 
     public User selectUserById(Long id) {
         User user = userDao.selectUserById(id);
@@ -81,7 +91,7 @@ public class UserService {
 
         user.setToken(token);
         userDao.updateUser(user);
-
+        userDao.updateLastLoginTime(user.getId());
         UserVo userVo = new UserVo();
         userVo.setId(user.getId());
         userVo.setUsername(user.getUsername());
@@ -192,6 +202,35 @@ public class UserService {
         return connectionBoList;
 
     }
+
+    public ClientDetailBo getClientDetail(GetClientDetailReqBody getClientDetailReqBody) {
+        Long clientId = getClientDetailReqBody.getClientId();
+        Long therapistId = getClientDetailReqBody.getTherapistId();
+        User user = userDao.selectUserById(clientId);
+        if (Objects.isNull(user)) {
+            log.error("invalid client id, clientId={}, therapistId={}", clientId, therapistId);
+            throw new ApiException(ApiMessage.INVALID_USER_ID);
+        }
+        ListConnectionReqBody listConnectionReqBody = ListConnectionReqBody.builder()
+                .clientId(clientId).therapistId(therapistId).build();
+        List<UserConnectionBo> connectionBoList = listConnectionByCondition(listConnectionReqBody);
+        if (CollectionUtils.isEmpty(connectionBoList)) {
+            log.error("empty connection list, clientId={}, therapistId={}", clientId, therapistId);
+            throw new ApiException(ApiMessage.INVALID_CONNECTION);
+        }
+        QuestionRecord questionRecord = questionRecordService.getLatestRecordByUserId(clientId);
+        List<MessageRecord> messageList = chatService.selectMessagesByUserId(clientId);
+        List<MoodRecord> recordList = moodRecordService.listMoodRecordByUserId(clientId);
+        return ClientDetailBo.builder()
+                .user(user)
+                .latestRecord(questionRecord)
+                .messageRecordList(messageList)
+                .connection(connectionBoList.getFirst())
+                .moodRecordList(recordList)
+                .build();
+    }
+
+
 
 }
 

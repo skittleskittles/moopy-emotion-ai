@@ -50,4 +50,8 @@ public class MoodRecordService {
         return recordList;
     }
 
+    public List<MoodRecord> listMoodRecordByUserId(Long userId) {
+        return moodRecordDao.selectRecordByUserId(userId);
+    }
+
 }

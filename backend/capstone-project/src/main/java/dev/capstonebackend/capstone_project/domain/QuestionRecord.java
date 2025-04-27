@@ -3,6 +3,7 @@ package dev.capstonebackend.capstone_project.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,6 +16,7 @@ import java.util.Date;
  * @create: 2025-02-16 00:21
  **/
 @Builder
+@Data
 public class QuestionRecord {
 
     /**

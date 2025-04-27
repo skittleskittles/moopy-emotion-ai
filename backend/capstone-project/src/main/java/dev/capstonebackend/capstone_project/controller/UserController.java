@@ -1,10 +1,13 @@
 package dev.capstonebackend.capstone_project.controller;
 
+import dev.capstonebackend.capstone_project.bo.ClientDetailBo;
 import dev.capstonebackend.capstone_project.bo.UserConnectionBo;
 import dev.capstonebackend.capstone_project.converter.UserConverter;
 import dev.capstonebackend.capstone_project.enums.ApiMessage;
 import dev.capstonebackend.capstone_project.enums.ConnectType;
 import dev.capstonebackend.capstone_project.request.*;
+import dev.capstonebackend.capstone_project.service.ChatService;
+import dev.capstonebackend.capstone_project.service.QuestionRecordService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +30,12 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private QuestionRecordService questionRecordService;
+
+    @Autowired
+    private ChatService chatService;
 
     @ApiOperation(value = "user register")
     @PostMapping("/register")
@@ -98,6 +107,30 @@ public class UserController {
     public Result<?> listConnectionByCondition(@RequestBody ListConnectionReqBody listConnectionReqBody) {
         List<UserConnectionBo> userConnectionBoList = userService.listConnectionByCondition(listConnectionReqBody);
         return ResultUtil.success(UserConverter.connectionBoToVo(userConnectionBoList));
+    }
+
+    @ApiOperation(value = "")
+    @PostMapping("/detail")
+    public Result<?> getClientDetail(@RequestBody GetClientDetailReqBody getClientDetailReqBody) {
+        if (!paramCheckGetClientDetail(getClientDetailReqBody)) {
+            log.info("Invalid request, getUserDetailReqBody={}", getClientDetailReqBody.toString());
+            return ResultUtil.error(ApiMessage.ILLEGAL_PARAMS);
+        }
+        ClientDetailBo clientDetailBo = userService.getClientDetail(getClientDetailReqBody);
+        return ResultUtil.success(UserConverter.clientDetailBoToVo(clientDetailBo));
+    }
+
+    private Boolean paramCheckGetClientDetail(GetClientDetailReqBody getClientDetailReqBody) {
+        if (Objects.isNull(getClientDetailReqBody)) {
+            return Boolean.FALSE;
+        }
+        if (Objects.isNull(getClientDetailReqBody.getClientId()) || getClientDetailReqBody.getClientId() <= 0) {
+            return Boolean.FALSE;
+        }
+        if (Objects.isNull(getClientDetailReqBody.getTherapistId()) || getClientDetailReqBody.getTherapistId() <= 0) {
+            return Boolean.FALSE;
+        }
+        return Boolean.TRUE;
     }
 
 }

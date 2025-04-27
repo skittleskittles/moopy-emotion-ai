@@ -12,7 +12,7 @@ import java.util.Date;
 @Data
 @Getter
 @Setter
-@ApiModel(value = "useerVo", description = "Basic info of the user")
+@ApiModel(value = "userVo", description = "Basic info of the user")
 public class UserVo {
 
     private Long id;

@@ -11,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @program: Capstone_Project
  * @author: Yiyan Kong
@@ -34,5 +36,14 @@ public class QuestionRecordService {
         }
         QuestionRecord questionRecord = QuestionRecord.builder().userId(userId).score(score).build();
         return questionRecordDao.insertQuestionRecord(questionRecord);
+    }
+
+    public QuestionRecord getLatestRecordByUserId(Long userId) {
+        List<QuestionRecord> recordList = questionRecordDao.selectUserRecord(userId);
+        if (recordList.isEmpty()) {
+            log.error("User does not take survey, id = {}", userId);
+            return null;
+        }
+        return recordList.getFirst();
     }
 }

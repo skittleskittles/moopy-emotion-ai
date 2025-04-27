@@ -1,11 +1,17 @@
 package dev.capstonebackend.capstone_project.converter;
 
 
+import dev.capstonebackend.capstone_project.bo.ClientDetailBo;
 import dev.capstonebackend.capstone_project.bo.UserConnectionBo;
-import dev.capstonebackend.capstone_project.vo.ConnectionVo;
+import dev.capstonebackend.capstone_project.domain.QuestionRecord;
+import dev.capstonebackend.capstone_project.domain.User;
+import dev.capstonebackend.capstone_project.domain.UserConnection;
+import dev.capstonebackend.capstone_project.vo.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @program: Capstone_Project
@@ -30,5 +36,24 @@ public class UserConverter {
             connectionVoList.add(connectionVo);
         }
         return connectionVoList;
+    }
+
+    public static ClientDetailVo clientDetailBoToVo(ClientDetailBo clientDetailBo) {
+        ClientDetailVo clientDetailVo = new ClientDetailVo();
+        clientDetailVo.setUserId(clientDetailBo.getUser().getId());
+        clientDetailVo.setUsername(clientDetailBo.getUser().getUsername());
+        clientDetailVo.setFullName(clientDetailBo.getUser().getFullName());
+        clientDetailVo.setScore(Optional.ofNullable(clientDetailBo.getLatestRecord())
+                .map(QuestionRecord::getScore).orElse(0));
+        clientDetailVo.setConnectedDate(clientDetailBo.getConnection().getConnectDate());
+        clientDetailVo.setLastLoginAt(clientDetailBo.getUser().getLastLoginAt());
+        List<ChatVo> voList = Optional.ofNullable(clientDetailBo.getMessageRecordList()).orElse(Collections.emptyList())
+                .stream().map(ChatConverter::messageRecordToVo).toList();
+        List<ConversationVo> conversationVoList = ChatConverter.messageVoToConversationVo(voList);
+        clientDetailVo.setConversationList(conversationVoList);
+        List<MoodRecordVo> recordVoList = Optional.ofNullable(clientDetailBo.getMoodRecordList())
+                .orElse(Collections.emptyList()).stream().map(MoodRecordConverter::moodRecordToVo).toList();
+        clientDetailVo.setMoodRecordList(recordVoList);
+        return clientDetailVo;
     }
 }

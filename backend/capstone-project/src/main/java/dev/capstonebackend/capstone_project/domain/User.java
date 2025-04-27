@@ -25,6 +25,8 @@ public class User {
     @JsonFormat(shape = JsonFormat.Shape.NUMBER)
     private Date modifiedAt;
     private String token;
+    @JsonFormat(shape = JsonFormat.Shape.NUMBER)
+    private Date lastLoginAt;
 
 
 

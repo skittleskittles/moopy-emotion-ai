@@ -4,11 +4,27 @@
 
 <mapper namespace="dev.capstonebackend.capstone_project.dao.QuestionRecordDao">
 
+    <resultMap id="QuestionRecordMap" type="dev.capstonebackend.capstone_project.domain.QuestionRecord">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="score" property="score" />
+        <result column="create_at" property="createdAt" />
+        <result column="modified_at" property="modifiedAt" />
+    </resultMap>
+
     <!-- 插入记录 -->
     <insert id="insertQuestionRecord" parameterType="dev.capstonebackend.capstone_project.domain.QuestionRecord">
         INSERT INTO question_record (user_id, score)
         VALUES (#{userId}, #{score})
     </insert>
+
+    <select id="selectUserRecord" parameterType="java.util.Objects" resultMap="QuestionRecordMap">
+        SELECT *
+        FROM question_record
+        WHERE user_id = #{userId}
+        ORDER BY create_at DESC
+        LIMIT 5
+    </select>
 
 
 

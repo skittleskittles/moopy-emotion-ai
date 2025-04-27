@@ -16,4 +16,6 @@ public interface MoodRecordDao {
 
     List<MoodRecord> selectRecordByMonth(@Param("user_id")Long userId, @Param("year")Integer year,
                                          @Param("month")Integer month);
+
+    List<MoodRecord> selectRecordByUserId(@Param("user_id")Long userId);
 }

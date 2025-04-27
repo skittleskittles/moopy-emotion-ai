@@ -30,7 +30,7 @@ public class ClientDetailVo {
 
     private Date connectedDate;
 
-    private Date lastLoginAt;
+    private Date lastLoginDate;
 
     private List<ConversationVo> conversationList;
 

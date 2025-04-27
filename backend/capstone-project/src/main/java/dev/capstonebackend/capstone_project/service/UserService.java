@@ -196,6 +196,7 @@ public class UserService {
                     .clientName(client.getFullName())
                     .clientCode(client.getUserCode())
                     .connectDate(connection.getCreatedAt())
+                    .lastLoginDate(client.getLastLoginAt())
                     .build();
             connectionBoList.add(bo);
         }

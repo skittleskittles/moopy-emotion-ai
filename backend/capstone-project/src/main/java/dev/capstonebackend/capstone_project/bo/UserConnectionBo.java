@@ -28,5 +28,5 @@ public class UserConnectionBo {
 
     private Date connectDate;
 
-    private Date lastActiveDate;
+    private Date lastLoginDate;
 }

@@ -32,6 +32,7 @@ public class UserConverter {
                     .clientId(connectionBo.getClientId())
                     .clientCode(connectionBo.getClientCode())
                     .connectDate(connectionBo.getConnectDate())
+                    .lastActiveDate(connectionBo.getLastLoginDate())
                     .build();
             connectionVoList.add(connectionVo);
         }
@@ -46,7 +47,7 @@ public class UserConverter {
         clientDetailVo.setScore(Optional.ofNullable(clientDetailBo.getLatestRecord())
                 .map(QuestionRecord::getScore).orElse(0));
         clientDetailVo.setConnectedDate(clientDetailBo.getConnection().getConnectDate());
-        clientDetailVo.setLastLoginAt(clientDetailBo.getUser().getLastLoginAt());
+        clientDetailVo.setLastLoginDate(clientDetailBo.getUser().getLastLoginAt());
         List<ChatVo> voList = Optional.ofNullable(clientDetailBo.getMessageRecordList()).orElse(Collections.emptyList())
                 .stream().map(ChatConverter::messageRecordToVo).toList();
         List<ConversationVo> conversationVoList = ChatConverter.messageVoToConversationVo(voList);

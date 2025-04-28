@@ -146,14 +146,14 @@ public class UserService {
             newConnection.setClientId(currentUser.getId());
             newConnection.setTherapistId(connectUser.getId());
             currentUser.setFullName(connectReqBody.getClientName());
+            newConnection.setClientName(connectReqBody.getClientName());
             userDao.updateUser(currentUser);
         } else {
+            // THERAPIST_CONNECT_WITH_CLIENT
             newConnection.setClientId(connectUser.getId());
+            newConnection.setClientName(connectUser.getFullName());
             newConnection.setTherapistId(currentUser.getId());
-            connectUser.setFullName(connectReqBody.getClientName());
-            userDao.updateUser(connectUser);
         }
-        newConnection.setClientName(connectReqBody.getClientName());
         return userConnectionDao.insertUserConnection(newConnection);
     }
 

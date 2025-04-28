@@ -82,8 +82,7 @@ public class UserController {
     }
 
     private Boolean paramCheckConnect(ConnectReqBody connectReqBody) {
-        if (Objects.isNull(connectReqBody) || Objects.isNull(connectReqBody.getConnectType())
-                || StringUtils.isEmpty(connectReqBody.getClientName())) {
+        if (Objects.isNull(connectReqBody) || Objects.isNull(connectReqBody.getConnectType())) {
             return Boolean.FALSE;
         }
         if (Objects.isNull(ConnectType.getConnectType(connectReqBody.getConnectType()))) {

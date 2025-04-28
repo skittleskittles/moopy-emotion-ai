@@ -7,7 +7,7 @@ import { updateRole } from "@/services/api";
 import { UserRole } from "@/models/User";
 
 const RoleSelectionPage = () => {
-  const { user, token } = useAuth();
+  const { user, token, updateUser } = useAuth();
   const navigate = useNavigate();
 
   const handleRoleSelect = async (role: UserRole) => {
@@ -23,6 +23,7 @@ const RoleSelectionPage = () => {
       }
 
       // Role updated successfully
+      updateUser({ role }); 
       console.log(`Role set to ${role}`);
       if (role == UserRole.Therapist) {
         navigate(ROUTE_PATHS.THERAPIST_CREDENTIALS);

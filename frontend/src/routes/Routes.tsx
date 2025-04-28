@@ -20,6 +20,7 @@ import MoodDay from "@/components/homepage/MoodDay";
 import YearTracker from "@/components/homepage/YearTracker";
 
 import TherapistDashboardPage from "@/pages/dashboard/TherapistDashboardPage";
+import ClientDetailPage from "@/pages/dashboard/ClientDetailPage";
 
 export const ROUTE_PATHS = {
   HOME: "/",
@@ -30,6 +31,7 @@ export const ROUTE_PATHS = {
   CLIENT_CONNECT_THERAPIST: "/client/connect",
   THERAPIST_CREDENTIALS: "/therapist/credentials",
   THERAPIST_DASHBOARD: "/therapist/dashboard",
+  THERAPIST_DASHBOARD_CLIENT_DETIAL: "/therapist/dashboard/client/detail",
 
   SURVEY: "/survey",
   SURVEY_QUESTIONS: "/survey/questions",
@@ -81,6 +83,10 @@ export const router = createBrowserRouter([
       {
         path: ROUTE_PATHS.THERAPIST_DASHBOARD,
         element: <TherapistDashboardPage />,
+      },
+      {
+        path: ROUTE_PATHS.THERAPIST_DASHBOARD_CLIENT_DETIAL,
+        element: <ClientDetailPage />,
       },
     ],
   },

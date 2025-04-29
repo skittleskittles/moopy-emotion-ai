@@ -5,10 +5,11 @@ import { HeroCards } from "./HeroCards";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import { ROUTE_PATHS } from "@/routes/Routes";
 import { useAuth } from "@/context/AuthContext";
+import { UserRole } from "@/models/User";
 
 export const Hero = () => {
   const navigate = useNavigate();
-  const { isLoggedIn } = useAuth();
+  const { user, isLoggedIn } = useAuth();
 
   return (
     <section className="container grid lg:grid-cols-2 place-items-center py-20 md:py-32 gap-10">
@@ -42,8 +43,12 @@ export const Hero = () => {
             onClick={() => {
               if (!isLoggedIn()) {
                 navigate(ROUTE_PATHS.LOGIN);
-              } else {
+              } else if (user?.role == UserRole.Client) {
                 navigate(ROUTE_PATHS.CHAT);
+              } else if (user?.role == UserRole.Therapist) {
+                navigate(ROUTE_PATHS.THERAPIST_DASHBOARD);
+              } else {
+                navigate(ROUTE_PATHS.ROLE_SELECTION);
               }
             }}
           >

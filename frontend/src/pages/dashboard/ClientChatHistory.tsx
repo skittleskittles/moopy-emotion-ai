@@ -95,10 +95,12 @@ export const ClientChatHistory = ({
                 )}
 
                 {/* Message bubble */}
-                <div className="flex items-center space-x-2 max-w-[70%] px-4 py-2 rounded-xl bg-gray-300 text-black break-words">
-                  <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                    {msg.message.replace(/\n/g, "  \n")}
-                  </ReactMarkdown>
+                <div className="flex items-center space-x-2 max-w-[70%] px-4 py-2 rounded-xl bg-gray-300 text-black">
+                  <div className="break-words">
+                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                      {msg.message.replace(/\n/g, "  \n")}
+                    </ReactMarkdown>
+                  </div>
                 </div>
 
                 {/* User avatar */}

@@ -32,14 +32,14 @@ export const ClientChatHistory = ({
     (conv) => conv.conversationId === currentConversationId
   );
 
-  const formatDate = (utcString: string) => {
-    const date = new Date(utcString);
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-    });
-  };
+  // const formatDate = (utcString: string) => {
+  //   const date = new Date(utcString);
+  //   return date.toLocaleDateString("en-US", {
+  //     year: "numeric",
+  //     month: "2-digit",
+  //     day: "2-digit",
+  //   });
+  // };
 
   return (
     <div className="flex flex-1 min-h-0">

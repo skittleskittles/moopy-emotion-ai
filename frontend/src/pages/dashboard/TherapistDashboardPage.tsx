@@ -114,7 +114,7 @@ const TherapistDashboardPage = () => {
         <table className="w-full text-left border-separate border-spacing-y-2">
           <thead>
             <tr className="text-gray-600">
-              <th className="p-2 border-y">CLIENT’S NICKNAME</th>
+              <th className="p-2 border-y">CLIENT’S NAME</th>
               <th className="p-2 border-y">JOIN DATE</th>
               <th className="p-2 border-y">LAST ACTIVE DATE</th>
               <th className="p-2 border-y">REMARKS</th>

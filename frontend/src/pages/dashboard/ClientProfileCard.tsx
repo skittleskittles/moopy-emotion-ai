@@ -20,7 +20,7 @@ export const ClientProfileCard = ({ clientDetail }: ClientProfileCardProps) => {
     <div className="flex justify-center mx-10 ">
       <div className="w-4/5 bg-white shadow-lg rounded-xl p-6 mx-10 my-8 flex items-center justify-between">
         {/* Left section: Avatar + Info */}
-        <div className="flex items-center gap-6 ml-20">
+        <div className="flex items-center gap-6 ml-[5%]">
           {/* Avatar */}
           <div className="w-24 h-24 rounded-full bg-[#f9f2f2] flex items-center justify-center overflow-hidden">
             <img
@@ -39,14 +39,15 @@ export const ClientProfileCard = ({ clientDetail }: ClientProfileCardProps) => {
               NICKNAME: {clientDetail.username}
             </p>
           </div>
-          <div className="flex flex-col ml-[500px] mt-10">
-            <p className="text-gray-500 mt-2 flex items-center gap-2">
-              📅 Connected Date: {formatDate(clientDetail.connectedDate)}
-            </p>
-            <p className="text-gray-500 flex items-center gap-2">
-              📅 Last Active Date: {formatDate(clientDetail.lastLoginDate)}
-            </p>
-          </div>
+        </div>
+
+        <div className="flex flex-col ml-[20%] mt-10">
+          <p className="text-gray-500 mt-2 flex items-center gap-2">
+            📅 Connected Date: {formatDate(clientDetail.connectedDate)}
+          </p>
+          <p className="text-gray-500 flex items-center gap-2">
+            📅 Last Active Date: {formatDate(clientDetail.lastLoginDate)}
+          </p>
         </div>
 
         {/* Divider */}

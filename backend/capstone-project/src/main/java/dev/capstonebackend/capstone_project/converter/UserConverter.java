@@ -44,8 +44,10 @@ public class UserConverter {
         clientDetailVo.setUserId(clientDetailBo.getUser().getId());
         clientDetailVo.setUsername(clientDetailBo.getUser().getUsername());
         clientDetailVo.setFullName(clientDetailBo.getUser().getFullName());
-        clientDetailVo.setScore(Optional.ofNullable(clientDetailBo.getLatestRecord())
-                .map(QuestionRecord::getScore).orElse(0));
+//        clientDetailVo.setScore(Optional.ofNullable(clientDetailBo.getLatestRecord())
+//                .map(QuestionRecord::getScore).orElse(0));
+        clientDetailVo.setScore((100 - Optional.ofNullable(clientDetailBo.getLatestRecord())
+                .map(QuestionRecord::getScore).orElse(100))/75*100);
         clientDetailVo.setConnectedDate(clientDetailBo.getConnection().getConnectDate());
         clientDetailVo.setLastLoginDate(clientDetailBo.getUser().getLastLoginAt());
         List<ChatVo> voList = Optional.ofNullable(clientDetailBo.getMessageRecordList()).orElse(Collections.emptyList())

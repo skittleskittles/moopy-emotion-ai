@@ -1,50 +1,47 @@
 import React, { useState, useEffect } from "react";
+import { useAuth } from "@/context/AuthContext";
 import { useParams } from "react-router-dom";
+import { saveMoodRecord } from "@/services/api";
+import {
+  MoodType,
+  MoodTypeLabelMap,
+  MoodTypeToEmoji,
+  MoodTypeToColor,
+} from "@/models/MoodTrakcer";
 
-// emoji 和颜色的映射
-const emojiColors: { [key: string]: string } = {
-  "😊": "#FFEB3B", // 开心
-  "😢": "#2196F3", // 难过
-  "😎": "#8BC34A", // 自信
-  "😡": "#F44336", // 生气
-  "😴": "#9E9E9E", // 疲倦
-  "😍": "#FF4081", // 爱情
-  "🤔": "#FFC107", // 思考
-};
+function MoodDay() {
+  const { user, isLoggedIn } = useAuth();
 
-const MoodDay: React.FC = () => {
   const { date } = useParams(); // 获取路由参数中的日期
-  const [emoji, setEmoji] = useState("😊");
-  const [color, setColor] = useState(emojiColors[emoji]);
+
+  const [moodType, setMoodType] = useState<MoodType>(MoodType.Happy);
   const [description, setDescription] = useState("");
 
-  useEffect(() => {
-    setColor(emojiColors[emoji]); // 选择 Emoji 时更新背景颜色
-  }, [emoji]);
+  const handleSaveMood = async () => {
+    try {
+      if (!isLoggedIn() || !user) return;
+      const response = await saveMoodRecord({
+        userId: user?.id,
+        moodType: moodType,
+        moodDesc: MoodTypeToEmoji[moodType],
+        moodDiary: description,
+      });
 
-  // 处理选择心情 emoji
-  const handleEmojiChange = (newEmoji: string) => {
-    setEmoji(newEmoji);
-  };
-
-  // 处理描述输入
-  const handleDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDescription(e.target.value);
-  };
-
-  // 处理保存心情
-  const handleSaveMood = () => {
-    localStorage.setItem(
-      `mood-${date}`,
-      JSON.stringify({ emoji, color, description })
-    );
-    alert(`Saved: ${emoji} | ${description}`);
+      if (response.code === 0) {
+        alert(`✅ Saved: ${MoodTypeToEmoji[moodType]} | ${description}`);
+      } else {
+        alert("❌ Failed to save mood.");
+      }
+    } catch (error) {
+      console.error("Failed to save mood", error);
+      alert("❌ Error occurred while saving mood.");
+    }
   };
 
   return (
     <div
       style={{
-        backgroundColor: color,
+        backgroundColor: MoodTypeToColor[moodType],
         padding: "20px",
         borderRadius: "8px",
         minHeight: "100vh",
@@ -70,8 +67,8 @@ const MoodDay: React.FC = () => {
 
       {/* Emoji 选择 */}
       <select
-        onChange={(e) => handleEmojiChange(e.target.value)}
-        value={emoji}
+        onChange={(e) => setMoodType(Number(e.target.value))}
+        value={moodType}
         style={{
           fontSize: "1.5rem",
           padding: "10px",
@@ -79,20 +76,21 @@ const MoodDay: React.FC = () => {
           margin: "20px",
         }}
       >
-        <option value="😊">😊 Happy</option>
-        <option value="😢">😢 Sad</option>
-        <option value="😎">😎 Confident</option>
-        <option value="😡">😡 Angry</option>
-        <option value="😴">😴 Tired</option>
-        <option value="😍">😍 Loved</option>
-        <option value="🤔">🤔 Thinking</option>
+        {Object.entries(MoodTypeToEmoji).map(([type, emoji]) => {
+          const moodType = Number(type) as MoodType;
+          return (
+            <option key={type} value={type}>
+              {emoji} {MoodTypeLabelMap[moodType]}
+            </option>
+          );
+        })}
       </select>
 
       {/* 输入感受 */}
       <input
         type="text"
         value={description}
-        onChange={handleDescriptionChange}
+        onChange={(e) => setDescription(e.target.value)}
         placeholder="Describe your mood"
         style={{
           padding: "10px",
@@ -119,12 +117,6 @@ const MoodDay: React.FC = () => {
       </button>
     </div>
   );
-};
+}
 
 export default MoodDay;
-
-
-
-
-
-

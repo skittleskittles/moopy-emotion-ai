@@ -6,6 +6,8 @@ import { getClientDetail } from "@/services/api";
 import { ClientDetailVo } from "@/models/ClientDetail";
 import { ClientChatHistory } from "./ClientChatHistory";
 import { ClientProfileCard } from "./ClientProfileCard";
+import { ClientMoodTrackerHistory } from "./ClientMoodTrackerHistory";
+import { mockMoodRecordList } from "@/models/mockMoodRecordList";
 
 const ClientDetailPage = () => {
   const location = useLocation();
@@ -100,21 +102,11 @@ const ClientDetailPage = () => {
               </button>
             </div>
             {/* Mood Tracker Preview */}
-            <div className="h-72 overflow-hidden bg-gray-100 rounded-lg p-4">
-              {clientDetail.moodRecordList.length === 0 ? (
-                <p className="text-gray-400 text-center pt-24">
-                  (No mood records)
-                </p>
-              ) : (
-                clientDetail.moodRecordList.slice(0, 5).map((mood, idx) => (
-                  <div
-                    key={idx}
-                    className="bg-white p-2 rounded shadow-sm text-gray-700"
-                  >
-                    {formatDate(mood.createdAt)} - {mood.moodType}
-                  </div>
-                ))
-              )}
+            <div className="flex flex-1 flex-col min-h-0 bg-gray-100  rounded-lg p-4">
+              <ClientMoodTrackerHistory
+                // moodRecordList={clientDetail.moodRecordList}
+                moodRecordList={mockMoodRecordList}
+              />
             </div>
           </div>
         </div>
@@ -133,7 +125,7 @@ const ClientDetailPage = () => {
             <h2 className="text-2xl font-bold text-[#6782B8] mb-4">
               Chats Records
             </h2>
-
+            {/* ClientChatHistory Thumbnail */}
             <div className="flex flex-1 flex-col min-h-0 bg-gray-100 rounded-lg p-4 overflow-hidden">
               <ClientChatHistory
                 conversations={clientDetail.conversationList}
@@ -156,9 +148,12 @@ const ClientDetailPage = () => {
             <h2 className="text-2xl font-bold text-[#6782B8] mb-4">
               Mood Tracker
             </h2>
-            {/* 大版 Mood Tracker */}
-            <div className="h-full bg-gray-100 rounded-lg p-4">
-              (Full Mood Tracker...)
+
+            <div className="h-full bg-gray-100 rounded-lg p-4 overflow-auto">
+              <ClientMoodTrackerHistory
+                // moodRecordList={clientDetail.moodRecordList}
+                moodRecordList={mockMoodRecordList}
+              />
             </div>
           </div>
         </div>

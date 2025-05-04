@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { format } from "date-fns";
+import { useAuth } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { listMoodRecords } from "@/services/api";
+import { MoodQueryType, MoodType, MoodTypeToColor } from "@/models/MoodTrakcer";
 import { ROUTE_PATHS } from "@/routes/Routes";
 
-const YearTracker: React.FC = () => {
+function YearTracker() {
+  const { user, isLoggedIn } = useAuth();
+
   const navigate = useNavigate();
   const currentYear = new Date().getFullYear();
   const [moodData, setMoodData] = useState<{ [key: string]: string }>({});
@@ -26,6 +31,39 @@ const YearTracker: React.FC = () => {
     setMoodData(newMoodData);
     setRecordedMonths(monthsWithData);
   }, []);
+
+  useEffect(() => {
+    const fetchMoodYearData = async () => {
+      if (!isLoggedIn() || !user) return;
+
+      try {
+        const response = await listMoodRecords({
+          userId: user.id,
+          queryType: MoodQueryType.Year,
+          year: currentYear,
+        });
+
+        const newMoodData: { [key: string]: string } = {};
+        const monthsSet = new Set<number>();
+
+        response.data.forEach((record) => {
+          const dateKey = record.createdAt.split("T")[0]; // yyyy-MM-dd
+          const month = new Date(dateKey).getMonth(); // 0-based
+          const color = MoodTypeToColor[record.moodType as MoodType] || "#ddd";
+
+          newMoodData[dateKey] = color;
+          monthsSet.add(month);
+        });
+
+        setMoodData(newMoodData);
+        setRecordedMonths(monthsSet);
+      } catch (err) {
+        console.error("❌ Failed to load mood year data", err);
+      }
+    };
+
+    fetchMoodYearData();
+  }, [user, currentYear]);
 
   return (
     <div style={{ textAlign: "center", padding: "20px" }}>
@@ -58,10 +96,27 @@ const YearTracker: React.FC = () => {
         🔙 Back to Monthly Calendar
       </button>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "20px", marginTop: "20px" }}>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(3, 1fr)",
+          gap: "20px",
+          marginTop: "20px",
+        }}
+      >
         {Array.from({ length: 12 }).map((_, month) => (
-          <div key={month} style={{ textAlign: "center", border: "1px solid #ccc", padding: "10px", borderRadius: "5px" }}>
-            <h3 style={{ color: recordedMonths.has(month) ? "purple" : "black" }}>
+          <div
+            key={month}
+            style={{
+              textAlign: "center",
+              border: "1px solid #ccc",
+              padding: "10px",
+              borderRadius: "5px",
+            }}
+          >
+            <h3
+              style={{ color: recordedMonths.has(month) ? "purple" : "black" }}
+            >
               {format(new Date(currentYear, month, 1), "MMM")}
             </h3>
             <div
@@ -73,7 +128,10 @@ const YearTracker: React.FC = () => {
               }}
             >
               {Array.from({ length: 31 }).map((_, day) => {
-                const dateKey = format(new Date(currentYear, month, day + 1), "yyyy-MM-dd");
+                const dateKey = format(
+                  new Date(currentYear, month, day + 1),
+                  "yyyy-MM-dd"
+                );
                 const color = moodData[dateKey] || "#ddd";
                 return (
                   <div
@@ -93,11 +151,6 @@ const YearTracker: React.FC = () => {
       </div>
     </div>
   );
-};
+}
 
 export default YearTracker;
-
-
-
-
-

@@ -1,6 +1,12 @@
 import axios from "axios";
 import { ConnectType, ConnectionListResponse } from "@/models/Connection";
 import { GetClientDetailResponse } from "@/models/ClientDetail";
+import {
+  SaveMoodRecordRequest,
+  SaveMoodRecordResponse,
+  ListMoodRecordsRequest,
+  ListMoodRecordsResponse,
+} from "@/models/MoodTrakcer";
 
 const api = axios.create({
   baseURL: "http://localhost:8080/",
@@ -145,66 +151,24 @@ export const saveChatMessage = async (
   const response = await api.post("/api/save", { userId, message, sender });
   return response.data;
 };
-/* moods for a month*/
-export const getMonthlyMoods = async (
-  userId: string,
-  year: number,
-  month: number
-) => {
-  const response = await api.get("/moods/month", {
-    params: { userId, year, month },
-  });
+
+/* Mood Tracker */
+export const saveMoodRecord = async (
+  payload: SaveMoodRecordRequest
+): Promise<SaveMoodRecordResponse> => {
+  const response = await api.post<SaveMoodRecordResponse>(
+    "/track/saveRecord",
+    payload
+  );
   return response.data;
 };
 
-/*  moods for year */
-export const getYearlyMoods = async (userId: string, year: number) => {
-  const response = await api.get("/moods/year", {
-    params: { userId, year },
-  });
-  return response.data;
-};
-
-/* Save mood*/
-export const saveMood = async (
-  userId: string,
-  date: string,
-  emoji: string,
-  color: string,
-  description: string
-) => {
-  const response = await api.post("/moods", {
-    userId,
-    date,
-    emoji,
-    color,
-    description,
-  });
-  return response.data;
-};
-
-/* Update */
-export const updateMood = async (
-  userId: string,
-  date: string,
-  emoji: string,
-  color: string,
-  description: string
-) => {
-  const response = await api.put("/moods", {
-    userId,
-    date,
-    emoji,
-    color,
-    description,
-  });
-  return response.data;
-};
-
-/* Delete */
-export const deleteMood = async (userId: string, date: string) => {
-  const response = await api.delete("/moods", {
-    data: { userId, date },
-  });
+export const listMoodRecords = async (
+  payload: ListMoodRecordsRequest
+): Promise<ListMoodRecordsResponse> => {
+  const response = await api.post<ListMoodRecordsResponse>(
+    "/track/listRecord",
+    payload
+  );
   return response.data;
 };

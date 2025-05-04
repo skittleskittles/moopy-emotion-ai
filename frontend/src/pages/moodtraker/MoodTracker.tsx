@@ -1,32 +1,55 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/context/AuthContext";
+import { listMoodRecords } from "@/services/api";
+import {
+  MoodTypeToEmoji,
+  MoodTypeToColor,
+  MoodQueryType,
+} from "@/models/MoodTrakcer";
 import { getDaysInMonth, format } from "date-fns";
-import { ROUTE_PATHS } from "@/routes/Routes"; // 确保 ROUTE_PATHS 里有 YearTracker 的路由
+import { ROUTE_PATHS } from "@/routes/Routes";
 
-const MoodTracker: React.FC = () => {
+function MoodTracker() {
   const navigate = useNavigate();
   const currentMonth = new Date();
   const daysInMonth = getDaysInMonth(currentMonth);
-  // const startOfCurrentMonth = startOfMonth(currentMonth);
+
+  const { user, isLoggedIn } = useAuth();
+
   const [moodData, setMoodData] = useState<{
     [key: string]: { emoji: string; color: string };
   }>({});
 
   useEffect(() => {
-    // 读取本地存储的 Mood 数据
-    const newMoodData: { [key: string]: { emoji: string; color: string } } = {};
-    for (let day = 1; day <= daysInMonth; day++) {
-      const dateKey = format(
-        new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day),
-        "yyyy-MM-dd"
-      );
-      const savedMood = localStorage.getItem(`mood-${dateKey}`);
-      if (savedMood) {
-        newMoodData[dateKey] = JSON.parse(savedMood);
+    const fetchMoodData = async () => {
+      if (!isLoggedIn() || !user) return;
+      try {
+        const response = await listMoodRecords({
+          userId: user?.id,
+          queryType: MoodQueryType.Month,
+          month: currentMonth.getMonth() + 1,
+          year: currentMonth.getFullYear(),
+        });
+
+        const newMoodData: { [key: string]: { emoji: string; color: string } } =
+          {};
+        response.data.forEach((record) => {
+          const dateKey = record.createdAt.split("T")[0];
+          newMoodData[dateKey] = {
+            emoji: MoodTypeToEmoji[record.moodType],
+            color: MoodTypeToColor[record.moodType],
+          };
+        });
+
+        setMoodData(newMoodData);
+      } catch (error) {
+        console.error("❌ Failed to fetch mood data", error);
       }
-    }
-    setMoodData(newMoodData);
-  }, [daysInMonth]);
+    };
+
+    fetchMoodData();
+  }, [user, daysInMonth]);
 
   return (
     <div style={{ textAlign: "center", padding: "20px" }}>
@@ -105,6 +128,6 @@ const MoodTracker: React.FC = () => {
       </div>
     </div>
   );
-};
+}
 
 export default MoodTracker;

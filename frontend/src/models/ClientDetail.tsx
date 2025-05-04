@@ -1,3 +1,5 @@
+import { MoodRecord } from "./MoodTrakcer";
+
 export interface ClientDetailVo {
   userId: number;
   username: string;
@@ -6,7 +8,7 @@ export interface ClientDetailVo {
   connectedDate: string;
   lastLoginDate: string;
   conversationList: ConversationVo[];
-  moodRecordList: MoodRecordVo[];
+  moodRecordList: MoodRecord[];
 }
 
 export interface ConversationVo {
@@ -20,15 +22,6 @@ export interface ChatVo {
   sender: number;
   userId: number;
   conversationId: number;
-  createdAt: string;
-  modifiedAt: string;
-}
-
-export interface MoodRecordVo {
-  moodId: number;
-  userId: number;
-  moodType: string;
-  moodDiary: number;
   createdAt: string;
   modifiedAt: string;
 }

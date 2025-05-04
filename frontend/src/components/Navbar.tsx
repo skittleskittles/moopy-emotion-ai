@@ -36,10 +36,17 @@ const homeRoutes: RouteProps[] = [
   },
 ];
 
-const ROUTE_PATHS = {
+export const ROUTE_PATHS = {
   HOME: "/",
   LOGIN: "/login",
   REGISTER: "/register",
+
+  ROLE_SELECTION: "/role/select",
+  CLIENT_CONNECT_THERAPIST: "/client/connect",
+  THERAPIST_CREDENTIALS: "/therapist/credentials",
+  THERAPIST_DASHBOARD: "/therapist/dashboard",
+  THERAPIST_DASHBOARD_CLIENT_DETIAL: "/therapist/dashboard/client/detail",
+
   SURVEY: "/survey",
   SURVEY_QUESTIONS: "/survey/questions",
   CHAT: "/chat",
@@ -50,12 +57,19 @@ const ROUTE_PATHS = {
   YEAR_TRACKER: "/year-tracker",
 };
 
-const featureRoutes: RouteProps[] = [
+
+const clientRoutes: RouteProps[] = [
   { href: ROUTE_PATHS.HOME, label: "HomePage" },
-  { href: ROUTE_PATHS.SURVEY, label: "Survey" }, // todo: hide in production mode
+  { href: ROUTE_PATHS.SURVEY, label: "Survey" },
   { href: ROUTE_PATHS.CHAT, label: "ChatBot" },
   { href: ROUTE_PATHS.MOOD_TRACKER, label: "MoodTracker" },
 ];
+
+const therapistRoutes: RouteProps[] = [
+  { href: ROUTE_PATHS.HOME, label: "HomePage" },
+  { href: ROUTE_PATHS.THERAPIST_DASHBOARD, label: "Dashboard" },
+];
+
 
 export const Navbar = () => {
   const { user, isLoggedIn, logout } = useAuth();
@@ -68,11 +82,17 @@ export const Navbar = () => {
     location.pathname === ROUTE_PATHS.LOGIN ||
     location.pathname === ROUTE_PATHS.REGISTER;
   const isHomePage = location.pathname === ROUTE_PATHS.HOME;
-  const routeList = isAuthPage
-    ? [{ href: ROUTE_PATHS.HOME, label: "HomePage" }]
-    : isHomePage
-    ? homeRoutes
-    : featureRoutes;
+
+  let routeList: RouteProps[] = [];
+  if (isAuthPage) {
+    routeList = [{ href: ROUTE_PATHS.HOME, label: "HomePage" }];
+  } else if (isHomePage) {
+    routeList = homeRoutes;
+  } else if (user?.role === UserRole.Therapist) {
+    routeList = therapistRoutes;
+  } else {
+    routeList = clientRoutes;
+  }
 
   const handleLogout = () => {
     logout();

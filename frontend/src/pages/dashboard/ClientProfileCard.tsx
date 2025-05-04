@@ -55,7 +55,9 @@ export const ClientProfileCard = ({ clientDetail }: ClientProfileCardProps) => {
 
         {/* Right section: Score */}
         <div className="flex flex-col items-center mr-14">
-          <div className="text-gray-600 font-semibold text-lg mb-2">Score</div>
+          <div className="text-gray-600 font-semibold text-lg mb-2">
+            Client Self-Evaluation
+          </div>
           <div className="flex items-center">
             {Array.from({ length: 5 }).map((_, idx) => (
               <div

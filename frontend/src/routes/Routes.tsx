@@ -15,9 +15,9 @@ import SurveyQuestionPage from "../pages/survey/SurveyQuestionPage";
 import ChatPage from "../pages/chat/ChatPage";
 import ProfilePage from "../pages/profile/ProfilePage";
 
-import MoodTracker from "@/components/homepage/MoodTracker";
-import MoodDay from "@/components/homepage/MoodDay";
-import YearTracker from "@/components/homepage/YearTracker";
+import MoodTracker from "@/pages/moodtraker/MoodTracker";
+import MoodDay from "@/pages/moodtraker/MoodDay";
+import YearTracker from "@/pages/moodtraker/YearTracker";
 
 import TherapistDashboardPage from "@/pages/dashboard/TherapistDashboardPage";
 import ClientDetailPage from "@/pages/dashboard/ClientDetailPage";

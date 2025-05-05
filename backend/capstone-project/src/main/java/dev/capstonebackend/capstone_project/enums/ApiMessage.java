@@ -23,7 +23,9 @@ public enum ApiMessage {
     INVALID_USER_ID(8003, "Invalid user id"),
     INVALID_USER_CODE(8004, "Invalid user code"),
     CREDENTIAL_ERROR(9000, "Credential expiration date error"),
-    INVALID_CONNECTION(9001, "Invalid connection"),;
+    INVALID_CONNECTION(9001, "Invalid connection"),
+
+    QUESTION_RECORD_SAVE_FAILED(9002, "Question record save failed"),;
 
 
 

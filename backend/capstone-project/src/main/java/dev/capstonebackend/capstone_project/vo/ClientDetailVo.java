@@ -36,4 +36,6 @@ public class ClientDetailVo {
 
     private List<MoodRecordVo> moodRecordList;
 
+    private List<SurveyVO> surveyHistoryList;
+
 }

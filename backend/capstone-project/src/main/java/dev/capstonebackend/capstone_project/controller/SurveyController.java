@@ -9,6 +9,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
@@ -18,7 +19,7 @@ import java.util.Objects;
 @Api(tags = {"Questionnaire Module"})
 @RequestMapping(value = "/question")
 @CrossOrigin
-public class QuestionnaireController {
+public class SurveyController {
 
     @Autowired
     private QuestionRecordService questionRecordService;
@@ -30,9 +31,8 @@ public class QuestionnaireController {
             log.info("Invalid request, recordReqBody={}", recordReqBody.toString());
             return ResultUtil.error(ApiMessage.ILLEGAL_PARAMS);
         }
-        Long userId = recordReqBody.getUserId();
-        Integer score = recordReqBody.getScore();
-        return ResultUtil.success(questionRecordService.insertQuestionRecord(userId, score));
+
+        return ResultUtil.success(questionRecordService.insertQuestionRecord(recordReqBody));
     }
 
     private Boolean paramCheck(QuestionRecordReqBody recordReqBody) {
@@ -41,6 +41,9 @@ public class QuestionnaireController {
             return Boolean.FALSE;
         }
         if (recordReqBody.getScore() < 0 || recordReqBody.getScore() > 100) {
+            return Boolean.FALSE;
+        }
+        if (CollectionUtils.isEmpty(recordReqBody.getDetailList())) {
             return Boolean.FALSE;
         }
         return Boolean.TRUE;

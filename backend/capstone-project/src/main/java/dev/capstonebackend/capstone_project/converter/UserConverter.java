@@ -8,10 +8,8 @@ import dev.capstonebackend.capstone_project.domain.User;
 import dev.capstonebackend.capstone_project.domain.UserConnection;
 import dev.capstonebackend.capstone_project.vo.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @program: Capstone_Project
@@ -46,8 +44,10 @@ public class UserConverter {
         clientDetailVo.setFullName(clientDetailBo.getUser().getFullName());
 //        clientDetailVo.setScore(Optional.ofNullable(clientDetailBo.getLatestRecord())
 //                .map(QuestionRecord::getScore).orElse(0));
-        clientDetailVo.setScore((100 - Optional.ofNullable(clientDetailBo.getLatestRecord())
-                .map(QuestionRecord::getScore).orElse(100))/75*100);
+        List<SurveyVO> surveyVOList = SurveyConverter.surveyBOToVO(clientDetailBo.getSurveyBOList());
+        surveyVOList = surveyVOList.stream()
+                .sorted(Comparator.comparing(SurveyVO::getSurveyId).reversed()).collect(Collectors.toList());
+        clientDetailVo.setSurveyHistoryList(surveyVOList);
         clientDetailVo.setConnectedDate(clientDetailBo.getConnection().getConnectDate());
         clientDetailVo.setLastLoginDate(clientDetailBo.getUser().getLastLoginAt());
         List<ChatVo> voList = Optional.ofNullable(clientDetailBo.getMessageRecordList()).orElse(Collections.emptyList())

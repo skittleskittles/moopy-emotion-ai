@@ -1,6 +1,7 @@
 package dev.capstonebackend.capstone_project.service;
 
 import dev.capstonebackend.capstone_project.bo.ClientDetailBo;
+import dev.capstonebackend.capstone_project.bo.SurveyBO;
 import dev.capstonebackend.capstone_project.bo.UserConnectionBo;
 import dev.capstonebackend.capstone_project.dao.UserConnectionDao;
 import dev.capstonebackend.capstone_project.domain.*;
@@ -8,7 +9,6 @@ import dev.capstonebackend.capstone_project.enums.ConnectType;
 import dev.capstonebackend.capstone_project.request.ConnectReqBody;
 import dev.capstonebackend.capstone_project.request.GetClientDetailReqBody;
 import dev.capstonebackend.capstone_project.request.ListConnectionReqBody;
-import dev.capstonebackend.capstone_project.vo.ClientDetailVo;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
@@ -219,12 +219,12 @@ public class UserService {
             log.error("empty connection list, clientId={}, therapistId={}", clientId, therapistId);
             throw new ApiException(ApiMessage.INVALID_CONNECTION);
         }
-        QuestionRecord questionRecord = questionRecordService.getLatestRecordByUserId(clientId);
+        List<SurveyBO> surveyBOList = questionRecordService.getRecordListByUserId(clientId);
         List<MessageRecord> messageList = chatService.selectMessagesByUserId(clientId);
         List<MoodRecord> recordList = moodRecordService.listMoodRecordByUserId(clientId);
         return ClientDetailBo.builder()
                 .user(user)
-                .latestRecord(questionRecord)
+                .surveyBOList(surveyBOList)
                 .messageRecordList(messageList)
                 .connection(connectionBoList.getFirst())
                 .moodRecordList(recordList)

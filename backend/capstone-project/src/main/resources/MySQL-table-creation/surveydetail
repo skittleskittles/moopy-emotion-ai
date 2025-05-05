@@ -1,0 +1,11 @@
+CREATE TABLE survey_detail (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL COMMENT 'primary key of users',
+    survey_id BIGINT NOT NULL COMMENT 'primary key of question_record',
+    question_number INT NOT NULL COMMENT 'range from 1 to 20',
+    answer_index INT NOT NULL COMMENT '1-A, 2-B, 3-C, 4-D',
+    create_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (survey_id) REFERENCES question_record(id),
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);

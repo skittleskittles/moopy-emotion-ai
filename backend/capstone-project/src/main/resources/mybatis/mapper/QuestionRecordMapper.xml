@@ -13,7 +13,8 @@
     </resultMap>
 
     <!-- 插入记录 -->
-    <insert id="insertQuestionRecord" parameterType="dev.capstonebackend.capstone_project.domain.QuestionRecord">
+    <insert id="insertQuestionRecord" parameterType="dev.capstonebackend.capstone_project.domain.QuestionRecord"
+            useGeneratedKeys="true" keyProperty="id">
         INSERT INTO question_record (user_id, score)
         VALUES (#{userId}, #{score})
     </insert>
@@ -23,7 +24,6 @@
         FROM question_record
         WHERE user_id = #{userId}
         ORDER BY create_at DESC
-        LIMIT 5
     </select>
 
 

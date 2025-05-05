@@ -26,8 +26,6 @@ public class ClientDetailVo {
 
     private String fullName;
 
-    private Integer score;
-
     private Date connectedDate;
 
     private Date lastLoginDate;

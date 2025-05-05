@@ -31,3 +31,9 @@ export interface GetClientDetailResponse {
   message: string;
   data: ClientDetailVo;
 }
+
+export interface SurveyRecord {
+  date: string; // e.g. '2025-05-01'
+  score: number;
+  responses: number[]; // index = questionId, value = selectedOptionIndex (0-3)
+}

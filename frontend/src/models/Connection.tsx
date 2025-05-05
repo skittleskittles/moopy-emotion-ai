@@ -15,6 +15,8 @@ export interface ConnectionVO {
 
   connectDate: string;
   lastActiveDate: string;
+
+  remark?: string;
 }
 
 export interface ConnectionListResponse {

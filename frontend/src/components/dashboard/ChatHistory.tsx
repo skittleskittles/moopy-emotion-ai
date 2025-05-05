@@ -3,6 +3,7 @@ import { FaRobot, FaUser } from "react-icons/fa";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { ConversationVo } from "@/models/ClientDetail";
+import { format } from "date-fns";
 
 interface ClientChatHistoryProps {
   conversations: ConversationVo[];
@@ -32,43 +33,63 @@ export const ClientChatHistory = ({
     (conv) => conv.conversationId === currentConversationId
   );
 
-  // const formatDate = (utcString: string) => {
-  //   const date = new Date(utcString);
-  //   return date.toLocaleDateString("en-US", {
-  //     year: "numeric",
-  //     month: "2-digit",
-  //     day: "2-digit",
-  //   });
-  // };
+  const formatDate = (utcString: string) => {
+    const date = new Date(utcString);
+    return format(date, "MM/dd/yyyy");
+  };
+
+  const groupedConversations: Record<string, ConversationVo[]> = {};
+
+  conversations.forEach((conv) => {
+    const dateKey = conv.messageList[0]?.createdAt
+      ? formatDate(conv.messageList[0].createdAt)
+      : "Unknown";
+
+    if (!groupedConversations[dateKey]) {
+      groupedConversations[dateKey] = [];
+    }
+    groupedConversations[dateKey].push(conv);
+  });
 
   return (
     <div className="flex flex-1 min-h-0">
-      {/* Left sidebar: conversation list */}
+      {/* Left sidebar: grouped by date */}
       <div className="w-[25%] bg-gray-100 rounded-lg overflow-y-auto pl-0 p-2">
-        {conversations.length === 0 ? (
+        {Object.keys(groupedConversations).length === 0 ? (
           <p className="text-gray-500">No conversations available</p>
         ) : (
-          conversations.map((conv) => {
-            const firstMsg = conv.messageList[0]?.message || "No messages";
-            const title =
-              firstMsg.length > 15
-                ? firstMsg.substring(0, 15) + "..."
-                : firstMsg;
-
-            return (
-              <button
-                key={conv.conversationId}
-                onClick={() => setCurrentConversationId(conv.conversationId)}
-                className={`w-full text-left px-4 py-2 my-1 rounded-lg break-words ${
-                  currentConversationId === conv.conversationId
-                    ? "bg-gray-200"
-                    : "hover:bg-gray-100"
-                }`}
-              >
-                {title}
-              </button>
-            );
-          })
+          Object.entries(groupedConversations)
+            .sort(([a], [b]) => new Date(b).getTime() - new Date(a).getTime())
+            .map(([date, convs]) => (
+              <div key={date}>
+                <p className="text-sm text-gray-500 font-semibold mt-3 mb-1">
+                  {date}
+                </p>
+                {convs.map((conv) => {
+                  const firstMsg =
+                    conv.messageList[0]?.message || "No messages";
+                  const title =
+                    firstMsg.length > 25
+                      ? firstMsg.slice(0, 25) + "..."
+                      : firstMsg;
+                  return (
+                    <button
+                      key={conv.conversationId}
+                      onClick={() =>
+                        setCurrentConversationId(conv.conversationId)
+                      }
+                      className={`w-full text-left px-4 py-2 my-1 rounded-lg break-words text-sm ${
+                        currentConversationId === conv.conversationId
+                          ? "bg-gray-200"
+                          : "hover:bg-gray-100"
+                      }`}
+                    >
+                      {title}
+                    </button>
+                  );
+                })}
+              </div>
+            ))
         )}
       </div>
 

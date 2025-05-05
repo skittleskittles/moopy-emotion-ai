@@ -8,6 +8,8 @@ import { ConfirmModal } from "@/components/connect/ConfirmModal";
 import { toast } from "sonner";
 import { ROUTE_PATHS } from "@/routes/Routes";
 
+import { mockConnections } from "@/models/mockClientsList";
+
 const TherapistDashboardPage = () => {
   const { user, isLoggedIn } = useAuth();
   const [connections, setConnections] = useState<ConnectionVO[]>([]);
@@ -25,6 +27,9 @@ const TherapistDashboardPage = () => {
       try {
         const data = await connectionList(user?.id, 0); // 这里 therapistId, clientId 你可以传实际值
         setConnections(data.data);
+
+        // mock data
+        // setConnections(mockConnections);
       } catch (error) {
         console.error("Failed to fetch connections:", error);
       }
@@ -132,7 +137,7 @@ const TherapistDashboardPage = () => {
                 <td className="p-3">
                   {formatDateToPST(connection.lastActiveDate)}
                 </td>
-                <td className="p-3">{""}</td> {/* remark */}
+                <td className="p-3">{connection.remark}</td> {/* remark */}
                 <td className="p-3 flex gap-3">
                   <button
                     className="bg-[#6782B8] text-white px-4 py-1 rounded hover:bg-[#769fcd]"

@@ -49,16 +49,6 @@ const ClientDetailPage = () => {
     return <div className="text-center mt-10 text-gray-500">Loading...</div>;
   }
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      timeZone: "America/Los_Angeles",
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-    });
-  };
-
   return (
     <div className="flex flex-col h-[calc(100vh-60px)] bg-gray-100">
       {/* Top: Two Panels (Client Profile + Score History) */}

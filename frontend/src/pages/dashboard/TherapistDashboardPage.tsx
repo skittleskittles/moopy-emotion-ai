@@ -8,7 +8,7 @@ import { ConfirmModal } from "@/components/connect/ConfirmModal";
 import { toast } from "sonner";
 import { ROUTE_PATHS } from "@/routes/Routes";
 
-import { mockConnections } from "@/models/mockClientsList";
+// import { mockConnections } from "@/models/mockClientsList";
 
 const TherapistDashboardPage = () => {
   const { user, isLoggedIn } = useAuth();

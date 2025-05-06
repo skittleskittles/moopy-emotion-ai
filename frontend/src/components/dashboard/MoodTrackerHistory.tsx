@@ -2,7 +2,6 @@ import React from "react";
 import { format, addMonths, subMonths } from "date-fns";
 import {
   MoodRecord,
-  MoodType,
   MoodTypeToColor,
   MoodTypeToEmoji,
 } from "@/models/MoodTrakcer";

@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { saveMoodRecord } from "@/services/api";
+import { ROUTE_PATHS } from "@/routes/Routes";
 import {
   MoodType,
   MoodTypeLabelMap,
@@ -11,6 +12,7 @@ import {
 
 function MoodDay() {
   const { user, isLoggedIn } = useAuth();
+  const navigate = useNavigate();
 
   const { date } = useParams(); // 获取路由参数中的日期
 
@@ -28,13 +30,10 @@ function MoodDay() {
       });
 
       if (response.code === 0) {
-        alert(`✅ Saved: ${MoodTypeToEmoji[moodType]} | ${description}`);
-      } else {
-        alert("❌ Failed to save mood.");
+        navigate(ROUTE_PATHS.MOOD_TRACKER);
       }
     } catch (error) {
       console.error("Failed to save mood", error);
-      alert("❌ Error occurred while saving mood.");
     }
   };
 

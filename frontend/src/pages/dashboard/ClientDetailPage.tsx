@@ -52,8 +52,8 @@ const ClientDetailPage = () => {
   return (
     <div className="flex flex-col h-[calc(100vh-60px)] bg-gray-100">
       {/* Top: Two Panels (Client Profile + Score History) */}
-      <div className="flex justify-center mt-4 mx-10 min-h-0 h-[25vh]">
-        <div className="flex gap-6 w-4/5 mx-10 mb-4">
+      <div className="flex justify-center mt-4 min-h-0 h-[29vh]">
+        <div className="flex gap-6 w-4/5 mb-4">
           {/* Profile */}
           <div className="flex flex-1 h-full">
             <ClientProfileCard clientDetail={clientDetail} />
@@ -83,8 +83,8 @@ const ClientDetailPage = () => {
       </div>
 
       {/* Bottom: Two Panels (Chat History + Mood History) */}
-      <div className="flex flex-1 justify-center mx-10 min-h-0">
-        <div className="flex gap-6 w-4/5 mx-10 mb-8 min-h-0">
+      <div className="flex flex-1 justify-center min-h-0">
+        <div className="flex gap-6 w-4/5 mb-8 min-h-0">
           {/* Chat History Thumbnail */}
           <div className="flex flex-col flex-1 bg-white shadow-lg rounded-xl p-4 relative">
             {/* Title Bar */}

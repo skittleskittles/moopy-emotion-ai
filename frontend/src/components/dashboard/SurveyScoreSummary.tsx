@@ -25,12 +25,13 @@ export const ClientSurveyScoreSummary: React.FC<
   return (
     <div className="flex justify-end items-center space-x-6 mb-2 pl-4">
       {/* Left: Stars + Score with label */}
-      <div className="flex flex-col items-center min-w-[20%] -mt-2">
+      <div className="flex flex-col items-center min-w-[20%] -mt-4">
         {/* Title + info icon */}
         <div className="flex items-center space-x-1 text-gray-600 font-semibold text-lg">
           <span>Latest Score</span>
           {/* Info icon with tooltip on hover */}
           <div className="relative group cursor-pointer">
+            {/* Info Icon */}
             <svg
               className="w-5 h-5 text-gray-500"
               fill="currentColor"
@@ -42,7 +43,9 @@ export const ClientSurveyScoreSummary: React.FC<
                 clipRule="evenodd"
               />
             </svg>
-            <div className="absolute left-5 top-1 w-[220px] text-sm font-normal bg-gray-700 text-white rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
+
+            {/* Tooltip */}
+            <div className="absolute left-5 top-1 w-[220px] text-sm font-normal bg-gray-700 text-white rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10 pointer-events-none">
               Higher scores indicate more depressive or anxious states
             </div>
           </div>

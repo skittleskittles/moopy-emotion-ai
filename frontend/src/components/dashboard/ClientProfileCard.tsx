@@ -18,7 +18,7 @@ export const ClientProfileCard = ({ clientDetail }: ClientProfileCardProps) => {
   };
 
   return (
-    <div className="w-full bg-white shadow-lg rounded-xl p-6 flex items-center justify-between px-14">
+    <div className="w-full bg-white shadow-lg rounded-xl p-6 flex items-center justify-between">
       {/* Left section: Avatar + Info */}
       <div className="flex items-center gap-6">
         {/* Avatar */}
@@ -32,10 +32,10 @@ export const ClientProfileCard = ({ clientDetail }: ClientProfileCardProps) => {
 
         {/* Name + Nickname */}
         <div>
-          <h2 className="text-3xl font-bold text-[#6782B8]">
+          <h2 className="text-2xl font-bold text-[#6782B8]">
             {clientDetail.fullName}
           </h2>
-          <p className="text-xl text-gray-500 font-semibold">
+          <p className="text-lg text-gray-500 font-semibold">
             Nickname: {clientDetail.username}
           </p>
         </div>

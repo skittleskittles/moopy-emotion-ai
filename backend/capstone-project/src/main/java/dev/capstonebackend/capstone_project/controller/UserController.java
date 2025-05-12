@@ -5,6 +5,7 @@ import dev.capstonebackend.capstone_project.bo.UserConnectionBo;
 import dev.capstonebackend.capstone_project.converter.UserConverter;
 import dev.capstonebackend.capstone_project.enums.ApiMessage;
 import dev.capstonebackend.capstone_project.enums.ConnectType;
+import dev.capstonebackend.capstone_project.exception.ApiException;
 import dev.capstonebackend.capstone_project.request.*;
 import dev.capstonebackend.capstone_project.service.ChatService;
 import dev.capstonebackend.capstone_project.service.QuestionRecordService;
@@ -119,7 +120,8 @@ public class UserController {
             ClientDetailBo clientDetailBo = userService.getClientDetail(getClientDetailReqBody);
             return ResultUtil.success(UserConverter.clientDetailBoToVo(clientDetailBo));
         } catch (Exception e) {
-            return ResultUtil.error(ApiMessage.INVALID_CONNECTION);
+            log.error("Failed to get client detail", e);
+            return ResultUtil.error(ApiMessage.FAILED);
         }
     }
 

@@ -2,6 +2,7 @@ package dev.capstonebackend.capstone_project.enums;
 
 public enum ApiMessage {
     SUCCESS(0, "SUCCESS"),
+    FAILED(1, "FAILED"),
     DELETE_FAIL_USER_NA(500, "Delete failed, user does not exist"),
     CARGO_EXISTED(2000, "Cargo already existed"),
     CARGO_NEED_EXISTED(2001, "Cargo Need already existed"),

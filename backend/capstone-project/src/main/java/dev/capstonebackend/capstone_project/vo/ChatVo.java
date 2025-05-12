@@ -25,6 +25,8 @@ public class ChatVo {
 
     private Long conversationId;
 
+    private Integer sensitiveFlag;
+
     private Date createdAt;
 
     private Date modifiedAt;

@@ -1,10 +1,8 @@
 package dev.capstonebackend.capstone_project.vo;
 
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
 
 import java.util.Date;
 

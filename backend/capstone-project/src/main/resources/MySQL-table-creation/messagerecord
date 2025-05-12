@@ -3,6 +3,7 @@ CREATE TABLE message_record (
     user_id BIGINT NOT NULL COMMENT '消息发送人 id > 0 - 用户，id = 0 - chatbot',
     conversation_id BIGINT NOT NULL,
     message TEXT NOT NULL,
+    sensitive_flag INT DEFAULT 0 COMMENT '0-no sensitive content, 1-contains sensitive content',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     sender INT NOT NULL DEFAULT 0 COMMENT '0-chatbot, 1-user'

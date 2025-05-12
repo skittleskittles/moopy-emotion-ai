@@ -115,8 +115,12 @@ public class UserController {
             log.info("Invalid request, getUserDetailReqBody={}", getClientDetailReqBody.toString());
             return ResultUtil.error(ApiMessage.ILLEGAL_PARAMS);
         }
-        ClientDetailBo clientDetailBo = userService.getClientDetail(getClientDetailReqBody);
-        return ResultUtil.success(UserConverter.clientDetailBoToVo(clientDetailBo));
+        try{
+            ClientDetailBo clientDetailBo = userService.getClientDetail(getClientDetailReqBody);
+            return ResultUtil.success(UserConverter.clientDetailBoToVo(clientDetailBo));
+        } catch (Exception e) {
+            return ResultUtil.error(ApiMessage.INVALID_CONNECTION);
+        }
     }
 
     private Boolean paramCheckGetClientDetail(GetClientDetailReqBody getClientDetailReqBody) {

@@ -21,4 +21,6 @@ public interface MessageRecordDao {
 
     List<MessageRecord> selectRecentMessages(@Param("list") List<Long> conversationIdList);
 
+    int updateSensitiveFlag(@Param("messageId") Long messageId);
+
 }

@@ -131,6 +131,12 @@
 			<version>2.17.0</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.springframework.kafka</groupId>
+			<artifactId>spring-kafka</artifactId>
+			<version>3.3.5</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>

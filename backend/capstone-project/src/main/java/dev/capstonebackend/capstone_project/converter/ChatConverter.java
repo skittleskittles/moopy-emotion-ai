@@ -31,6 +31,7 @@ public class ChatConverter {
                 .conversationId(messageRecord.getConversationId())
                 .messageId(messageRecord.getId())
                 .message(messageRecord.getMessage())
+                .sensitiveFlag(messageRecord.getSensitiveFlag())
                 .createdAt(messageRecord.getCreatedAt())
                 .modifiedAt(messageRecord.getModifiedAt())
                 .userId(messageRecord.getUserId())
@@ -40,16 +41,23 @@ public class ChatConverter {
     }
 
     public static List<ConversationVo> messageVoToConversationVo(List<ChatVo> messageList) {
-        List<ConversationVo> conversationVoList = messageList.stream()
+        return messageList.stream()
                 .collect(Collectors.groupingBy(ChatVo::getConversationId)) // Group by conversationId
                 .entrySet().stream()
                 .sorted((e1, e2) -> e2.getKey().compareTo(e1.getKey()))
-                .map(entry -> ConversationVo.builder()
-                        .conversationId(entry.getKey()) // 设置 conversationId
-                        .messageList(entry.getValue())  // 设置 messageList
-                        .build())
+                .map(entry -> {
+                    List<ChatVo> messages = entry.getValue();
+                    // 判断是否存在 sensitiveFlag 为 1 的消息
+                    boolean hasSensitive = messages.stream()
+                            .anyMatch(m -> m.getSensitiveFlag() == 1);
+
+                    return ConversationVo.builder()
+                            .conversationId(entry.getKey())
+                            .messageList(messages)
+                            .sensitiveFlag(hasSensitive ? 1 : 0)
+                            .build();
+                })
                 .collect(Collectors.toList());
-        return conversationVoList;
     }
 
 

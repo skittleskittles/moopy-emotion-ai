@@ -4,6 +4,17 @@
 
 <mapper namespace="dev.capstonebackend.capstone_project.dao.MessageRecordDao">
 
+    <resultMap id="MessageRecordResultMap" type="dev.capstonebackend.capstone_project.domain.MessageRecord">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="conversation_id" property="conversationId" />
+        <result column="message" property="message" />
+        <result column="sensitive_flag" property="sensitiveFlag" />
+        <result column="created_at" property="createdAt" />
+        <result column="modified_at" property="modifiedAt" />
+        <result column="sender" property="sender" />
+    </resultMap>
+
     <insert id="batchInsert" parameterType="java.util.List">
         INSERT INTO message_record (user_id, conversation_id, message)
         VALUES
@@ -12,7 +23,7 @@
         </foreach>
     </insert>
 
-    <select id="selectByConversationId" resultType="dev.capstonebackend.capstone_project.domain.MessageRecord">
+    <select id="selectByConversationId" resultMap="MessageRecordResultMap">
         SELECT *
         FROM message_record
         WHERE conversation_id = #{conversationId}
@@ -20,12 +31,13 @@
         LIMIT 10
     </select>
 
-    <insert id="insertMessage" parameterType="dev.capstonebackend.capstone_project.domain.MessageRecord">
+    <insert id="insertMessage" parameterType="dev.capstonebackend.capstone_project.domain.MessageRecord"
+            useGeneratedKeys="true" keyProperty="id">
         INSERT INTO message_record (user_id, conversation_id, message, sender)
         VALUES (#{userId}, #{conversationId}, #{message}, #{sender})
     </insert>
 
-    <select id="selectMessagesByConversationIds" parameterType="list" resultType="dev.capstonebackend.capstone_project.domain.MessageRecord">
+    <select id="selectMessagesByConversationIds" parameterType="list" resultMap="MessageRecordResultMap">
         SELECT * FROM message_record
         WHERE conversation_id IN
         <foreach collection="list" item="conversationId" open="(" separator="," close=")">
@@ -34,7 +46,7 @@
         ORDER BY created_at ASC
     </select>
 
-    <select id="selectRecentMessages" parameterType="list" resultType="dev.capstonebackend.capstone_project.domain.MessageRecord">
+    <select id="selectRecentMessages" parameterType="list" resultMap="MessageRecordResultMap">
         SELECT * FROM message_record
         WHERE conversation_id IN
         <foreach collection="list" item="conversationId" open="(" separator="," close=")">
@@ -44,5 +56,10 @@
         LIMIT 10
     </select>
 
+    <update id = "updateSensitiveFlag" parameterType = "java.util.Objects">
+        UPDATE message_record
+        SET sensitive_flag = 1
+        WHERE id = #{messageId}
+    </update>
 
 </mapper>

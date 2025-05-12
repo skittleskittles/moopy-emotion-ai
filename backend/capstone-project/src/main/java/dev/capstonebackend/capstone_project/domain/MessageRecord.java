@@ -25,6 +25,8 @@ public class MessageRecord {
 
     private String message;
 
+    private Integer sensitiveFlag;
+
     @JsonFormat(shape = JsonFormat.Shape.NUMBER)
     private Date createdAt;
 

@@ -53,7 +53,9 @@ public class ChatService {
                 .userId(chatBo.getUserId())
                 .sender(chatBo.getSender())
                 .build();
-        return messageRecordDao.insertMessage(record);
+        int result = messageRecordDao.insertMessage(record);
+        chatBo.setMessageId(record.getId());
+        return result;
     }
 
     public List<MessageRecord> selectMessagesByUserId(Long userId) {

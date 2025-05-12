@@ -164,7 +164,7 @@ public class UserService {
     public List<UserConnectionBo> listConnectionByCondition(ListConnectionReqBody listConnectionReqBody) {
         List<UserConnection> connectionList = userConnectionDao.selectUserConnections(listConnectionReqBody.getTherapistId(), listConnectionReqBody.getClientId());
         if (CollectionUtils.isEmpty(connectionList)) {
-            log.info("empty connection list, clientId={}, therapistId={}"
+            log.error("listConnectionByCondition empty connection list, clientId={}, therapistId={}"
                     , listConnectionReqBody.getClientId(), listConnectionReqBody.getTherapistId());
             return new ArrayList<>();
         }
@@ -216,7 +216,7 @@ public class UserService {
                 .clientId(clientId).therapistId(therapistId).build();
         List<UserConnectionBo> connectionBoList = listConnectionByCondition(listConnectionReqBody);
         if (CollectionUtils.isEmpty(connectionBoList)) {
-            log.error("empty connection list, clientId={}, therapistId={}", clientId, therapistId);
+            log.error("getClientDetail empty connection list, clientId={}, therapistId={}", clientId, therapistId);
             throw new ApiException(ApiMessage.INVALID_CONNECTION);
         }
         List<SurveyBO> surveyBOList = questionRecordService.getRecordListByUserId(clientId);

@@ -1,6 +1,5 @@
 package dev.capstonebackend.capstone_project.service;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -9,16 +8,16 @@ import dev.capstonebackend.capstone_project.config.OpenApi;
 import dev.capstonebackend.capstone_project.constant.ChatConstant;
 import dev.capstonebackend.capstone_project.domain.MessageRecord;
 import dev.capstonebackend.capstone_project.enums.Sender;
+import dev.capstonebackend.capstone_project.gateway.OpenApiGateway;
+import dev.capstonebackend.capstone_project.producer.MessagingService;
+import dev.capstonebackend.capstone_project.message.ContentCheckMessage;
 import dev.capstonebackend.capstone_project.vo.ChatVo;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 @Slf4j
 @Service
@@ -29,12 +28,18 @@ public class OpenApiService {
     @Autowired
     private ChatService chatService;
 
+    @Autowired
+    private MessagingService messagingService;
+
+    @Autowired
+    private OpenApiGateway openApiGateway;
+
     private final OkHttpClient httpClient = new OkHttpClient();
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    private static final Long CHATBOT_ID = 0L;
+    public static final Long CHATBOT_ID = 0L;
 
-
+    @Deprecated
     public OpenApi callGPT() {
         String apiKey = openAIConfig.getApiKey();
         String url = openAIConfig.getUrl();
@@ -43,90 +48,93 @@ public class OpenApiService {
 
     public ChatVo chatWithGPT(String prompt, ChatBo chatBo) {
         try {
-            List<MessageRecord> historicalMessageList = chatService.selectRecentMessages(chatBo.getConversationId());
             int promptResult = chatService.saveMessageContent(chatBo);
             if (promptResult == -1) {
                 log.error("Failed to save prompt message");
+                throw new RuntimeException("Failed to save prompt message");
             }
-            String apiKey = openAIConfig.getApiKey();
-            ObjectNode requestBody = objectMapper.createObjectNode();
-            requestBody.put("model", "gpt-4o");
-            ArrayNode messages = objectMapper.createArrayNode();
-            for(MessageRecord messageRecord : historicalMessageList) {
-                ObjectNode message = objectMapper.createObjectNode();
-                if (messageRecord.getUserId().equals(CHATBOT_ID)) {
-                    message.put("role", "assistant");
-                } else {
-                    message.put("role", "user");
-                }
-                message.put("content", messageRecord.getMessage());
-                messages.add(message);
-            }
-            ObjectNode message = objectMapper.createObjectNode();
-            message.put("role", "user");
-            message.put("content", prompt);
-            messages.add(message);
-            requestBody.set("messages", messages);
-            Request request = new Request.Builder()
-                    .url("https://api.openai.com/v1/chat/completions")
-                    .addHeader("Authorization", "Bearer " + apiKey)
-                    .addHeader("Content-Type", "application/json")
-                    .post(RequestBody.create(requestBody.toString(), MediaType.parse("application/json")))
-                    .build();
+            List<MessageRecord> historicalMessageList = chatService.selectRecentMessages(chatBo.getConversationId());
+            ArrayNode messages = buildChatArrayNode(historicalMessageList);
+            Request request = buildOpenAIRequestBody(messages);
             if (prompt.equals(ChatConstant.FIXED_PROMPT)) {
-                String reply = ChatConstant.AUTO_REPLY;
-                ChatBo replyBo = ChatBo.builder()
-                        // chatbot userid默认为0
-                        .userId(CHATBOT_ID)
-                        .conversationId(chatBo.getConversationId())
-                        .message(reply)
-                        .sender(Sender.CHATBOT.getSender())
-                        .build();
-                int replyResult = chatService.saveMessageContent(replyBo);
-                if (replyResult == -1) {
-                    log.error("Failed to save reply message");
-                }
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                ChatVo chatVo = ChatVo.builder()
-                        .message(replyBo.getMessage())
-                        .userId(replyBo.getUserId())
-                        .conversationId(replyBo.getConversationId())
-                        .sender(chatBo.getSender())
-                        .build();
-                return chatVo;
+                return fixedPromptHandler(chatBo.getConversationId());
             }
-            try (Response response = httpClient.newCall(request).execute()) {
-                if (!response.isSuccessful()) {
-                    throw new RuntimeException("调用OpenAI API失败：" + response);
-                }
-                JsonNode jsonNode = objectMapper.readTree(response.body().string());
-                String reply = jsonNode.get("choices").get(0).get("message").get("content").asText();
-                ChatBo replyBo = ChatBo.builder()
-                        // chatbot userid默认为0
-                        .userId(CHATBOT_ID)
-                        .conversationId(chatBo.getConversationId())
-                        .message(reply)
-                        .sender(Sender.CHATBOT.getSender())
-                        .build();
-                int replyResult = chatService.saveMessageContent(replyBo);
-                if (replyResult == -1) {
-                    log.error("Failed to save reply message");
-                }
-                ChatVo chatVo = ChatVo.builder()
-                        .message(replyBo.getMessage())
-                        .userId(replyBo.getUserId())
-                        .conversationId(replyBo.getConversationId())
-                        .sender(chatBo.getSender())
-                        .build();
-                return chatVo;
+            String reply = openApiGateway.callOpenApi(request);
+            ChatBo replyBo = ChatBo.builder()
+                    .userId(CHATBOT_ID)
+                    .conversationId(chatBo.getConversationId())
+                    .message(reply)
+                    .sender(Sender.CHATBOT.getSender())
+                    .build();
+            int replyResult = chatService.saveMessageContent(replyBo);
+            if (replyResult == -1) {
+                log.error("Failed to save reply message");
             }
+            ContentCheckMessage checkMessage = ContentCheckMessage.of(chatBo.getUserId(), prompt, chatBo.getMessageId());
+            messagingService.sendContentCheckMessage(checkMessage);
+            return ChatVo.builder()
+                    .message(replyBo.getMessage())
+                    .userId(replyBo.getUserId())
+                    .conversationId(replyBo.getConversationId())
+                    .sender(replyBo.getSender())
+                    .build();
         } catch (Exception e) {
             throw new RuntimeException("调用OpenAI API异常：" + e.getMessage(), e);
         }
+    }
+
+    public Request buildOpenAIRequestBody(ArrayNode chatArrayNode) {
+        String apiKey = openAIConfig.getApiKey();
+        ObjectNode requestBody = objectMapper.createObjectNode();
+        requestBody.put("model", "gpt-4o");
+        requestBody.set("messages", chatArrayNode);
+        return new Request.Builder()
+                .url("https://api.openai.com/v1/chat/completions")
+                .addHeader("Authorization", "Bearer " + apiKey)
+                .addHeader("Content-Type", "application/json")
+                .post(RequestBody.create(requestBody.toString(), MediaType.parse("application/json")))
+                .build();
+    }
+
+    private ArrayNode buildChatArrayNode(List<MessageRecord> historicalMessageList) {
+        ArrayNode messages = objectMapper.createArrayNode();
+        for(MessageRecord messageRecord : historicalMessageList) {
+            ObjectNode message = objectMapper.createObjectNode();
+            if (messageRecord.getUserId().equals(CHATBOT_ID)) {
+                message.put("role", "assistant");
+            } else {
+                message.put("role", "user");
+            }
+            message.put("content", messageRecord.getMessage());
+            messages.add(message);
+        }
+        return messages;
+    }
+
+    private ChatVo fixedPromptHandler(Long conversationId) {
+        String reply = ChatConstant.AUTO_REPLY;
+        ChatBo replyBo = ChatBo.builder()
+                // chatbot userid默认为0
+                .userId(CHATBOT_ID)
+                .conversationId(conversationId)
+                .message(reply)
+                .sender(Sender.CHATBOT.getSender())
+                .build();
+        int replyResult = chatService.saveMessageContent(replyBo);
+        if (replyResult == -1) {
+            log.error("Failed to save fixed reply message");
+        }
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return ChatVo.builder()
+                .message(replyBo.getMessage())
+                .userId(replyBo.getUserId())
+                .conversationId(replyBo.getConversationId())
+                .sender(replyBo.getSender())
+                .build();
     }
 }
 

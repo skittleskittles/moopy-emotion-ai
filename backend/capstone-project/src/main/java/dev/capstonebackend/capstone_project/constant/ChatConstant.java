@@ -1,6 +1,9 @@
 package dev.capstonebackend.capstone_project.constant;
 
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * @program: Capstone_Project
  * @author: Yiyan Kong
@@ -30,4 +33,30 @@ public class ChatConstant {
             "8. **Reflect and Adjust**: At the end of each day or week, reflect on what you've accomplished and adjust your plans if needed. This can help you stay on top of things and prevent new stress from building up.\n" +
             "\n" +
             "If you ever feel overwhelmed, it's important to remember that it's okay to ask for help. Consider talking to someone you trust or seeking support from a counselor if stress levels remain high.";
+
+    public static final List<String> SENSITIVE_WORDS = Arrays.asList(
+            // 🟥 自杀/自残相关
+            "suicide", "kill myself", "end it all", "take my life", "die", "dying",
+            "self-harm", "cut myself", "jump off", "jump from", "overdose",
+            "hang myself", "I want to disappear", "slit my wrists",
+
+            // 🟧 抑郁/自我否定
+            "I’m worthless", "I hate myself", "nothing matters", "I don’t want to live",
+            "no one cares", "I’m so tired of everything", "lost all hope", "I'm broken",
+            "can’t go on", "feeling empty",
+
+            // 🟨 焦虑/恐慌
+            "panic attack", "anxious all the time", "can’t breathe", "spiraling",
+            "overwhelming fear", "intrusive thoughts", "voices in my head",
+            "mental breakdown", "shaking uncontrollably",
+
+            // 🟦 求助倾向
+            "need someone to talk to", "can I talk to someone", "please help me",
+            "is therapy worth it", "hotline", "crisis line", "I need help",
+            "therapist near me",
+
+            // ⚠️ 网络用语/绕过审查写法
+            "unalive", "kms", "kms pls", "final nap", "rope", "s*icide",
+            "k1ll myself", "unal1ve"
+    );
 }

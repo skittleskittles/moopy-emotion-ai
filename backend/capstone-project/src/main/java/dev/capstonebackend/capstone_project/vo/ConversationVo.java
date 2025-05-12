@@ -18,4 +18,9 @@ public class ConversationVo {
     private Long conversationId;
 
     private List<ChatVo> messageList;
+
+    /**
+     * 0-no sensitive content, 1-contains sensitive content
+     */
+    private Integer sensitiveFlag;
 }

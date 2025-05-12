@@ -21,6 +21,8 @@ public class ChatBo {
 
     private Long conversationId;
 
+    private Long messageId;
+
     private Integer sender;
 
     private String message;

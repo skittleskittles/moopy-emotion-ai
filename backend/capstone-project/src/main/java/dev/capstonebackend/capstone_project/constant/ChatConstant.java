@@ -59,4 +59,9 @@ public class ChatConstant {
             "unalive", "kms", "kms pls", "final nap", "rope", "s*icide",
             "k1ll myself", "unal1ve"
     );
+
+    public static final String CONTENT_CHECK_PROMPT = "You are a safety monitoring assistant. Below is a conversation between " +
+            "a user and the system. Your only task is to determine whether this message contains sensitive content " +
+            "related to suicide, self-harm, or extreme emotional distress. If it does, respond with “Yes”. " +
+            "If it does not, respond with “No”. Only respond with “Yes” or “No”. The message is:";
 }

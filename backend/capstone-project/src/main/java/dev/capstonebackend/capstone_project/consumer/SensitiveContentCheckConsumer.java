@@ -90,8 +90,7 @@ public class SensitiveContentCheckConsumer extends TopicMessageListener {
             }
             String messageContent = messageRecord.getMessage();
             if (messageRecord.getId().equals(messageId)) {
-                messageContent = "Assess whether this message contains mental health–related content " +
-                        "based on other messages, and respond with 'yes' or 'no': " + messageContent;
+                messageContent = ChatConstant.CONTENT_CHECK_PROMPT + messageContent;
             }
             message.put("content", messageContent);
             messages.add(message);

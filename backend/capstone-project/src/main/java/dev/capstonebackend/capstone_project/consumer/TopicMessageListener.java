@@ -8,9 +8,7 @@ import org.springframework.stereotype.Component;
  * @author: Yiyan Kong
  * @create: 2025-05-06 12:19
  **/
-@Component
-@Slf4j
-public class TopicMessageListener {
+public abstract class TopicMessageListener {
 
     @SuppressWarnings("unchecked")
     public static <T> Class<T> getType(String type) {

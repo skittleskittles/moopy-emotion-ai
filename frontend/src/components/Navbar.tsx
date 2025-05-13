@@ -9,12 +9,12 @@ import { CopyButton } from "./navbar/CopyButton";
 import { UserRole } from "@/models/User";
 
 import { buttonVariants } from "../components/ui/button";
-import { LogoIcon } from "../components/homepage/Icons";
 
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 
 import moopy from "../assets/moopy.png";
+import logo from "../assets/logo_wo_text.png";
 
 interface RouteProps {
   href: string;
@@ -57,7 +57,6 @@ export const ROUTE_PATHS = {
   YEAR_TRACKER: "/year-tracker",
 };
 
-
 const clientRoutes: RouteProps[] = [
   { href: ROUTE_PATHS.HOME, label: "HomePage" },
   { href: ROUTE_PATHS.SURVEY, label: "Survey" },
@@ -69,7 +68,6 @@ const therapistRoutes: RouteProps[] = [
   { href: ROUTE_PATHS.HOME, label: "HomePage" },
   { href: ROUTE_PATHS.THERAPIST_DASHBOARD, label: "Dashboard" },
 ];
-
 
 export const Navbar = () => {
   const { user, isLoggedIn, logout } = useAuth();
@@ -110,8 +108,8 @@ export const Navbar = () => {
               href="/"
               className="ml-2 flex items-center "
             >
-              <LogoIcon />
-              <img src={moopy} alt="Moopy Logo" className="h-[40px] mt-2" />
+              <img src={logo} alt="Moopy Logo" className="h-[50px]" />
+              <img src={moopy} alt="Moopy" className="h-[40px] mt-2" />
             </a>
           </NavigationMenuItem>
 

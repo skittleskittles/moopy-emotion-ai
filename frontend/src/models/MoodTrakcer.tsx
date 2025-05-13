@@ -31,10 +31,10 @@ export const MoodTypeLabelMap: { [key in MoodType]: string } = {
 export const MoodTypeToColor: { [key in MoodType]: string } = {
   [MoodType.Happy]: "#FFD700", // Happy - Yellow
   [MoodType.Sad]: "#87CEFA", // Sad - Light Blue
-  [MoodType.Confident]: "#32CD32", // Confident - Lime Green
-  [MoodType.Angry]: "#FF6347", // Angry - Tomato Red
-  [MoodType.Tired]: "#A9A9A9", // Tired - Gray
-  [MoodType.Loved]: "#FF69B4", // Loved - Hot Pink
+  [MoodType.Confident]: "#7ae582", // Confident - Lime Green
+  [MoodType.Angry]: "#9a031e", // Angry - Tomato Red
+  [MoodType.Tired]: "#55828b", // Tired - Gray
+  [MoodType.Loved]: "#F49BAB", // Loved - Hot Pink
   [MoodType.Thinking]: "#DAA520", // Thinking - Goldenrod
 };
 

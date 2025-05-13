@@ -4,6 +4,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { ConversationVo } from "@/models/ClientDetail";
 import { format } from "date-fns";
+import * as Tooltip from "@radix-ui/react-tooltip";
 
 interface ClientChatHistoryProps {
   conversations: ConversationVo[];
@@ -54,7 +55,7 @@ export const ClientChatHistory = ({
   return (
     <div className="flex flex-1 min-h-0">
       {/* Left sidebar: grouped by date */}
-      <div className="w-[25%] bg-gray-100 rounded-lg overflow-y-auto pl-0 p-2">
+      <div className="w-1/4 bg-gray-100 rounded-lg overflow-y-auto pl-0 p-2">
         {Object.keys(groupedConversations).length === 0 ? (
           <p className="text-gray-500">No conversations available</p>
         ) : (
@@ -72,20 +73,48 @@ export const ClientChatHistory = ({
                     firstMsg.length > 25
                       ? firstMsg.slice(0, 25) + "..."
                       : firstMsg;
+
                   return (
-                    <button
+                    <Tooltip.Provider
+                      delayDuration={0}
                       key={conv.conversationId}
-                      onClick={() =>
-                        setCurrentConversationId(conv.conversationId)
-                      }
-                      className={`w-full text-left px-4 py-2 my-1 rounded-lg break-words text-sm ${
-                        currentConversationId === conv.conversationId
-                          ? "bg-gray-200"
-                          : "hover:bg-gray-100"
-                      }`}
                     >
-                      {title}
-                    </button>
+                      <Tooltip.Root>
+                        <Tooltip.Trigger asChild>
+                          <button
+                            onClick={() =>
+                              setCurrentConversationId(conv.conversationId)
+                            }
+                            className={`w-full text-left px-4 py-2 my-1 rounded-lg break-words text-sm
+                            ${
+                              currentConversationId === conv.conversationId
+                                ? "bg-gray-200"
+                                : "hover:bg-gray-300"
+                            }
+                          ${
+                            conv.sensitiveFlag === 1
+                              ? "bg-red-100 text-red-800 hover:bg-red-200"
+                              : "hover:bg-gray-300"
+                          }`}
+                          >
+                            {title}
+                          </button>
+                        </Tooltip.Trigger>
+                        {conv.sensitiveFlag === 1 && (
+                          <Tooltip.Portal>
+                            <Tooltip.Content
+                              side="top"
+                              sideOffset={8}
+                              className="z-[9999] bg-gray-700 text-white text-xs px-2 py-1 rounded shadow-md max-w-[220px]"
+                            >
+                              ⚠️ This conversation may contain sensitive
+                              content.
+                              <Tooltip.Arrow className="fill-black" />
+                            </Tooltip.Content>
+                          </Tooltip.Portal>
+                        )}
+                      </Tooltip.Root>
+                    </Tooltip.Provider>
                   );
                 })}
               </div>
@@ -116,12 +145,29 @@ export const ClientChatHistory = ({
                 )}
 
                 {/* Message bubble */}
-                <div className="flex items-center space-x-2 max-w-[70%] px-4 py-2 rounded-xl bg-gray-300 text-black">
-                  <div className="break-words">
+                <div
+                  className={`flex flex-col max-w-[70%] ${
+                    msg.sender === 1 ? "items-end" : "items-start"
+                  }`}
+                >
+                  <div
+                    className={`inline-block px-4 py-2 rounded-xl text-black whitespace-pre-wrap break-words cursor-default
+                          ${
+                            msg.sensitiveFlag === 1
+                              ? "bg-red-100 border border-red-400"
+                              : "bg-gray-300"
+                          }`}
+                  >
                     <ReactMarkdown remarkPlugins={[remarkGfm]}>
                       {msg.message.replace(/\n/g, "  \n")}
                     </ReactMarkdown>
                   </div>
+
+                  {msg.sensitiveFlag === 1 && (
+                    <div className="text-xs text-red-500 mt-1 ml-1 max-w-[100%]">
+                      ⚠️ This message may contain sensitive content
+                    </div>
+                  )}
                 </div>
 
                 {/* User avatar */}

@@ -11,9 +11,13 @@ interface Question {
 
 interface Props {
   scoreHistory: SurveyRecord[];
+  expanded: boolean;
 }
 
-export const ClientSurveyHistory: React.FC<Props> = ({ scoreHistory }) => {
+export const ClientSurveyHistory: React.FC<Props> = ({
+  scoreHistory,
+  expanded,
+}) => {
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
   const [questions, setQuestions] = useState<Question[]>([]);
 
@@ -33,9 +37,9 @@ export const ClientSurveyHistory: React.FC<Props> = ({ scoreHistory }) => {
 
   const getScoreCategory = (score: number) => {
     if (score <= 49) return "Normal";
-    if (score <= 60) return "Mild";
-    if (score <= 70) return "Moderate";
-    return "Severe";
+    if (score <= 60) return "Mild Depression and Anxiety";
+    if (score <= 70) return "Moderate Depression and Anxiety";
+    return "Severe Depression and Anxiety";
   };
 
   const getScoreColor = (score: number) => {
@@ -51,6 +55,7 @@ export const ClientSurveyHistory: React.FC<Props> = ({ scoreHistory }) => {
       <ClientSurveyScoreSummary
         latestRecord={scoreHistory[scoreHistory.length - 1]}
         scoreHistory={scoreHistory}
+        expanded={expanded}
       />
 
       <hr className="my-4 border-t border-gray-300" />
@@ -100,12 +105,12 @@ export const ClientSurveyHistory: React.FC<Props> = ({ scoreHistory }) => {
                         key={qIdx}
                         className="flex justify-between items-start gap-6 border-b border-gray-200 py-3"
                       >
-                        {/* 左侧问题文字 */}
+                        {/* Questions */}
                         <div className="w-1/2 pr-2 text-gray-800 font-medium">
                           {qIdx + 1}. {q.question}
                         </div>
 
-                        {/* 右侧选项组 */}
+                        {/* Answers */}
                         <div className="w-1/2 flex flex-wrap gap-2 justify-start">
                           {q.options.map((opt, oIdx) => (
                             <span

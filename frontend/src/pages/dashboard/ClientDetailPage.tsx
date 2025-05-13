@@ -52,8 +52,8 @@ const ClientDetailPage = () => {
   return (
     <div className="flex flex-col h-[calc(100vh-60px)] bg-gray-100">
       {/* Top: Two Panels (Client Profile + Score History) */}
-      <div className="flex justify-center mt-4 min-h-0 h-[29vh]">
-        <div className="flex gap-6 w-4/5 mb-4">
+      <div className="flex justify-center my-4 min-h-0 h-[28%]">
+        <div className="flex gap-5 w-[90%]">
           {/* Profile */}
           <div className="flex flex-1 h-full">
             <ClientProfileCard clientDetail={clientDetail} />
@@ -74,8 +74,11 @@ const ClientDetailPage = () => {
                 </button>
               </div>
 
-              <div className="flex flex-1 flex-col min-h-0 bg-gray-100  rounded-lg p-4">
-                <ClientSurveyHistory scoreHistory={mockSurveyHistory} />
+              <div className="flex flex-1 flex-col min-h-0 bg-gray-100 rounded-lg p-2">
+                <ClientSurveyHistory
+                  scoreHistory={mockSurveyHistory}
+                  expanded={showSurveyModal}
+                />
               </div>
             </div>
           </div>
@@ -83,8 +86,8 @@ const ClientDetailPage = () => {
       </div>
 
       {/* Bottom: Two Panels (Chat History + Mood History) */}
-      <div className="flex flex-1 justify-center min-h-0">
-        <div className="flex gap-6 w-4/5 mb-8 min-h-0">
+      <div className="flex flex-1 justify-center mb-4 min-h-0">
+        <div className="flex gap-5 w-[90%]">
           {/* Chat History Thumbnail */}
           <div className="flex flex-col flex-1 bg-white shadow-lg rounded-xl p-4 relative">
             {/* Title Bar */}
@@ -101,7 +104,7 @@ const ClientDetailPage = () => {
               </button>
             </div>
             {/* Chat History Preview */}
-            <div className="flex flex-1 flex-col min-h-0 bg-gray-100  rounded-lg p-4">
+            <div className="flex flex-1 flex-col min-h-0 bg-gray-100 rounded-lg p-4">
               <ClientChatHistory
                 conversations={clientDetail.conversationList}
               />
@@ -123,10 +126,11 @@ const ClientDetailPage = () => {
               </button>
             </div>
             {/* Mood Tracker Preview */}
-            <div className="flex flex-1 flex-col min-h-0 bg-gray-100  rounded-lg p-4">
+            <div className="flex flex-1 flex-col min-h-0 bg-gray-100 rounded-lg p-4">
               <ClientMoodTrackerHistory
                 // moodRecordList={clientDetail.moodRecordList}
                 moodRecordList={mockMoodRecordList}
+                expanded={showMoodModal}
               />
             </div>
           </div>
@@ -174,6 +178,7 @@ const ClientDetailPage = () => {
               <ClientMoodTrackerHistory
                 // moodRecordList={clientDetail.moodRecordList}
                 moodRecordList={mockMoodRecordList}
+                expanded={showMoodModal}
               />
             </div>
           </div>
@@ -194,7 +199,10 @@ const ClientDetailPage = () => {
               Self-Evaluation History
             </h2>
             <div className="h-full overflow-auto">
-              <ClientSurveyHistory scoreHistory={mockSurveyHistory} />
+              <ClientSurveyHistory
+                scoreHistory={mockSurveyHistory}
+                expanded={showSurveyModal}
+              />
             </div>
           </div>
         </div>

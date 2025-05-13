@@ -14,6 +14,7 @@ export interface ClientDetailVo {
 export interface ConversationVo {
   conversationId: number;
   messageList: ChatVo[];
+  sensitiveFlag: number;
 }
 
 export interface ChatVo {
@@ -24,6 +25,7 @@ export interface ChatVo {
   conversationId: number;
   createdAt: string;
   modifiedAt: string;
+  sensitiveFlag: number;
 }
 
 export interface GetClientDetailResponse {

@@ -62,7 +62,7 @@ const ClientDetailPage = () => {
           <div className="flex-1 h-full">
             <div className="bg-white shadow-lg rounded-xl p-4 h-full flex flex-col">
               <div className="flex justify-between items-center mb-2">
-                <h3 className="text-xl font-semibold text-[#6782B8]">
+                <h3 className="text-xl font-semibold text-primary">
                   Self-Evaluation History
                 </h3>
                 <button
@@ -92,7 +92,7 @@ const ClientDetailPage = () => {
           <div className="flex flex-col flex-1 bg-white shadow-lg rounded-xl p-4 relative">
             {/* Title Bar */}
             <div className="flex justify-between items-center mb-2">
-              <h3 className="text-xl font-semibold text-[#6782B8]">
+              <h3 className="text-xl font-semibold text-primary">
                 Chats Records
               </h3>
               <button
@@ -114,7 +114,7 @@ const ClientDetailPage = () => {
           {/* Mood Tracker Thumbnail */}
           <div className="flex flex-col flex-1 min-w-[320px] bg-white shadow-lg rounded-xl p-4 relative">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-xl font-semibold text-[#6782B8]">
+              <h3 className="text-xl font-semibold text-primary">
                 Mood Tracker
               </h3>
               <button
@@ -147,7 +147,7 @@ const ClientDetailPage = () => {
             >
               ×
             </button>
-            <h2 className="text-2xl font-bold text-[#6782B8] mb-4">
+            <h2 className="text-2xl font-bold text-primary mb-4">
               Chats Records
             </h2>
             {/* ClientChatHistory Thumbnail */}
@@ -170,7 +170,7 @@ const ClientDetailPage = () => {
             >
               ×
             </button>
-            <h2 className="text-2xl font-bold text-[#6782B8] mb-4">
+            <h2 className="text-2xl font-bold text-primary mb-4">
               Mood Tracker
             </h2>
 
@@ -195,7 +195,7 @@ const ClientDetailPage = () => {
             >
               ×
             </button>
-            <h2 className="text-2xl font-bold text-[#6782B8] mb-4">
+            <h2 className="text-2xl font-bold text-primary mb-4">
               Self-Evaluation History
             </h2>
             <div className="h-full overflow-auto">

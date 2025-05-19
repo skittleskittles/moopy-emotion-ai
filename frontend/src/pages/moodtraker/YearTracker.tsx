@@ -3,7 +3,7 @@ import { format } from "date-fns";
 import { useAuth } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { listMoodRecords } from "@/services/api";
-import { MoodQueryType, MoodType, MoodTypeToColor } from "@/models/MoodTrakcer";
+import { MoodQueryType } from "@/models/MoodData";
 import { ROUTE_PATHS } from "@/routes/Routes";
 
 function YearTracker() {
@@ -49,7 +49,8 @@ function YearTracker() {
         response.data.forEach((record) => {
           const dateKey = record.createdAt.split("T")[0]; // yyyy-MM-dd
           const month = new Date(dateKey).getMonth(); // 0-based
-          const color = MoodTypeToColor[record.moodType as MoodType] || "#ddd";
+          // const color = MoodTypeToColor[record.moodType as MoodType] || "#ddd";
+          const color = "#ddd";
 
           newMoodData[dateKey] = color;
           monthsSet.add(month);

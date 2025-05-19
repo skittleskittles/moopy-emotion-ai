@@ -1,108 +1,74 @@
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-// import image from "../../assets/growth.png";
-// import image3 from "../../assets/reflecting.png";
-// import image4 from "../../assets/looking-ahead.png";
-
-interface FeatureProps {
-  title: string;
-  description: string;
-  image: string;
-}
-
-const features: FeatureProps[] = [
-  {
-    title: "Professional Assessments",
-    description:
-      "Gain valuable insights into your mental well-being with clinically validated assessments. Moopy integrates professional mental health evaluations, providing you with a deeper understanding of your emotional state and enabling you to track your progress over time. This allows healthcare professionals to easily monitor and assess patient conditions.",
-    //image: image4,
-    image: "https://media.istockphoto.com/photos/assessment-and-analysis-by-professional-auditing-consultant-concept-picture-id1162629597?k=6&m=1162629597&s=170667a&w=0&h=rJGFR0BrEOpnsZzl3BqnLPcT0iK_fsj7M9v-6FWIiqI=",
-  },
-  {
-    title: "AI-Powered ChatBot",
-    description:
-      "Need someone to talk to? Moopy’s AI-powered chatbot provides a safe, judgment-free space where you can express your thoughts, get emotional support, and receive helpful insights tailored to your feelings.",
-    //image: image3,
-    image: "https://www.cioinsight.com/wp-content/uploads/2022/08/Chatbots-in-Machine-Learning-2048x1365.jpeg",
-  },
-  {
-    title: "Mood Tracker",
-    description:
-      "Stay in tune with your emotions. Our intuitive mood tracker allows you to log your daily feelings, identify patterns, and gain deeper self-awareness, empowering you to take charge of your mental health.",
-    //image: image,
-    image: "https://i2.wp.com/101planners.com/wp-content/uploads/2020/03/Mood-Tracker-13-1187x1536.jpeg",
-  },
-  {
-    title: "Real doctor",
-    description:
-      "Your mental health professional will provide online support, addressing your concerns and circumstances, offering emotional reassurance, and delivering timely treatment.",
-    image: "https://th.bing.com/th/id/OIP.UEF6BYjO44FOGtSMSJnv_AHaHa?rs=1&pid=ImgDetMain",
-  },
-  {
-    title: "Online Reservation",
-    description:
-      "Users can schedule appointments with doctors online, and doctors can access their calendar to view, modify, or update appointment details.",
-    image: "https://www.singhead.com/uploads/20221031/2022103109164362072333_800%C3%97607.jpg",
-  },
-
-];
-
-// const featureList: string[] = [
-//   "Dark/Light theme",
-//   "Reviews",
-//   "Features",
-//   "Pricing",
-//   "Contact form",
-//   "Our team",
-//   "Responsive design",
-//   "Newsletter",
-//   "Minimalist",
-// ];
+import { FeatureCard } from "./FeatureCard";
+import client1 from "../../assets/product/client_chatbot.png";
+import client2 from "../../assets/product/client_chatbot.png";
+import therapist1 from "../../assets/product/therapist_dashboard.png";
+import therapist2 from "../../assets/product/therapist_dashboard.png";
 
 export const Features = () => {
   return (
-    <section id="features" className="container py-24 sm:py-32 space-y-8">
-      <h2 className="text-3xl lg:text-4xl font-bold md:text-center">
-        Many Great{" "}
-        <span className="bg-gradient-to-b from-purple-300 to-[#6782B8] text-transparent bg-clip-text">
-          Features
-        </span>
-      </h2>
+    <section id="features" className="px-6 md:px-12 bg-white">
+      <FeatureCard
+        label="FOR CLIENTS"
+        heading="Your Space to Reflect, Feel, and Grow"
+        description="Moopy provides a private space to explore your feelings, track your mood, and chat with a supportive AI companion.
+                    You can reflect anytime—whether you’re having a tough day or making progress.
+                    Your therapist can see these insights to help guide your in-person sessions."
+        screenshots={[client1, client2]}
+        features={[
+          {
+            icon: "💬",
+            title: "24/7 AI Chat Support",
+            desc: "Talk freely to an AI companion that listens without judgment.",
+          },
+          {
+            icon: "📝",
+            title: "Mood Tracking",
+            desc: "Log daily moods and visualize emotional trends over time.",
+          },
+          {
+            icon: "🧘",
+            title: "Self-Reflection Prompts",
+            desc: "Answer guided questions to help you better understand yourself.",
+          },
+          {
+            icon: "🔐",
+            title: "Trusted Therapist Access",
+            desc: "Your reflections are shared only with therapists you know and trust in real life.",
+          },
+        ]}
+      />
 
-      {/* <div className="flex flex-wrap md:justify-center gap-4">
-        {featureList.map((feature: string) => (
-          <div key={feature}>
-            <Badge variant="secondary" className="text-sm">
-              {feature}
-            </Badge>
-          </div>
-        ))}
-      </div> */}
-
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {features.map(({ title, description, image }: FeatureProps) => (
-          <Card key={title}>
-            <CardHeader>
-              <CardTitle>{title}</CardTitle>
-            </CardHeader>
-
-            <CardContent>{description}</CardContent>
-
-            <CardFooter>
-              <img
-                src={image}
-                alt="About feature"
-                className="w-[200px] lg:w-[300px] mx-auto"
-              />
-            </CardFooter>
-          </Card>
-        ))}
-      </div>
+      <FeatureCard
+        label="FOR THERAPISTS"
+        heading="Stay Informed Between Sessions"
+        description="Moopy gives you valuable context between in-person sessions. 
+        Access mood trends, AI chat summaries, and client check-in reflections—all in one place. 
+        Stay connected while maintaining boundaries and control."
+        screenshots={[therapist1, therapist2]}
+        reverse
+        features={[
+          {
+            icon: "📊",
+            title: "Mood & Trend Insights",
+            desc: "View longitudinal emotional data and spot patterns or red flags.",
+          },
+          {
+            icon: "📄",
+            title: "AI Chat Summaries",
+            desc: "Quickly understand what clients are expressing between sessions.",
+          },
+          {
+            icon: "📋",
+            title: "Self-Evaluation Records",
+            desc: "View clients' SAS & SDS questionnaire results to better understand their current emotional state.",
+          },
+          {
+            icon: "🛡️",
+            title: "Verified Access Only",
+            desc: "Only licensed therapists can join, and may view records of clients they’ve already worked with offline.",
+          },
+        ]}
+      />
     </section>
   );
 };

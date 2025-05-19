@@ -1,48 +1,39 @@
-import { MoodRecord, MoodType } from "@/models/MoodTrakcer";
+import { MoodRecord, MoodType } from "@/models/MoodData";
 
 export const mockMoodRecordList: MoodRecord[] = [];
 
 const baseUserId = 1;
 let idCounter = 1;
 
-const moods = [
-  MoodType.Happy,
-  MoodType.Sad,
-  MoodType.Confident,
-  MoodType.Angry,
-  MoodType.Tired,
-  MoodType.Loved,
-  MoodType.Thinking,
-];
+// Map MoodType to meaningful diary text
+const moodDiaryMap: { [key in MoodType]: string } = {
+  [MoodType.Happy]: "Feeling great today!",
+  [MoodType.Calm]: "Content and relaxed.",
+  [MoodType.Angry]: "Frustrated with work.",
+  [MoodType.Sad]: "A bit down...",
+  [MoodType.Worried]: "Anxious about deadlines.",
+  [MoodType.Tired]: "Not enough sleep.",
+  [MoodType.Bored]: "Bored and unmotivated.",
+  [MoodType.Ecstatic]: "Excited for what's next.",
+  [MoodType.Content]: "Appreciate my friends.",
+};
 
-const diaryTexts = [
-  "Feeling great today!",
-  "A bit down...",
-  "Crushed my goals!",
-  "Frustrated with work.",
-  "Not enough sleep.",
-  "Appreciate my friends.",
-  "Thinking about the future.",
-  "Feeling motivated.",
-  "Tough day but survived.",
-  "Trying to stay positive.",
-  "Exhausted but proud.",
-  "Anxious about deadlines.",
-  "Content and relaxed.",
-  "Excited for what's next.",
-];
+// Get list of moods (MoodType enum values)
+const moods = Object.values(MoodType).filter(
+  (v) => typeof v === "number"
+) as MoodType[];
 
-// Generate 10 records for each month from Jan to May
+// Generate 10 records per month (Jan to May)
 for (let month = 0; month < 5; month++) {
   for (let i = 1; i <= 10; i++) {
     const day = i + 1;
-    const moodType = moods[(i + month) % moods.length];
-    const diary = diaryTexts[(i + month) % diaryTexts.length];
+    const mood = moods[(i + month) % moods.length];
+    const diary = moodDiaryMap[mood];
 
     mockMoodRecordList.push({
       moodId: idCounter++,
       userId: baseUserId,
-      moodType,
+      moodType: mood,
       moodDiary: diary,
       createdAt: `2025-${String(month + 1).padStart(2, "0")}-${String(
         day

@@ -7,6 +7,7 @@ import { ConnectClientModal } from "@/components/connect/ConnectClientModal";
 import { ConfirmModal } from "@/components/connect/ConfirmModal";
 import { toast } from "sonner";
 import { ROUTE_PATHS } from "@/routes/Routes";
+import { Button } from "@/components/ui/button";
 
 // import { mockConnections } from "@/models/mockClientsList";
 
@@ -105,15 +106,12 @@ const TherapistDashboardPage = () => {
     <div className="min-h-screen bg-gray-100 p-8">
       <div className="bg-white rounded-xl shadow-md p-6">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-3xl font-semibold text-[#6782B8]">
+          <h2 className="text-3xl font-semibold text-primary">
             {connections.length} Clients
           </h2>
-          <button
-            className="bg-[#6782B8] text-white px-4 py-2 rounded hover:bg-[#769fcd]"
-            onClick={() => setIsModalOpen(true)}
-          >
+          <Button className="" onClick={() => setIsModalOpen(true)}>
             Connect with Clients
-          </button>
+          </Button>
         </div>
 
         <table className="w-full text-left border-separate border-spacing-y-2">
@@ -139,8 +137,8 @@ const TherapistDashboardPage = () => {
                 </td>
                 <td className="p-3">{connection.remark}</td> {/* remark */}
                 <td className="p-3 flex gap-3">
-                  <button
-                    className="bg-[#6782B8] text-white px-4 py-1 rounded hover:bg-[#769fcd]"
+                  <Button
+                    variant="outline"
                     onClick={() =>
                       navigate(ROUTE_PATHS.THERAPIST_DASHBOARD_CLIENT_DETIAL, {
                         state: { clientId: connection.clientId },
@@ -148,13 +146,13 @@ const TherapistDashboardPage = () => {
                     }
                   >
                     Details
-                  </button>
-                  <button
-                    className="bg-[#D3D3D3] text-white px-4 py-1 rounded hover:bg-[#B0B0B0]"
+                  </Button>
+                  <Button
+                    variant="outline"
                     onClick={() => handleDeleteClick(connection.clientId)}
                   >
-                    Delete
-                  </button>
+                    Archive
+                  </Button>
                 </td>
               </tr>
             ))}

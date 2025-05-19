@@ -1,45 +1,43 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "../ui/button";
 import { buttonVariants } from "../ui/button";
-import { HeroCards } from "./HeroCards";
-import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import { ROUTE_PATHS } from "@/routes/Routes";
 import { useAuth } from "@/context/AuthContext";
 import { UserRole } from "@/models/User";
+import { ArrowRight } from "lucide-react";
 
 export const Hero = () => {
   const navigate = useNavigate();
   const { user, isLoggedIn } = useAuth();
 
   return (
-    <section className="container grid lg:grid-cols-2 place-items-center py-20 md:py-32 gap-10">
-      <div className="text-center lg:text-start space-y-6">
-        <main className="text-5xl md:text-6xl font-bold">
-          <h1 className="inline">
-            <span className="inline bg-gradient-to-r from-[#75308a]  to-[#aa7e9d] text-transparent bg-clip-text">
-              Moopy
-            </span>{" "}
-            -
-          </h1>{" "}
-          {/*for{" "}*/}
-          <h2 className="inline">
-            <span className="inline bg-gradient-to-r from-[#133c47] via-[#8785a2] to-[#6782B8] text-transparent bg-clip-text">
-              Your AI Psychologist Assistant
-            </span>{" "}
-          </h2>
-        </main>
+    <section className="relative bg-white text-center py-24 md:py-40 overflow-hidden">
+      {/* 渐变背景 */}
+      <div className="absolute inset-0 z-0 flex items-center justify-center">
+        <div className="w-[80%] h-[80%] bg-gradient-to-tr from-[#6782B8] via-[#ba839f] to-[#FFC6C6] rounded-full blur-3xl opacity-40"></div>
+      </div>
 
-        <p className="text-xl text-muted-foreground md:w-10/12 mx-auto lg:mx-0">
-          An AI-powered comprehensive mental health companion counseling with a
-          friendly and engaging interactive experience. Through professional
-          assessments, an AI conversational chatbot, and a mood tracker, Moopy
-          provides personalized support, helping you better understand and
-          navigate your mental health journey.
+      <div className="relative z-10 mx-auto px-6">
+        <p className="uppercase tracking-widest text-sm text-minor font-semibold mb-4">
+          Mental Health Support
         </p>
+        <h1 className="text-4xl md:text-6xl font-quilon font-bold text-[#25012b] leading-tight">
+          Connect Clients and Therapists.
+          <br />
+          Stay Close Between Sessions.
+        </h1>
 
-        <div className="space-y-4 md:space-y-0 md:space-x-4">
+        <p className="mt-6 text-lg md:text-xl font-mono text-minor mx-auto leading-relaxed">
+          Moopy is a two-sided emotional support platform designed for
+          therapists and their clients. <br />
+          Clients can chat with AI, track their moods, and reflect on their
+          mental state — anytime, 24/7. <br />
+          Therapists can view chat history and trends, gaining the context
+          needed to support each session.
+        </p>
+        <div className="flex flex-col md:flex-row items-center justify-center gap-8 mt-6">
           <Button
-            className="w-full md:mr-4 md:w-44"
+            className="w-64 font-mono font-bold "
             onClick={() => {
               if (!isLoggedIn()) {
                 navigate(ROUTE_PATHS.LOGIN);
@@ -53,29 +51,21 @@ export const Hero = () => {
             }}
           >
             Get Started
+            <ArrowRight className="ml-2 w-6 h-4" />
           </Button>
 
           <a
             rel="noreferrer noopener"
-            href="https://github.com/skittleskittles/Capstone_Project.git"
-            target="_blank"
-            className={`w-full md:w-1/3 ${buttonVariants({
-              variant: "outline",
-            })}`}
+            href="/#features"
+            className={
+              buttonVariants({ variant: "outline" }) +
+              " w-64 font-mono font-medium"
+            }
           >
-            Github Repository
-            <GitHubLogoIcon className="ml-2 w-5 h-5" />
+            Learn More
           </a>
         </div>
       </div>
-
-      {/* Hero cards sections */}
-      <div className="z-10">
-        <HeroCards />
-      </div>
-
-      {/* Shadow effect */}
-      <div className="shadow"></div>
     </section>
   );
 };

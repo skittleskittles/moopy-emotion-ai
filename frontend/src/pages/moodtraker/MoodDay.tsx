@@ -3,12 +3,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useParams, useNavigate } from "react-router-dom";
 import { saveMoodRecord } from "@/services/api";
 import { ROUTE_PATHS } from "@/routes/Routes";
-import {
-  MoodType,
-  MoodTypeLabelMap,
-  MoodTypeToEmoji,
-  MoodTypeToColor,
-} from "@/models/MoodTrakcer";
+import { MoodType, MoodTypeLabelMap, MoodTypeToEmoji } from "@/models/MoodData";
 
 function MoodDay() {
   const { user, isLoggedIn } = useAuth();
@@ -40,7 +35,7 @@ function MoodDay() {
   return (
     <div
       style={{
-        backgroundColor: MoodTypeToColor[moodType],
+        // todo: backgroundColor: MoodTypeToColor[moodType],
         padding: "20px",
         borderRadius: "8px",
         minHeight: "100vh",

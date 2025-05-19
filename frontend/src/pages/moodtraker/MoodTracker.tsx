@@ -2,11 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { listMoodRecords } from "@/services/api";
-import {
-  MoodTypeToEmoji,
-  MoodTypeToColor,
-  MoodQueryType,
-} from "@/models/MoodTrakcer";
+import { MoodTypeToEmoji, MoodQueryType } from "@/models/MoodData";
 import { getDaysInMonth, format } from "date-fns";
 import { ROUTE_PATHS } from "@/routes/Routes";
 
@@ -38,7 +34,8 @@ function MoodTracker() {
           const dateKey = record.createdAt.split("T")[0];
           newMoodData[dateKey] = {
             emoji: MoodTypeToEmoji[record.moodType],
-            color: MoodTypeToColor[record.moodType],
+            // color: MoodTypeToColor[record.moodType],
+            color: "#ddd", // todo
           };
         });
 

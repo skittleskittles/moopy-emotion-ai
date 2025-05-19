@@ -1,168 +1,57 @@
-import { LogoIcon } from "./Icons";
+import logo from "../../assets/logo_wo_text.png";
+import HIPAA from "../../assets/HIPAA.png";
+import GDPR from "../../assets/GDPR.png";
 
 export const Footer = () => {
   return (
-    <footer id="footer">
-      <hr className="w-11/12 mx-auto" />
-
-      <section className="container py-20 grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-x-12 gap-y-8">
-        <div className="col-span-full xl:col-span-2">
-          <a
-            rel="noreferrer noopener"
-            href="/"
-            className="font-bold text-xl flex"
-          >
-            <LogoIcon />
-            ShadcnUI/React
-          </a>
+    <footer className="bg-muted/50 border-t py-8 px-6 md:px-12 text-sm text-gray-600">
+      {/* Branding + Description */}
+      <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-4 text-left">
+        {/* Left: Logo + Brand */}
+        <div className="flex items-center md:items-center gap-4 pl-28">
+          <img
+            src={logo}
+            alt="Moopy Logo"
+            className="h-[100px] w-auto object-contain"
+          />
+          <span className="text-4xl font-quilon font-bold text-primary">
+            Moopy
+          </span>
         </div>
 
-        <div className="flex flex-col gap-2">
-          <h3 className="font-bold text-lg">Follow US</h3>
-          <div>
-            <a
-              rel="noreferrer noopener"
-              href="#"
-              className="opacity-60 hover:opacity-100"
-            >
-              Github
-            </a>
-          </div>
-
-          <div>
-            <a
-              rel="noreferrer noopener"
-              href="#"
-              className="opacity-60 hover:opacity-100"
-            >
-              Twitter
-            </a>
-          </div>
-
-          <div>
-            <a
-              rel="noreferrer noopener"
-              href="#"
-              className="opacity-60 hover:opacity-100"
-            >
-              Dribbble
-            </a>
+        {/* Right: Description + Icons */}
+        <div className="flex flex-col items-center md:items-center gap-4 pr-32 text-base">
+          <p className="text-minor font-mono font-semibold leading-relaxed">
+            AI-powered support that bridges therapy gaps. <br />
+            Helping you reflect, stay grounded, and grow between sessions.
+          </p>
+          <div className="flex gap-6 justify-center md:justify-end">
+            <img src={HIPAA} alt="HIPAA Compliant" className="h-10" />
+            <img src={GDPR} alt="GDPR Compliant" className="h-10" />
           </div>
         </div>
+      </div>
 
-        <div className="flex flex-col gap-2">
-          <h3 className="font-bold text-lg">Platforms</h3>
-          <div>
-            <a
-              rel="noreferrer noopener"
-              href="#"
-              className="opacity-60 hover:opacity-100"
-            >
-              Web
-            </a>
-          </div>
+      {/* Disclaimer */}
+      <div className="max-w-[80%] mx-auto mt-8 text-justify text-gray-600">
+        <span className="font-semibold text-sm text-gray-800 mb-2">
+          Disclaimer:{" "}
+        </span>
+        <span className="text-sm leading-relaxed">
+          Moopy offers AI-powered emotional support tools designed for use in
+          therapeutic settings. The insights generated are intended to assist
+          therapists in understanding client patterns and emotions between
+          sessions, and should not be interpreted as medical or mental health
+          diagnoses. Clients should always rely on qualified professionals for
+          clinical guidance. Use of this platform indicates your understanding
+          that Moopy is a supplement to—not a substitute for—professional care.
+        </span>
+      </div>
 
-          <div>
-            <a
-              rel="noreferrer noopener"
-              href="#"
-              className="opacity-60 hover:opacity-100"
-            >
-              Mobile
-            </a>
-          </div>
-
-          <div>
-            <a
-              rel="noreferrer noopener"
-              href="#"
-              className="opacity-60 hover:opacity-100"
-            >
-              Desktop
-            </a>
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <h3 className="font-bold text-lg">About</h3>
-          <div>
-            <a
-              rel="noreferrer noopener"
-              href="#"
-              className="opacity-60 hover:opacity-100"
-            >
-              Features
-            </a>
-          </div>
-
-          <div>
-            <a
-              rel="noreferrer noopener"
-              href="#"
-              className="opacity-60 hover:opacity-100"
-            >
-              Pricing
-            </a>
-          </div>
-
-          <div>
-            <a
-              rel="noreferrer noopener"
-              href="#"
-              className="opacity-60 hover:opacity-100"
-            >
-              FAQ
-            </a>
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <h3 className="font-bold text-lg">Community</h3>
-          <div>
-            <a
-              rel="noreferrer noopener"
-              href="#"
-              className="opacity-60 hover:opacity-100"
-            >
-              Youtube
-            </a>
-          </div>
-
-          <div>
-            <a
-              rel="noreferrer noopener"
-              href="#"
-              className="opacity-60 hover:opacity-100"
-            >
-              Discord
-            </a>
-          </div>
-
-          <div>
-            <a
-              rel="noreferrer noopener"
-              href="#"
-              className="opacity-60 hover:opacity-100"
-            >
-              Twitch
-            </a>
-          </div>
-        </div>
-      </section>
-
-      <section className="container pb-14 text-center">
-        <h3>
-          &copy; 2024 Landing page made by{" "}
-          <a
-            rel="noreferrer noopener"
-            target="_blank"
-            href="https://www.linkedin.com/in/leopoldo-miranda/"
-            className="text-primary transition-all border-primary hover:border-b-2"
-          >
-            Leo Miranda
-          </a>
-        </h3>
-      </section>
+      {/* Copyright */}
+      <div className="mt-4 text-center text-sm text-gray-400">
+        © {new Date().getFullYear()} Moopy. All rights reserved.
+      </div>
     </footer>
   );
 };

@@ -6,7 +6,7 @@ import {
   SaveMoodRecordResponse,
   ListMoodRecordsRequest,
   ListMoodRecordsResponse,
-} from "@/models/MoodTrakcer";
+} from "@/models/MoodData";
 
 const api = axios.create({
   baseURL: "http://localhost:8081/",

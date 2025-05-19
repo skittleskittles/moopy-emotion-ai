@@ -6,6 +6,7 @@ import { FaUser, FaRobot, FaTrash, FaHome, FaPlus } from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router-dom";
 import { chat, getChatList } from "@/services/api";
 import { useAuth } from "@/context/AuthContext";
+import { Button } from "@/components/ui/button";
 
 interface Message {
   sender: string;
@@ -479,8 +480,8 @@ const ChatPage = (_: Props) => {
             ))
           ) : (
             <p className="text-2xl font-semibold text-center text-[#393e46] mt-10 px-6">
-              Hi! I’m <span className="text-[#6782B8]">Moopy</span>, your AI
-              Mood Companion. How are you feeling today?{" "}
+              Hi! I’m <span className="text-primary">Moopy</span>, your AI Mood
+              Companion. How are you feeling today?{" "}
               <span className="text-yellow-500 text-3xl">😊</span>
             </p>
           )}
@@ -497,15 +498,13 @@ const ChatPage = (_: Props) => {
             placeholder={loading ? "Loading..." : "Type your message..."}
             disabled={loading}
           />
-          <button
+          <Button
             onClick={handleSendMessage}
-            className={`ml-2 bg-[#6782B8] hover:bg-[#769fcd] text-white px-4 py-2 rounded-lg ${
-              loading ? "opacity-50 cursor-not-allowed" : ""
-            }`}
+            className={`ml-2 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
             disabled={loading}
           >
             Send
-          </button>
+          </Button>
         </div>
       </div>
     </div>

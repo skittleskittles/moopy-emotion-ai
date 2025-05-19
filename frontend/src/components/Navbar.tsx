@@ -31,6 +31,10 @@ const homeRoutes: RouteProps[] = [
     label: "Features",
   },
   {
+    href: "#team",
+    label: "Contact Us",
+  },
+  {
     href: "#faq",
     label: "FAQ",
   },
@@ -135,8 +139,6 @@ export const Navbar = () => {
           </nav>
 
           <div className="hidden md:flex gap-4 items-center relative">
-            {/* <ModeToggle /> */}
-
             {/* 如果用户未登录，显示 “Login” 按钮 */}
             {!isLoggedIn() ? (
               <button

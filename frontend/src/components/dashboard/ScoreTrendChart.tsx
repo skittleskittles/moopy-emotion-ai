@@ -1,4 +1,4 @@
-import { SurveyRecord } from "@/models/ClientDetail";
+import { SurveyRecord, getLevelLabel } from "@/models/ClientDetail";
 import {
   ResponsiveContainer,
   LineChart,
@@ -22,10 +22,12 @@ export const ScoreTrendChart: React.FC<Props> = ({ scoreHistory }) => {
   const startDate = startOfMonth(firstDate);
   const endDate = endOfMonth(new Date());
 
-  const chartData = scoreHistory.map((item) => ({
-    ...item,
-    date: new Date(item.date).getTime(), // Convert to timestamp
-  }));
+  const chartData = scoreHistory.map((item) => {
+    return {
+      ...item,
+      date: new Date(item.date).getTime(),
+    };
+  });
 
   return (
     <ResponsiveContainer width="100%" height="100%">
@@ -34,7 +36,7 @@ export const ScoreTrendChart: React.FC<Props> = ({ scoreHistory }) => {
         margin={{ top: 10, right: 20, bottom: 0, left: 0 }}
       >
         <ReferenceArea
-          y1={40}
+          y1={25}
           y2={49}
           fill="#d1fae5"
           fillOpacity={0.4}
@@ -64,24 +66,6 @@ export const ScoreTrendChart: React.FC<Props> = ({ scoreHistory }) => {
 
         <CartesianGrid strokeDasharray="4 4" stroke="#e2e8f0" />
 
-        {/* <XAxis
-          dataKey="date"
-          type="number"
-          domain={[startDate.getTime(), endDate.getTime()]}
-          tickFormatter={(timestamp) =>
-            new Date(timestamp).toLocaleDateString("en-US", {
-              month: "numeric",
-              day: "numeric",
-            })
-          }
-          tick={{ fontSize: 12, fill: "#4B5563" }}
-          angle={-35}
-          textAnchor="end"
-          height={50}
-          tickLine={false}
-          axisLine={false}
-        /> */}
-
         <XAxis
           dataKey="date"
           type="number"
@@ -95,18 +79,26 @@ export const ScoreTrendChart: React.FC<Props> = ({ scoreHistory }) => {
         />
 
         <YAxis
-          domain={[40, 100]}
-          tick={{ fontSize: 12, fill: "#4B5563" }}
+          domain={[25, 100]}
+          ticks={[49, 60, 70, 85]} // 你可自定义实际显示位置（关键点）
+          tickFormatter={(score) => {
+            if (score <= 49) return "1";
+            if (score <= 60) return "2";
+            if (score <= 70) return "3";
+            return "4";
+          }}
+          // tick={{ fontSize: 12, fill: "#4B5563" }}
+          tick={false} // 隐藏刻度文字
           tickLine={false}
           axisLine={false}
           allowDecimals={false}
-          width={40}
+          width={30}
         />
 
         <Tooltip
-          formatter={(value: any, name: string) => {
-            if (name === "score") return [`${value}`, "Score"];
-            return value;
+          formatter={(value: any) => {
+            // Map score → Level text
+            return [getLevelLabel(value), "Level"];
           }}
           labelFormatter={(label: number) => {
             return new Date(label).toLocaleDateString("en-US", {

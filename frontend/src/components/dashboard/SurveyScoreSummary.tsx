@@ -1,4 +1,9 @@
-import { SurveyRecord } from "@/models/ClientDetail";
+import {
+  SurveyRecord,
+  getScoreColor,
+  getLevelFromScore,
+  getScoreCategory,
+} from "@/models/ClientDetail";
 import { ScoreTrendChart } from "./ScoreTrendChart";
 
 interface ClientSurveyScoreSummaryProps {
@@ -18,23 +23,33 @@ export const ClientSurveyScoreSummary: React.FC<
     if (idx >= filledBars) return "#d1d5db"; // Empty bar color
 
     if (score <= 49) return "#d1fae5"; // Normal
-    if (score <= 60) return "#fef3c7"; // Mild
-    if (score <= 70) return "#fde68a"; // Moderate
+    if (score <= 59) return "#fef3c7"; // Mild
+    if (score <= 69) return "#fde68a"; // Moderate
     return "#fecaca"; // Severe
   };
 
   return (
-    <div className="flex justify-end items-center space-x-4 mb-2">
+    <div className="flex justify-end items-center space-x-4 mt-2 mb-2">
       {/* Left: Stars + Score with label */}
-      <div className="flex flex-col items-center justify-center w-[30%] h-full mx-auto">
+      <div className="flex flex-col items-center justify-center w-[40%] h-full mx-auto -mt-4 gap-2">
         {/* Title + info icon */}
-        <div className="flex items-center justify-center text-gray-600 font-semibold text-[1rem]">
+        <div
+          className={`flex items-center justify-center text-gray-600 font-semibold ${
+            expanded ? "text-lg" : "text-base"
+          }`}
+        >
           <span>
             {" "}
-            {expanded ? "Latest Depression & Anxiety Score" : "Latest Score"}
+            {expanded
+              ? "Latest Depression & Anxiety Level"
+              : "Depression & Anxiety Level"}
           </span>
           {/* Info icon with tooltip on hover */}
-          <div className="relative group cursor-pointer ml-1">
+          <div
+            className={`relative group cursor-pointer ml-1 ${
+              expanded ? "block" : "hidden"
+            }`}
+          >
             {/* Info Icon */}
             <svg
               className="w-5 h-5 text-gray-500"
@@ -49,41 +64,60 @@ export const ClientSurveyScoreSummary: React.FC<
             </svg>
 
             {/* Tooltip */}
-            <div className="absolute left-5 top-1 w-[250px] text-sm font-normal bg-gray-700 text-white rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10 pointer-events-none">
+            <div className="absolute left-5 top-1 w-[320px] text-sm font-normal bg-gray-700 text-white rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10 pointer-events-none">
               <strong>
-                Higher scores indicate more severe symptoms of anxiety and
+                Higher level indicates more severe symptoms of anxiety and
                 depression.
               </strong>
+              <br />
               Based on the Self-Rating Anxiety Scale (SAS) and Self-Rating
-              Depression Scale (SDS). <br />
+              Depression Scale (SDS).
             </div>
           </div>
         </div>
 
-        {/* Signal bars and score display */}
-        <div className="flex items-end space-x-2 mt-1">
-          {Array.from({ length: 5 }).map((_, idx) => {
-            const filledBars = Math.min(5, Math.ceil(latestRecord.score / 20));
+        {/* Signal bars and level display */}
+        <div className={`flex items-end mt-1 space-x-3`}>
+          {Array.from({ length: 4 }).map((_, idx) => {
+            let filledBars = getLevelFromScore(latestRecord.score);
             let bgColor = getBarColor(latestRecord.score, idx, filledBars);
 
-            const barHeights = ["h-3", "h-5", "h-7", "h-9", "h-11"]; // increasing height
+            let barHeights = ["h-4", "h-6", "h-8", "h-10"]; // increasing height
+            if (expanded) {
+              barHeights = ["h-5", "h-7", "h-9", "h-11"];
+            }
 
             return (
               <div
                 key={idx}
-                className={`w-3 ${barHeights[idx]} rounded-sm`}
+                className={`${expanded ? "w-5" : "w-4"} ${
+                  barHeights[idx]
+                } rounded-sm`}
                 style={{ backgroundColor: bgColor }}
               />
             );
           })}
-          <div className="ml-2 text-4xl font-bold text-gray-700">
-            {latestRecord.score}
-          </div>
+          {expanded ? (
+            <p className="font-bold">
+              <span className="text-4xl font-bold text-gray-700">
+                {getLevelFromScore(latestRecord.score)}
+              </span>
+              <span
+                className={`ml-2 ${getScoreColor(latestRecord.score)} text-lg`}
+              >
+                ({getScoreCategory(latestRecord.score)})
+              </span>
+            </p>
+          ) : (
+            <div className="ml-2 text-4xl font-bold text-gray-700">
+              {getLevelFromScore(latestRecord.score)}
+            </div>
+          )}
         </div>
       </div>
 
       {/* Right: Score trend chart */}
-      <div className="w-[60%] h-32 -pr-2">
+      <div className="w-[60%] h-36 -pr-2">
         <ScoreTrendChart scoreHistory={scoreHistory} />
       </div>
     </div>

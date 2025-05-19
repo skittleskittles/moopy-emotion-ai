@@ -85,7 +85,7 @@ export const ConnectClientModal = ({
           </button>
           <button
             onClick={handleConnect}
-            className="px-6 py-2 rounded-md bg-[#6782B8] text-white hover:bg-[#769fcd]"
+            className="px-6 py-2 rounded-md bg-primary text-white"
           >
             Connect
           </button>

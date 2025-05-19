@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
-import { SurveyRecord } from "@/models/ClientDetail";
+import {
+  SurveyRecord,
+  getLevelFromScore,
+  getScoreCategory,
+  getScoreColor,
+} from "@/models/ClientDetail";
 import { ClientSurveyScoreSummary } from "./SurveyScoreSummary";
 import { FaRegCalendarAlt } from "react-icons/fa";
 
@@ -35,20 +40,6 @@ export const ClientSurveyHistory: React.FC<Props> = ({
     fetchQuestions();
   }, []);
 
-  const getScoreCategory = (score: number) => {
-    if (score <= 49) return "Normal";
-    if (score <= 60) return "Mild Depression and Anxiety";
-    if (score <= 70) return "Moderate Depression and Anxiety";
-    return "Severe Depression and Anxiety";
-  };
-
-  const getScoreColor = (score: number) => {
-    if (score <= 49) return "text-[#047857]"; // Normal (emerald-700)
-    if (score <= 60) return "text-[#a16207]"; // Mild (yellow-700)
-    if (score <= 70) return "text-[#92400e]"; // Moderate (amber-700)
-    return "text-[#b91c1c]"; // Severe (red-600)
-  };
-
   return (
     <div className="h-full overflow-y-auto pr-2">
       {/* Summary */}
@@ -72,11 +63,14 @@ export const ClientSurveyHistory: React.FC<Props> = ({
                 </p>
 
                 <p className="font-medium">
-                  <span className="text-gray-600">Score: </span>
+                  <span className="text-gray-600">
+                    Depression & Anxiety Level:{" "}
+                  </span>
                   <span
                     className={`${getScoreColor(record.score)} font-medium`}
                   >
-                    {record.score} ({getScoreCategory(record.score)})
+                    {getLevelFromScore(record.score)} (
+                    {getScoreCategory(record.score)})
                   </span>
                 </p>
               </div>

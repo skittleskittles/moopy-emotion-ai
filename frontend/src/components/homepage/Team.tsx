@@ -7,12 +7,17 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Facebook, Instagram, Linkedin } from "lucide-react";
+import { Linkedin, Github } from "lucide-react";
+import shuyuan from "../../assets/team/shuyuan.png";
+import yiyan from "../../assets/team/yiyan.png";
+import yuhan from "../../assets/team/yuhan.jpeg";
+import meier from "../../assets/team/meier.png";
 
 interface TeamProps {
   imageUrl: string;
   name: string;
   position: string;
+  desc: string;
   socialNetworks: SociaNetworkslProps[];
 }
 
@@ -23,71 +28,66 @@ interface SociaNetworkslProps {
 
 const teamList: TeamProps[] = [
   {
-    imageUrl: "https://i.pravatar.cc/150?img=35",
-    name: "Emma Smith",
-    position: "Product Manager",
+    imageUrl: shuyuan,
+    name: "Shuyuan Fu",
+    position: "Co-founder · Frontend Lead",
+    desc: "Passionate about building empathetic user experiences. Leads frontend and product design.",
     socialNetworks: [
       {
         name: "Linkedin",
-        url: "https://www.linkedin.com/in/leopoldo-miranda/",
+        url: "https://www.linkedin.com/in/shuyuan-fu/",
       },
       {
-        name: "Facebook",
-        url: "https://www.facebook.com/",
-      },
-      {
-        name: "Instagram",
-        url: "https://www.instagram.com/",
+        name: "Github",
+        url: "https://github.com/skittleskittles",
       },
     ],
   },
   {
-    imageUrl: "https://i.pravatar.cc/150?img=60",
-    name: "John Doe",
-    position: "Tech Lead",
+    imageUrl: yiyan,
+    name: "Yiyan Kong",
+    position: "Co-founder · Technical Director",
+    desc: "Oversees architecture and technical vision. Drives innovation and scalability at Moopy.",
     socialNetworks: [
       {
         name: "Linkedin",
-        url: "https://www.linkedin.com/in/leopoldo-miranda/",
+        url: "https://www.linkedin.com/in/yiyankong/",
       },
       {
-        name: "Facebook",
-        url: "https://www.facebook.com/",
-      },
-      {
-        name: "Instagram",
-        url: "https://www.instagram.com/",
+        name: "Github",
+        url: "https://github.com/K11yann",
       },
     ],
   },
   {
-    imageUrl: "https://i.pravatar.cc/150?img=36",
-    name: "Ashley Ross",
-    position: "Frontend Developer",
+    imageUrl: yuhan,
+    name: "Yuhan Liu",
+    position: "Backend Engineer",
+    desc: "Specializes in API, data security, and scalable infrastructure powering Moopy’s core.",
     socialNetworks: [
       {
         name: "Linkedin",
-        url: "https://www.linkedin.com/in/leopoldo-miranda/",
+        url: "https://www.linkedin.com/in/yhliu62/",
       },
-
       {
-        name: "Instagram",
-        url: "https://www.instagram.com/",
+        name: "Github",
+        url: "https://github.com/",
       },
     ],
   },
   {
-    imageUrl: "https://i.pravatar.cc/150?img=17",
-    name: "Bruce Rogers",
-    position: "Backend Developer",
+    imageUrl: meier,
+    name: "Meier Chen",
+    position: "Frontend Engineer",
+    desc: "Focuses on seamless UI interactions and mental state assessment to enhance user experience.",
     socialNetworks: [
       {
         name: "Linkedin",
-        url: "https://www.linkedin.com/in/leopoldo-miranda/",
+        url: "https://www.linkedin.com/in/meier-chen/",
       },
       {
-        name: "Facebook",
-        url: "https://www.facebook.com/",
+        name: "Github",
+        url: "https://github.com/",
       },
     ],
   },
@@ -99,37 +99,28 @@ export const Team = () => {
       case "Linkedin":
         return <Linkedin size="20" />;
 
-      case "Facebook":
-        return <Facebook size="20" />;
-
-      case "Instagram":
-        return <Instagram size="20" />;
+      case "Github":
+        return <Github size="20" />;
     }
   };
 
   return (
-    <section
-      id="team"
-      className="container py-24 sm:py-32"
-    >
-      <h2 className="text-3xl md:text-4xl font-bold">
-        <span className="bg-gradient-to-b from-primary/60 to-primary text-transparent bg-clip-text">
-          Our Dedicated{" "}
-        </span>
-        Crew
+    <section id="team" className=" max-w-7xl mx-auto pt-24">
+      <h2 className="text-3xl md:text-4xl text-primary font-quilon font-semibold">
+        Meet Our Team
       </h2>
 
-      <p className="mt-4 mb-10 text-xl text-muted-foreground">
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Veritatis
-        dolor pariatur sit!
+      <p className="mt-4 mb-12 text-xl font-mono text-muted-foreground">
+        We are a dedicated team passionate about bridging therapy gaps with
+        AI-powered solutions.
       </p>
 
       <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 gap-y-10">
         {teamList.map(
-          ({ imageUrl, name, position, socialNetworks }: TeamProps) => (
+          ({ imageUrl, name, position, desc, socialNetworks }: TeamProps) => (
             <Card
               key={name}
-              className="bg-muted/50 relative mt-8 flex flex-col justify-center items-center"
+              className="bg-muted/50 shadow-md relative mt-8 flex flex-col justify-center items-center"
             >
               <CardHeader className="mt-8 flex justify-center items-center pb-2">
                 <img
@@ -138,13 +129,13 @@ export const Team = () => {
                   className="absolute -top-12 rounded-full w-24 h-24 aspect-square object-cover"
                 />
                 <CardTitle className="text-center">{name}</CardTitle>
-                <CardDescription className="text-primary">
+                <CardDescription className="text-minor font-mono">
                   {position}
                 </CardDescription>
               </CardHeader>
 
               <CardContent className="text-center pb-2">
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                <p>{desc}</p>
               </CardContent>
 
               <CardFooter>

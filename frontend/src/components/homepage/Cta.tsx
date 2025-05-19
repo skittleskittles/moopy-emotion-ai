@@ -1,29 +1,26 @@
 import { Button } from "../ui/button";
+import { Mail } from "lucide-react";
 
 export const Cta = () => {
   return (
-    <section id="cta" className="bg-muted/50 py-16 my-24 sm:my-32">
+    <section id="contact" className="bg-muted/50 rounded-lg mt-8 py-16">
       <div className="container lg:grid lg:grid-cols-2 place-items-center">
+        {/* Left Content */}
         <div className="lg:col-start-1">
-          <h2 className="text-3xl md:text-4xl font-bold ">
-            Your
-            <span className="bg-gradient-to-b from-purple-300 to-[#6782B8] text-transparent bg-clip-text">
-            {" "}Appointment
-            </span>
-            {/*In One Interface*/}
-          </h2>
-          <p className="text-muted-foreground text-xl mt-4 mb-8 lg:mb-0">
-            Welcome to book your Appointment!
+          <h2 className="text-3xl md:text-4xl font-bold">Contact Us</h2>
+          <p className="text-muted-foreground text-lg font-mono mt-4 mb-8 lg:mb-0">
+            We're happy to connect! Feel free to reach out by email.
           </p>
         </div>
 
+        {/* Button to open mail */}
         <div className="space-y-4 lg:col-start-2">
-          <Button className="w-full md:mr-4 md:w-auto bg-[#6782B8]">
-            Book
-          </Button>
-          {/*<Button variant="outline" className="w-full md:w-auto">*/}
-          {/*View all features*/}
-          {/*</Button>*/}
+          <a href="mailto:shuyuanf@uci.edu">
+            <Button className="w-full md:w-auto bg-primary flex items-center gap-2">
+              Contact
+              <Mail className="w-4 h-4" />
+            </Button>
+          </a>
         </div>
       </div>
     </section>

@@ -32,7 +32,7 @@ export const ClientProfileCard = ({ clientDetail }: ClientProfileCardProps) => {
 
         {/* Name + Nickname */}
         <div>
-          <h2 className="text-2xl font-bold text-[#6782B8]">
+          <h2 className="text-2xl font-bold text-primary">
             {clientDetail.fullName}
           </h2>
           <p className="text-lg text-gray-500 font-semibold">

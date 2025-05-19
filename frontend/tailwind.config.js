@@ -30,6 +30,9 @@ module.exports = {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
         },
+        minor: {
+          DEFAULT: "hsl(var(--minor))",
+        },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
@@ -73,6 +76,8 @@ module.exports = {
       fontFamily: {
         nobile: ["Nobile", "sans-serif"],
         newsreader: ["Newsreader", "serif"],
+        satoshi: ['"Satoshi Variable"', "sans-serif"],
+        quilon: ["Quilon", "sans-serif"],
       },
     },
   },

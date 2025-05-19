@@ -2,9 +2,9 @@ import React from "react";
 import { format, addMonths, subMonths } from "date-fns";
 import {
   MoodRecord,
-  MoodTypeToColor,
+  MoodTypeLabelMap,
   MoodTypeToEmoji,
-} from "@/models/MoodTrakcer";
+} from "@/models/MoodData";
 import * as Tooltip from "@radix-ui/react-tooltip";
 
 interface ClientMoodTrackerHistoryProps {
@@ -15,20 +15,57 @@ interface ClientMoodTrackerHistoryProps {
 export const ClientMoodTrackerHistory: React.FC<
   ClientMoodTrackerHistoryProps
 > = ({ moodRecordList, expanded }) => {
-  const now = new Date();
+  /* calculate visible months */
+  const sortedDates = moodRecordList
+    .map((r) => new Date(r.createdAt))
+    .sort((a, b) => a.getTime() - b.getTime());
 
-  const months = Array.from({ length: 12 }).map((_, i) => {
-    const date = addMonths(subMonths(now, 9), i);
-    return {
-      label: format(date, "MMM yyyy"),
-      year: date.getFullYear(),
-      month: date.getMonth(),
-    };
-  });
+  const firstRecordDate = sortedDates[0] || new Date();
+  const lastRecordDate = sortedDates[sortedDates.length - 1] || new Date();
 
+  // 计算数据跨度（单位：月）
+  const monthDiff =
+    (lastRecordDate.getFullYear() - firstRecordDate.getFullYear()) * 12 +
+    (lastRecordDate.getMonth() - firstRecordDate.getMonth());
+
+  let startFrom: Date;
+  let visibleMonthCount: number;
+
+  if (monthDiff > 11) {
+    // 数据跨度超过 12 个月, 显示完整范围
+    startFrom = new Date(
+      firstRecordDate.getFullYear(),
+      firstRecordDate.getMonth(),
+      1
+    );
+    visibleMonthCount = monthDiff + 1; // +1 因为同年同月 diff 为 0，但要显示当月
+  } else {
+    // 数据跨度较小, 补齐 12 个月，从 firstRecordDate 往前推 1 个月
+    const fallbackStart = subMonths(firstRecordDate, 1);
+    startFrom = new Date(
+      fallbackStart.getFullYear(),
+      fallbackStart.getMonth(),
+      1
+    );
+    visibleMonthCount = 12;
+  }
+
+  // 生成 visibleMonths 列表
+  const visibleMonths = Array.from({ length: visibleMonthCount }).map(
+    (_, i) => {
+      const date = addMonths(startFrom, i);
+      return {
+        label: format(date, "MMM yyyy"),
+        year: date.getFullYear(),
+        month: date.getMonth(),
+      };
+    }
+  );
+
+  /* mood data */
   const moodMap: {
     [key: string]: {
-      color: string;
+      mood: string;
       emoji: string;
       diary: string;
       date: string;
@@ -38,7 +75,7 @@ export const ClientMoodTrackerHistory: React.FC<
   moodRecordList.forEach((record) => {
     const dateKey = record.createdAt.split("T")[0]; // yyyy-MM-dd
     moodMap[dateKey] = {
-      color: MoodTypeToColor[record.moodType] || "#ddd",
+      mood: MoodTypeLabelMap[record.moodType] || "",
       emoji: MoodTypeToEmoji[record.moodType] || "",
       diary: record.moodDiary,
       date: format(new Date(dateKey), "dd"),
@@ -51,8 +88,8 @@ export const ClientMoodTrackerHistory: React.FC<
 
   return (
     <div className="w-full h-full overflow-y-auto">
-      <div className="grid grid-cols-3 gap-4">
-        {months.map(({ label, year, month }) => (
+      <div className={`grid ${expanded ? "grid-cols-3" : "grid-cols-2"} gap-4`}>
+        {visibleMonths.map(({ label, year, month }) => (
           <div
             key={`${year}-${month}`}
             className="border border-gray-300 rounded-lg p-2 text-center"
@@ -64,31 +101,28 @@ export const ClientMoodTrackerHistory: React.FC<
                   const date = new Date(year, month, dayIdx + 1);
                   const dateKey = format(date, "yyyy-MM-dd");
                   const moodData = moodMap[dateKey];
-                  const color = moodData?.color || "#ddd";
                   const tooltipText =
                     moodData?.emoji && moodData?.diary
-                      ? `Day ${moodData.date}: ${moodData.emoji} ${moodData.diary}`
+                      ? `Day ${moodData.date}: ${moodData.diary}`
                       : undefined;
 
                   return (
                     <Tooltip.Provider key={dayIdx} delayDuration={0}>
                       <Tooltip.Root>
                         <Tooltip.Trigger asChild>
-                          <div
-                            className="w-full relative rounded cursor-default"
-                            style={{ backgroundColor: color }}
-                          >
+                          <div className="w-full relative rounded cursor-default">
                             {/* height = width */}
                             <div className="pb-[100%]"></div>
 
                             <div className="absolute inset-0 flex items-center justify-center">
-                              <span
-                                className={`leading-none ${
-                                expanded ? "text-[1.4rem]" : "text-[0.8rem]"
-                                }`}
-                              >
-                                {moodData?.emoji || ""}
-                              </span>
+                              {moodData?.emoji ? (
+                                <img
+                                  src={moodData.emoji}
+                                  className="w-full h-full object-contain"
+                                />
+                              ) : (
+                                <div className="w-full h-full rounded-full bg-gray-300" />
+                              )}
                             </div>
                           </div>
                         </Tooltip.Trigger>

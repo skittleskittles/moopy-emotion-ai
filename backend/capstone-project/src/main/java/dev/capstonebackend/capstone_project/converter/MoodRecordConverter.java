@@ -20,6 +20,7 @@ public class MoodRecordConverter {
                 .userId(reqBody.getUserId())
                 .moodType(reqBody.getMoodType())
                 .moodDiary(reqBody.getMoodDiary())
+                .recordDate(reqBody.getRecordDate())
                 .build();
     }
 
@@ -39,6 +40,9 @@ public class MoodRecordConverter {
                 .userId(moodRecord.getUserId())
                 .moodType(moodRecord.getMoodType())
                 .moodDiary(moodRecord.getMoodDiary())
+                .year(moodRecord.getYear())
+                .month(moodRecord.getMonth())
+                .day(moodRecord.getDay())
                 .createdAt(moodRecord.getCreatedAt())
                 .modifiedAt(moodRecord.getModifiedAt())
                 .build();

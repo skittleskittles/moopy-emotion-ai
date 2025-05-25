@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -37,5 +38,9 @@ public class MoodRecordReqBody {
     @ApiModelProperty(example = "烦", value = "moodDiary", required = true)
     @NotEmpty(message = "心情日记")
     private String moodDiary;
+
+    @ApiModelProperty(example = "烦", value = "moodDiary", required = true)
+    @NotEmpty(message = "日期")
+    private LocalDate recordDate; // 格式应为 MM/dd/yyyy
 
 }

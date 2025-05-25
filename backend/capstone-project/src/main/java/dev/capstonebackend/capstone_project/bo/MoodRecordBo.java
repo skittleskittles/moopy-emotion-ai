@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -30,6 +31,8 @@ public class MoodRecordBo {
     private Integer year;
 
     private MoodRecordQueryType queryType;
+
+    private LocalDate recordDate;
 
 
 

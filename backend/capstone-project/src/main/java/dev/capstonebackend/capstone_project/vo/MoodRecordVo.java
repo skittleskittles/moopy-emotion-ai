@@ -28,6 +28,12 @@ public class MoodRecordVo {
 
     private String moodDiary;
 
+    private Integer year;
+
+    private Integer month;
+
+    private Integer day;
+
     private Date createdAt;
 
     private Date modifiedAt;

@@ -4,9 +4,14 @@ package dev.capstonebackend.capstone_project.service;
 import dev.capstonebackend.capstone_project.bo.MoodRecordBo;
 import dev.capstonebackend.capstone_project.dao.MoodRecordDao;
 import dev.capstonebackend.capstone_project.domain.MoodRecord;
+import dev.capstonebackend.capstone_project.enums.ApiMessage;
+import dev.capstonebackend.capstone_project.exception.ApiException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -24,10 +29,10 @@ public class MoodRecordService {
     private MoodRecordDao moodRecordDao;
 
     public int insertMoodRecord(MoodRecordBo bo) {
-        Calendar calendar = Calendar.getInstance();
-        Integer year = calendar.get(Calendar.YEAR);
-        Integer month = calendar.get(Calendar.MONTH)+1;
-        Integer day = calendar.get(Calendar.DAY_OF_MONTH);
+        LocalDate recordDate = bo.getRecordDate();
+        Integer year = recordDate.getYear();
+        Integer month = recordDate.getMonthValue();
+        Integer day = recordDate.getDayOfMonth();
         MoodRecord moodRecord = MoodRecord.builder()
                 .userId(bo.getUserId())
                 .moodType(bo.getMoodType())

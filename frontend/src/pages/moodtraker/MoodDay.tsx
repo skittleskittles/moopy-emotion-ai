@@ -35,7 +35,7 @@ function MoodDay() {
   return (
     <div
       style={{
-        // todo: backgroundColor: MoodTypeToColor[moodType],
+        // backgroundColor: MoodTypeToColor[moodType],
         padding: "20px",
         borderRadius: "8px",
         minHeight: "100vh",

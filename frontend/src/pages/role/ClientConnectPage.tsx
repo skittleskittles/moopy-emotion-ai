@@ -110,7 +110,7 @@ const ClientConnectPage = () => {
               type="submit"
               className={`w-[80%] font-medium py-2 rounded-lg text-white ${
                 isFormValid && !isLoading
-                  ? "bg-primary hover:bg-[#769fcd]"
+                  ? "bg-primary hover:bg-primary/80"
                   : "bg-gray-400 cursor-not-allowed"
               }`}
               disabled={!isFormValid || isLoading}

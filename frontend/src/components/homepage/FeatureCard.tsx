@@ -32,7 +32,7 @@ export const FeatureCard: React.FC<FeatureSectionProps> = ({
       >
         {/* Text Block */}
         <div className="w-full md:w-1/2 space-y-6">
-          <div className="text-lg font-mono text-primary text-minor uppercase tracking-wider">
+          <div className="text-lg font-mono text-minor uppercase tracking-wider">
             {label}
           </div>
           <h2 className="text-4xl md:text-5xl font-quilon text-primary leading-tight">

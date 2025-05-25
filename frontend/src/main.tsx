@@ -7,6 +7,8 @@ import "./index.css";
 import { AuthProvider } from "./context/AuthContext.tsx";
 import { Toaster } from "sonner";
 
+import "keen-slider/keen-slider.min.css";
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <ThemeProvider>

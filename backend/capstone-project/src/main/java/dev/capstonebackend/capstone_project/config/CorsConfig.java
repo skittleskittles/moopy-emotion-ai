@@ -19,7 +19,7 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:5173", "http://www.moopy.com.s3-website-us-west-2.amazonaws.com")  // 允许前端访问
+                        .allowedOrigins("http://localhost:5173", "http://www.moopy-ai.com.s3-website-us-west-2.amazonaws.com", "https://www.moopy-ai.com")  // 允许前端访问
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);

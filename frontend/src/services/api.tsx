@@ -9,8 +9,7 @@ import {
 } from "@/models/MoodData";
 
 const api = axios.create({
-  baseURL: "http://localhost:8081/",
-  // baseURL: "http://106.55.105.246:6262",
+  baseURL: "http://34.223.248.166:8081",
   headers: { "Content-Type": "application/json" },
 });
 

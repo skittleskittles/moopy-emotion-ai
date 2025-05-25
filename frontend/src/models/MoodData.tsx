@@ -20,17 +20,7 @@ export enum MoodType {
   Content = 9,
 }
 
-// export const MoodTypeToEmoji: { [key in MoodType]: string } = {
-//   [MoodType.Happy]: "😊",
-//   [MoodType.Sad]: "😢",
-//   [MoodType.Confident]: "😎",
-//   [MoodType.Angry]: "😡",
-//   [MoodType.Tired]: "😴",
-//   [MoodType.Loved]: "😍",
-//   [MoodType.Thinking]: "🤔",
-// };
-
-export const MoodTypeToEmoji: { [key in MoodType]: string } = {
+export const MoodTypeToEmoji: Record<MoodType, string> = {
   [MoodType.Happy]: happy,
   [MoodType.Calm]: calm,
   [MoodType.Angry]: angry,

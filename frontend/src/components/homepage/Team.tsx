@@ -30,8 +30,8 @@ const teamList: TeamProps[] = [
   {
     imageUrl: shuyuan,
     name: "Shuyuan Fu",
-    position: "Co-founder · Frontend Lead",
-    desc: "Passionate about building empathetic user experiences. Leads frontend and product design.",
+    position: "Co-founder · Product Manager",
+    desc: "Passionate about building empathetic user experiences. Leads product design and frontend dev.",
     socialNetworks: [
       {
         name: "Linkedin",
@@ -46,7 +46,7 @@ const teamList: TeamProps[] = [
   {
     imageUrl: yiyan,
     name: "Yiyan Kong",
-    position: "Co-founder · Technical Director",
+    position: "Co-founder · Technical Lead",
     desc: "Oversees architecture and technical vision. Drives innovation and scalability at Moopy.",
     socialNetworks: [
       {
@@ -105,8 +105,8 @@ export const Team = () => {
   };
 
   return (
-    <section id="team" className=" max-w-7xl mx-auto pt-24">
-      <h2 className="text-3xl md:text-4xl text-primary font-quilon font-semibold">
+    <section id="team" className="max-w-full mx-11 px-6 pt-24">
+      <h2 className="text-4xl text-primary font-quilon font-semibold">
         Meet Our Team
       </h2>
 
@@ -115,7 +115,7 @@ export const Team = () => {
         AI-powered solutions.
       </p>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 gap-y-10">
+      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-7 gap-y-10">
         {teamList.map(
           ({ imageUrl, name, position, desc, socialNetworks }: TeamProps) => (
             <Card

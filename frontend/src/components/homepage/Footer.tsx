@@ -1,7 +1,3 @@
-import logo from "../../assets/logo_wo_text.png";
-import HIPAA from "../../assets/HIPAA.png";
-import GDPR from "../../assets/GDPR.png";
-
 export const Footer = () => {
   return (
     <footer className="bg-muted/50 border-t py-8 px-6 md:px-12 text-sm text-gray-600">
@@ -10,7 +6,7 @@ export const Footer = () => {
         {/* Left: Logo + Brand */}
         <div className="flex items-center md:items-center gap-4 pl-28">
           <img
-            src={logo}
+            src="/assets/logo_wo_text.png"
             alt="Moopy Logo"
             className="h-[100px] w-auto object-contain"
           />
@@ -26,8 +22,12 @@ export const Footer = () => {
             Helping you reflect, stay grounded, and grow between sessions.
           </p>
           <div className="flex gap-6 justify-center md:justify-end">
-            <img src={HIPAA} alt="HIPAA Compliant" className="h-10" />
-            <img src={GDPR} alt="GDPR Compliant" className="h-10" />
+            <img
+              src="/assets/HIPAA.png"
+              alt="HIPAA Compliant"
+              className="h-10"
+            />
+            <img src="/assets/GDPR.png" alt="GDPR Compliant" className="h-10" />
           </div>
         </div>
       </div>

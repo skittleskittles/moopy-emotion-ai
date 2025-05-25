@@ -1,24 +1,17 @@
 import { useEffect, useState } from "react";
-// import { useNavigate } from "react-router-dom";
+
 import { useAuth } from "@/context/AuthContext";
 import { listMoodRecords } from "@/services/api";
 import { MoodTypeToEmoji, MoodQueryType, toDateKey } from "@/models/MoodData";
-import {
-  format,
-  getDaysInMonth,
-  getDay,
-  startOfMonth,
-  isToday,
-} from "date-fns";
-// import { ROUTE_PATHS } from "@/routes/Routes";
+import { format, startOfMonth } from "date-fns";
+import { ChevronLeft, ChevronRight } from "@/components/ui/icons";
+import { CalendarGrid } from "@/components/moodTracker/CalendarGrid";
 import { MoodModal } from "@/components/moodTracker/MoodModal";
-import calendarBg from "../../assets/calendar-bg.png";
 
 function MoodTracker() {
-  // const navigate = useNavigate();
-  const currentMonth = new Date();
-  const daysInMonth = getDaysInMonth(currentMonth);
-  const firstDayOffset = getDay(startOfMonth(currentMonth)); // Sunday = 0
+  const [currentMonth, setCurrentMonth] = useState(() =>
+    startOfMonth(new Date())
+  );
 
   const { user, isLoggedIn } = useAuth();
 
@@ -57,7 +50,7 @@ function MoodTracker() {
 
   useEffect(() => {
     fetchMoodData();
-  }, [user, daysInMonth]);
+  }, [user, currentMonth]);
 
   const handleDayClick = (dateKey: string) => {
     setSelectedDate(dateKey);
@@ -73,115 +66,41 @@ function MoodTracker() {
         </h1>
       </div>
 
-      {/* 年日历按钮 */}
-      {/* <button
-        onClick={() => navigate(ROUTE_PATHS.YEAR_TRACKER)}
-        style={{
-          padding: "10px 20px",
-          margin: "20px 0",
-          fontSize: "1.2rem",
-          backgroundColor: "#4CAF50",
-          color: "white",
-          border: "none",
-          borderRadius: "5px",
-          cursor: "pointer",
-        }}
-      >
-        📅 View Yearly Mood Calendar
-      </button> */}
-
-      {/* 日历容器加背景 */}
-      <div
-        className="relative max-w-[35%]"
-        style={{
-          marginInline: "auto",
-          aspectRatio: "1.1",
-        }}
-      >
-        {/* 背景图层 */}
-        <img
-          src={calendarBg}
-          alt="calendar background"
-          className="absolute inset-0 flex items-center justify-center rounded-lg pointer-events-none z-0"
-        />
-
-        {/* 网格内容层 */}
-        <div
-          className="relative grid z-10n gap-3 pt-24 px-5"
-          style={{
-            gridTemplateColumns: "repeat(7, 1fr)",
-          }}
+      <div className="flex items-center justify-center gap-4">
+        {/* 左箭头 */}
+        <button
+          onClick={() =>
+            setCurrentMonth((prev) =>
+              startOfMonth(new Date(prev.getFullYear(), prev.getMonth() - 1))
+            )
+          }
         >
-          {/* 星期标题 */}
-          {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
-            <div
-              key={day}
-              className="font-bold text-base font-mono text-primary uppercase"
-            >
-              {day}
-            </div>
-          ))}
+          <ChevronLeft />
+        </button>
 
-          {/* 首日偏移空格 */}
-          {Array.from({ length: firstDayOffset }).map((_, i) => (
-            <div key={`empty-${i}`} />
-          ))}
-
-          {/* 日期按钮 */}
-          {Array.from({ length: daysInMonth }).map((_, index) => {
-            const day = index + 1;
-            const date = new Date(
-              currentMonth.getFullYear(),
-              currentMonth.getMonth(),
-              day
-            );
-            const dateKey = format(date, "yyyy-MM-dd");
-            const mood = moodData[dateKey];
-            const isTodayCell = isToday(date);
-
-            const outlineClass = "outline outline-2 outline-primary/50";
-            const shapeClass = mood ? "rounded-xl" : "rounded-full";
-            const animationClass = !mood ? "animate-breathe" : "";
-
-            return (
-              <button
-                key={day}
-                onClick={() => handleDayClick(dateKey)}
-                className={`relative w-full aspect-square border-none bg-transparent cursor-pointer p-0
-                  ${
-                    isTodayCell
-                      ? `${outlineClass} ${shapeClass} ${animationClass}`
-                      : ""
-                  }
-                `}
-              >
-                {mood ? (
-                  <img
-                    src={mood.emoji}
-                    alt="mood"
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "contain",
-                      borderRadius: "50%",
-                    }}
-                  />
-                ) : (
-                  <span
-                    style={{
-                      fontSize: "16px",
-                      fontWeight: "500",
-                      color: "#333",
-                    }}
-                  >
-                    {day}
-                  </span>
-                )}
-              </button>
-            );
-          })}
+        {/* 日历主体 */}
+        <div className="w-[35%]">
+          <CalendarGrid
+            currentMonth={currentMonth}
+            moodData={moodData}
+            onDayClick={handleDayClick}
+          />
         </div>
+
+        {/* 右箭头 */}
+        <button
+          onClick={() =>
+            setCurrentMonth((prev) =>
+              startOfMonth(new Date(prev.getFullYear(), prev.getMonth() + 1))
+            )
+          }
+          className="text-gray-400 hover:text-gray-900 px-2"
+          aria-label="Next Month"
+        >
+          <ChevronRight />
+        </button>
       </div>
+
       {/* MoodModal */}
       {selectedDate && user && (
         <MoodModal

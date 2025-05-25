@@ -1,6 +1,5 @@
 import { ClientDetailVo } from "@/models/ClientDetail";
 import { FaRegCalendarAlt } from "react-icons/fa";
-import avatarImg from "../../assets/avatar.png";
 
 interface ClientProfileCardProps {
   clientDetail: ClientDetailVo;
@@ -24,7 +23,7 @@ export const ClientProfileCard = ({ clientDetail }: ClientProfileCardProps) => {
         {/* Avatar */}
         <div className="w-20 h-20 rounded-full bg-[#f9f2f2] flex items-center justify-center overflow-hidden">
           <img
-            src={avatarImg}
+            src="/assets/avatar.png"
             alt="Avatar"
             className="w-full h-full object-contain"
           />

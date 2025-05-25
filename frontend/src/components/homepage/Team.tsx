@@ -8,10 +8,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Linkedin, Github } from "lucide-react";
-import shuyuan from "../../assets/team/shuyuan.png";
-import yiyan from "../../assets/team/yiyan.png";
-import yuhan from "../../assets/team/yuhan.jpeg";
-import meier from "../../assets/team/meier.png";
 
 interface TeamProps {
   imageUrl: string;
@@ -28,7 +24,7 @@ interface SociaNetworkslProps {
 
 const teamList: TeamProps[] = [
   {
-    imageUrl: shuyuan,
+    imageUrl: "/assets/team/shuyuan.png",
     name: "Shuyuan Fu",
     position: "Co-founder · Product Manager",
     desc: "Passionate about building empathetic user experiences. Leads product design and frontend dev.",
@@ -44,7 +40,7 @@ const teamList: TeamProps[] = [
     ],
   },
   {
-    imageUrl: yiyan,
+    imageUrl: "/assets/team/yiyan.png",
     name: "Yiyan Kong",
     position: "Co-founder · Technical Lead",
     desc: "Oversees architecture and technical vision. Drives innovation and scalability at Moopy.",
@@ -60,7 +56,7 @@ const teamList: TeamProps[] = [
     ],
   },
   {
-    imageUrl: yuhan,
+    imageUrl: "/assets/team/yuhan.jpeg",
     name: "Yuhan Liu",
     position: "Backend Engineer",
     desc: "Specializes in API, data security, and scalable infrastructure powering Moopy’s core.",
@@ -76,7 +72,7 @@ const teamList: TeamProps[] = [
     ],
   },
   {
-    imageUrl: meier,
+    imageUrl: "/assets/team/meier.png",
     name: "Meier Chen",
     position: "Frontend Engineer",
     desc: "Focuses on seamless UI interactions and mental state assessment to enhance user experience.",

@@ -1,13 +1,3 @@
-import angry from "../assets/emoji/angry.png";
-import calm from "../assets/emoji/calm.png";
-import bored from "../assets/emoji/bored.png";
-import content from "../assets/emoji/content.png";
-import ecstatic from "../assets/emoji/ecstatic.png";
-import happy from "../assets/emoji/happy.png";
-import sad from "../assets/emoji/sad.png";
-import tired from "../assets/emoji/tired.png";
-import worried from "../assets/emoji/worried.png";
-
 export enum MoodType {
   Happy = 1,
   Calm = 2,
@@ -21,15 +11,15 @@ export enum MoodType {
 }
 
 export const MoodTypeToEmoji: Record<MoodType, string> = {
-  [MoodType.Happy]: happy,
-  [MoodType.Calm]: calm,
-  [MoodType.Angry]: angry,
-  [MoodType.Sad]: sad,
-  [MoodType.Worried]: worried,
-  [MoodType.Tired]: tired,
-  [MoodType.Bored]: bored,
-  [MoodType.Ecstatic]: ecstatic,
-  [MoodType.Content]: content,
+  [MoodType.Happy]: "/assets/emoji/happy.png",
+  [MoodType.Calm]: "/assets/emoji/calm.png",
+  [MoodType.Angry]: "/assets/emoji/angry.png",
+  [MoodType.Sad]: "/assets/emoji/sad.png",
+  [MoodType.Worried]: "/assets/emoji/worried.png",
+  [MoodType.Tired]: "/assets/emoji/tired.png",
+  [MoodType.Bored]: "/assets/emoji/bored.png",
+  [MoodType.Ecstatic]: "/assets/emoji/ecstatic.png",
+  [MoodType.Content]: "/assets/emoji/content.png",
 };
 
 export const MoodTypeLabelMap: { [key in MoodType]: string } = {
@@ -43,16 +33,6 @@ export const MoodTypeLabelMap: { [key in MoodType]: string } = {
   [MoodType.Ecstatic]: "Ecstatic",
   [MoodType.Content]: "Content",
 };
-
-// export const MoodTypeToColor: { [key in MoodType]: string } = {
-//   [MoodType.Happy]: "#FFD700", // Happy - Yellow
-//   [MoodType.Sad]: "#87CEFA", // Sad - Light Blue
-//   [MoodType.Calm]: "#7ae582", // Confident - Lime Green
-//   [MoodType.Angry]: "#9a031e", // Angry - Tomato Red
-//   [MoodType.Tired]: "#55828b", // Tired - Gray
-//   [MoodType.Content]: "#F49BAB", // Loved - Hot Pink
-//   [MoodType.Ecstatic]: "#DAA520", // Thinking - Goldenrod
-// };
 
 export interface SaveMoodRecordRequest {
   userId: number;

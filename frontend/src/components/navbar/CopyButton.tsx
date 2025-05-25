@@ -1,6 +1,4 @@
 import { useState } from "react";
-import copyIcon from "../../assets/copy.png";
-import checkIcon from "../../assets/check.png";
 
 type CopyButtonProps = {
   text: string;
@@ -39,7 +37,7 @@ export const CopyButton = ({ text }: CopyButtonProps) => {
       title={copied ? "Copied!" : "Copy to clipboard"}
     >
       <img
-        src={copied ? checkIcon : copyIcon}
+        src={copied ? "/assets/check.png" : "/assets/copy.png"}
         alt={copied ? "Copied" : "Copy"}
         className="w-4 h-4"
       />

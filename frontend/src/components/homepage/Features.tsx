@@ -1,8 +1,8 @@
 import { FeatureCard } from "./FeatureCard";
-import client1 from "../../assets/product/client_chatbot.png";
-import client2 from "../../assets/product/client_chatbot.png";
-import therapist1 from "../../assets/product/therapist_dashboard.png";
-import therapist2 from "../../assets/product/therapist_dashboard.png";
+import client1 from "/assets/product/client_chatbot.png";
+import client2 from "/assets/product/client_chatbot.png";
+import therapist1 from "/assets/product/therapist_dashboard.png";
+import therapist2 from "/assets/product/therapist_dashboard.png";
 
 export const Features = () => {
   return (

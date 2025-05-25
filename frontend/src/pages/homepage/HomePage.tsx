@@ -15,13 +15,8 @@ const HomePage = (_: Props) => {
       <Hero />
       <Features />
       {/* <About /> */}
-      {/* <HowItWorks /> */}
-      {/* <Services /> */}
       <Team />
       <Cta />
-
-      {/* <Pricing /> */}
-      {/* <Newsletter /> */}
       <FAQ />
       <Footer />
       <ScrollToTop />

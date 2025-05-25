@@ -1,5 +1,3 @@
-import therapistImg from "../../assets/therapist.png";
-import clientImg from "../../assets/client.png";
 import { useAuth } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { ROUTE_PATHS } from "@/routes/Routes";
@@ -23,7 +21,7 @@ const RoleSelectionPage = () => {
       }
 
       // Role updated successfully
-      updateUser({ role }); 
+      updateUser({ role });
       console.log(`Role set to ${role}`);
       if (role == UserRole.Therapist) {
         navigate(ROUTE_PATHS.THERAPIST_CREDENTIALS);
@@ -55,7 +53,7 @@ const RoleSelectionPage = () => {
         >
           <div className="flex justify-center">
             <img
-              src={therapistImg}
+              src="/assets/therapist.png"
               alt="Therapist Icon"
               className="w-[220px] h-[220px] mt-10"
             />
@@ -75,7 +73,7 @@ const RoleSelectionPage = () => {
         >
           <div className="flex justify-center">
             <img
-              src={clientImg}
+              src="/assets/client.png"
               alt="Client Icon"
               className="w-[220px] h-[220px] mt-10 ml-6"
             />

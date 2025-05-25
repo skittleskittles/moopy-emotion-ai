@@ -13,9 +13,6 @@ import { buttonVariants } from "../components/ui/button";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 
-import moopy from "../assets/moopy.png";
-import logo from "../assets/logo_wo_text.png";
-
 interface RouteProps {
   href: string;
   label: string;
@@ -112,8 +109,16 @@ export const Navbar = () => {
               href="/"
               className="ml-2 flex items-center "
             >
-              <img src={logo} alt="Moopy Logo" className="h-[50px]" />
-              <img src={moopy} alt="Moopy" className="h-[40px] mt-2" />
+              <img
+                src="/assets/logo_wo_text.png"
+                alt="Moopy Logo"
+                className="h-[50px]"
+              />
+              <img
+                src="/assets/moopy.png"
+                alt="Moopy"
+                className="h-[40px] mt-2"
+              />
             </a>
           </NavigationMenuItem>
 

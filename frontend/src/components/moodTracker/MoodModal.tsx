@@ -174,16 +174,6 @@ export const MoodModal: React.FC<MoodModalProps> = ({
                         idx,
                         total
                       );
-                      console.log(
-                        "loopDist: ",
-                        loopDist,
-                        "currentIdx: ",
-                        currentIndex,
-                        "idx: ",
-                        idx,
-                        "total:",
-                        total
-                      );
 
                       if (loopDist > 0) {
                         slider.next();
@@ -241,7 +231,7 @@ export const MoodModal: React.FC<MoodModalProps> = ({
             disabled={diary.trim() === ""}
             className={`w-full py-2 rounded-md font-semibold transition-colors ${
               diary.trim()
-                ? "bg-green-500 text-white hover:bg-green-600"
+                ? "bg-primary text-white hover:bg-primary/80"
                 : "bg-gray-300 text-gray-500 cursor-not-allowed"
             }`}
           >

@@ -9,7 +9,7 @@ import {
 } from "@/models/MoodData";
 
 const api = axios.create({
-  baseURL: "http://34.223.248.166:8081",
+  baseURL: "https://api.moopy-ai.com",
   headers: { "Content-Type": "application/json" },
 });
 

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Button } from "../ui/button";
 
 interface ConnectClientModalProps {
   isOpen: boolean;
@@ -54,7 +55,7 @@ export const ConnectClientModal = ({
           ×
         </button>
 
-        <h2 className="text-center text-2xl font-semibold text-[#5B78C7]">
+        <h2 className="text-center text-2xl font-semibold text-primary">
           Connect with Client
         </h2>
 
@@ -77,18 +78,10 @@ export const ConnectClientModal = ({
 
         {/* Buttons */}
         <div className="flex justify-around">
-          <button
-            onClick={onClose}
-            className="px-6 py-2 rounded-md bg-[#9DB6E0] text-white hover:bg-[#b0c8f0]"
-          >
+          <Button variant="outline" onClick={onClose}>
             Cancel
-          </button>
-          <button
-            onClick={handleConnect}
-            className="px-6 py-2 rounded-md bg-primary text-white"
-          >
-            Connect
-          </button>
+          </Button>
+          <Button onClick={handleConnect}>Connect</Button>
         </div>
       </div>
     </div>

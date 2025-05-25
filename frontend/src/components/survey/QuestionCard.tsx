@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useSurvey } from "../../context/SurveyContext";
+import { Button } from "../ui/button";
 
 interface Props {}
 
@@ -13,13 +14,13 @@ const QuestionCard = (_: Props) => {
   const question = questions[currentIndex];
 
   return (
-    <div className="items-center justify-center mt-12">
+    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-172px)] w-full">
       {/* Question Card */}
-      <div className="bg-white shadow-lg rounded-2xl border border-[#D9D9D9] p-8 max-w-[683px] w-full text-center">
-        <h2 className="text-[50px] font-nobile text-[#664500] mb-4">
+      <div className="bg-white shadow-lg rounded-2xl border border-[#D9D9D9] p-8 max-w-full text-center">
+        <h2 className="text-5xl font-nobile text-primary mb-4">
           Question {currentIndex + 1}
         </h2>
-        <p className="text-[25px] mb-6 font-newsreader leading-[38.4px] text-black text-center tracking-tight">
+        <p className="text-2xl mb-4 font-newsreader leading-[38.4px] text-black text-center tracking-tight">
           {question.question}
         </p>
 
@@ -30,7 +31,7 @@ const QuestionCard = (_: Props) => {
               key={index}
               className={`w-full py-3 px-4 text-lg rounded-lg border transition  ${
                 selectedIndex === index
-                  ? "bg-[#8785a2] text-white border-gray-300"
+                  ? "bg-primary/80 text-white border-gray-300"
                   : "bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200"
               }`}
               onClick={() => !isSubmitted && setSelectedIndex(index)}
@@ -42,8 +43,8 @@ const QuestionCard = (_: Props) => {
         </div>
 
         {/* Next */}
-        <button
-          className="mt-4 px-6 py-2 bg-primary text-white rounded-lg hover:bg-[#769fcd] disabled:bg-gray-400"
+        <Button
+          className="mt-4"
           onClick={() => {
             if (selectedIndex !== null) {
               dispatch({
@@ -61,12 +62,12 @@ const QuestionCard = (_: Props) => {
           disabled={selectedIndex === null || isSubmitted}
         >
           {currentIndex + 1 === questions.length ? "Finish" : "Next"}
-        </button>
+        </Button>
       </div>
 
       {/* Schedule */}
-      <div className="mt-6 text-center">
-        <p className="text-[18px] leading-[28.8px] font-nobile text-black tracking-tight">
+      <div className="mt-4 text-center">
+        <p className="text-lg font-nobile text-black tracking-tight">
           Question {currentIndex + 1} of {questions.length}
         </p>
       </div>

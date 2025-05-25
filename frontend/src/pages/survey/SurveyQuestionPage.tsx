@@ -101,8 +101,8 @@ const SurveyQuestionPage = () => {
   return (
     <div className="flex flex-col items-center justify-center">
       {/* Banner */}
-      <div className="w-full h-[150px] bg-[#FFD8D8] flex items-center justify-center">
-        <h1 className="text-[55px] leading-[76.8px] font-serif text-[#0F0F0E] tracking-tight">
+      <div className="w-full h-28 bg-secondary flex items-center justify-center">
+        <h1 className="text-5xl font-serif text-[#0F0F0E] tracking-tight">
           Take our quick test
         </h1>
       </div>

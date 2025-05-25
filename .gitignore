@@ -2,3 +2,4 @@
 .idea/
 *.iml
 out/
+backend/capstone-project/src/main/resources/application.properties

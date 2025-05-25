@@ -59,6 +59,7 @@ export interface SaveMoodRecordRequest {
   moodType: MoodType;
   moodDesc: string; // e.g., "😊Happy"
   moodDiary: string; // e.g., "今天心情很不错"
+  recordDate: string; // "YYYY-MM-DD"
 }
 
 export interface SaveMoodRecordResponse {
@@ -80,11 +81,20 @@ export interface ListMoodRecordsRequest {
   year: number;
 }
 
+export function toDateKey(year: number, month: number, day: number): string {
+  const paddedMonth = String(month).padStart(2, "0");
+  const paddedDay = String(day).padStart(2, "0");
+  return `${year}-${paddedMonth}-${paddedDay}`;
+}
+
 export interface MoodRecord {
   moodId: number;
   userId: number;
   moodType: MoodType;
   moodDiary: string;
+  year: number;
+  month: number;
+  day: number;
   createdAt: string;
   modifiedAt: string;
 }

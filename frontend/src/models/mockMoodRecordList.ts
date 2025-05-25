@@ -41,6 +41,9 @@ for (let month = 0; month < 5; month++) {
       modifiedAt: `2025-${String(month + 1).padStart(2, "0")}-${String(
         day
       ).padStart(2, "0")}T10:05:00Z`,
+      year: 2025,
+      month: month + 1,
+      day: day,
     });
   }
 }

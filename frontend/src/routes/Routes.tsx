@@ -16,7 +16,6 @@ import ChatPage from "../pages/chat/ChatPage";
 import ProfilePage from "../pages/profile/ProfilePage";
 
 import MoodTracker from "@/pages/moodtraker/MoodTracker";
-import MoodDay from "@/pages/moodtraker/MoodDay";
 import YearTracker from "@/pages/moodtraker/YearTracker";
 
 import TherapistDashboardPage from "@/pages/dashboard/TherapistDashboardPage";
@@ -75,9 +74,7 @@ export const router = createBrowserRouter([
       { path: ROUTE_PATHS.CHAT, element: <ChatPage /> },
       { path: ROUTE_PATHS.PROFILE, element: <ProfilePage /> },
 
-      // ➤ 添加 Mood Tracker 和 MoodDay 页面
       { path: ROUTE_PATHS.MOOD_TRACKER, element: <MoodTracker /> },
-      { path: ROUTE_PATHS.MOOD_DAY, element: <MoodDay /> },
       { path: ROUTE_PATHS.YEAR_TRACKER, element: <YearTracker /> },
 
       {

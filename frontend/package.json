@@ -21,7 +21,7 @@
     "build": "tsc && vite build --mode development",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "deploy": "npm run build && aws s3 sync dist/ s3://www.moopy.com --acl public-read"
+    "deploy": "npm run build && aws s3 sync dist/ s3://www.moopy-ai.com --acl public-read"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.3",

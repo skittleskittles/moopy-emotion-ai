@@ -479,7 +479,7 @@ const ChatPage = (_: Props) => {
               </div>
             ))
           ) : (
-            <p className="text-2xl font-semibold text-center text-[#393e46] mt-10 px-6">
+            <p className="text-3xl font-bold font-newsreader text-center mt-10 px-6">
               Hi! I’m <span className="text-primary">Moopy</span>, your AI Mood
               Companion. How are you feeling today?{" "}
               <span className="text-yellow-500 text-3xl">😊</span>

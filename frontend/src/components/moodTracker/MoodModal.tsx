@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { useKeenSlider } from "keen-slider/react";
 import { MoodType, MoodTypeLabelMap, MoodTypeToEmoji } from "@/models/MoodData";
@@ -24,8 +24,6 @@ export const MoodModal: React.FC<MoodModalProps> = ({
   onSaved,
   initialMood,
 }) => {
-  const containerRef = useRef<HTMLDivElement | null>(null);
-
   const moodKeys = Object.keys(MoodTypeToEmoji).map(Number); // [1,2,...]
   const emojiToMoodType: { [key: string]: MoodType } = Object.entries(
     MoodTypeToEmoji
@@ -42,7 +40,7 @@ export const MoodModal: React.FC<MoodModalProps> = ({
     loop: true,
     mode: "snap",
     slides: { perView: 3, spacing: 12, origin: "center" },
-    initial: 0,
+    initial: moodKeys.indexOf(moodType),
     created(slider) {
       if (initialMood?.emoji) {
         const type = emojiToMoodType[initialMood.emoji];
@@ -51,6 +49,34 @@ export const MoodModal: React.FC<MoodModalProps> = ({
           slider.moveToIdx(idx, true);
         }
       }
+      // ✅ Wheel handler binding
+      const handleWheel = (e: WheelEvent) => {
+        e.preventDefault();
+        // 以水平滑动为主
+        if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+          if (e.deltaX > 0) {
+            slider.next();
+          } else {
+            slider.prev();
+          }
+        } else {
+          // 可选：如果是竖向滚动时也触发左右
+          if (e.deltaY > 0) {
+            slider.next();
+          } else {
+            slider.prev();
+          }
+        }
+      };
+
+      slider.container.addEventListener("wheel", handleWheel, {
+        passive: false,
+      });
+
+      // ✅ Unbind on destroy
+      slider.on("destroyed", () => {
+        slider.container.removeEventListener("wheel", handleWheel);
+      });
     },
     slideChanged(slider) {
       const rel = slider.track.details.rel;
@@ -61,21 +87,6 @@ export const MoodModal: React.FC<MoodModalProps> = ({
       setMoodType(newMood);
     },
   });
-
-  // Handle mouse wheel scrolling
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container || !instanceRef.current) return;
-
-    const handleWheel = (e: WheelEvent) => {
-      e.preventDefault();
-      if (e.deltaY > 0) instanceRef.current!.next();
-      else instanceRef.current!.prev();
-    };
-
-    container.addEventListener("wheel", handleWheel, { passive: false });
-    return () => container.removeEventListener("wheel", handleWheel);
-  }, [instanceRef]);
 
   // Set mood/diary from initial value
   useEffect(() => {
@@ -92,11 +103,13 @@ export const MoodModal: React.FC<MoodModalProps> = ({
 
   const handleSave = async () => {
     try {
+      const recordDate = date ?? new Date().toISOString().split("T")[0]; // fallback 当前日期
       await saveMoodRecord({
         userId,
         moodType,
         moodDesc: MoodTypeToEmoji[moodType],
         moodDiary: diary,
+        recordDate: recordDate,
       });
       onOpenChange(false);
       onSaved?.();
@@ -104,6 +117,12 @@ export const MoodModal: React.FC<MoodModalProps> = ({
       console.error("❌ Save error", err);
     }
   };
+
+  function getLoopDistance(from: number, to: number, total: number) {
+    const forward = (to - from + total) % total;
+    const backward = (from - to + total) % total;
+    return forward <= backward ? forward : -backward;
+  }
 
   return (
     <Dialog.Root
@@ -119,7 +138,7 @@ export const MoodModal: React.FC<MoodModalProps> = ({
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 bg-black/30 z-40" />
         <Dialog.Content className="fixed z-50 left-1/2 top-1/2 w-[90%] max-w-md -translate-x-1/2 -translate-y-1/2 bg-white p-6 rounded-xl shadow-xl">
-          <Dialog.Title className="text-xl font-bold text-center mb-4">
+          <Dialog.Title className="text-xl text-primary font-newsreader font-bold text-center mb-4">
             How are you feeling on {date}?
           </Dialog.Title>
 
@@ -130,18 +149,14 @@ export const MoodModal: React.FC<MoodModalProps> = ({
               alt="Selected mood"
               className="w-20 h-20 mb-2"
             />
-            <p className="text-lg font-medium">{MoodTypeLabelMap[moodType]}</p>
+            <p className="text-base font-mono font-medium">
+              {MoodTypeLabelMap[moodType]}
+            </p>
           </div>
 
           {/* Emoji Carousel */}
           <div className="relative mb-4">
-            <div
-              ref={(node) => {
-                containerRef.current = node; // for wheel event
-                sliderRef(node); // for keen-slider
-              }}
-              className="keen-slider"
-            >
+            <div ref={sliderRef} className="keen-slider">
               {moodKeys.map((mood, idx) => {
                 const isActive = idx === currentIndex;
                 return (
@@ -149,8 +164,32 @@ export const MoodModal: React.FC<MoodModalProps> = ({
                     key={mood}
                     className="keen-slider__slide flex justify-center items-center"
                     onClick={() => {
-                      setMoodType(mood);
-                      instanceRef.current?.moveToIdx(idx, true);
+                      const slider = instanceRef.current;
+                      if (!slider) return;
+
+                      const total = moodKeys.length;
+
+                      const loopDist = getLoopDistance(
+                        currentIndex,
+                        idx,
+                        total
+                      );
+                      console.log(
+                        "loopDist: ",
+                        loopDist,
+                        "currentIdx: ",
+                        currentIndex,
+                        "idx: ",
+                        idx,
+                        "total:",
+                        total
+                      );
+
+                      if (loopDist > 0) {
+                        slider.next();
+                      } else if (loopDist < 0) {
+                        slider.prev();
+                      }
                     }}
                   >
                     <div className="relative">
@@ -170,18 +209,17 @@ export const MoodModal: React.FC<MoodModalProps> = ({
                 );
               })}
             </div>
-
             {/* Arrows */}
-            <div className="flex justify-between absolute top-1/2 w-full px-2 -translate-y-1/2">
+            <div className="flex justify-between absolute top-1/2 w-full px-2 -translate-y-1/2 pointer-events-none">
               <button
                 onClick={() => instanceRef.current?.prev()}
-                className="text-2xl text-gray-500 hover:text-black"
+                className="text-2xl text-gray-500 hover:text-black pointer-events-auto"
               >
                 ←
               </button>
               <button
                 onClick={() => instanceRef.current?.next()}
-                className="text-2xl text-gray-500 hover:text-black"
+                className="text-2xl text-gray-500 hover:text-black pointer-events-auto"
               >
                 →
               </button>
@@ -203,7 +241,7 @@ export const MoodModal: React.FC<MoodModalProps> = ({
             disabled={diary.trim() === ""}
             className={`w-full py-2 rounded-md font-semibold transition-colors ${
               diary.trim()
-                ? "bg-primary text-white hover:bg-primary/80"
+                ? "bg-green-500 text-white hover:bg-green-600"
                 : "bg-gray-300 text-gray-500 cursor-not-allowed"
             }`}
           >

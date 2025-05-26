@@ -1,20 +1,12 @@
 import { ClientDetailVo } from "@/models/ClientDetail";
 import { FaRegCalendarAlt } from "react-icons/fa";
+import { formatDate } from "@/models/ClientDetail";
 
 interface ClientProfileCardProps {
   clientDetail: ClientDetailVo;
 }
 
 export const ClientProfileCard = ({ clientDetail }: ClientProfileCardProps) => {
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      timeZone: "America/Los_Angeles",
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-    });
-  };
 
   return (
     <div className="w-full bg-white shadow-lg rounded-xl p-6 flex items-center justify-between">

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { ConnectType, ConnectionListResponse } from "@/models/Connection";
+import { SaveSurveyRecordReq } from "@/models/Survey";
 import { GetClientDetailResponse } from "@/models/ClientDetail";
 import {
   SaveMoodRecordRequest,
@@ -105,8 +106,8 @@ export const getClientDetail = async (
 };
 
 /* Survey */
-export const surveySaveRecord = async (userId: number, score: number) => {
-  const response = await api.post("/question/saveRecord", { userId, score });
+export const surveySaveRecord = async (payload: SaveSurveyRecordReq) => {
+  const response = await api.post("/question/saveRecord", payload);
   return response.data;
 };
 

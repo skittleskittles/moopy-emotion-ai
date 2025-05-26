@@ -42,7 +42,7 @@ export const FeatureCard: React.FC<FeatureSectionProps> = ({
         </div>
 
         {/* Picture Scroller */}
-        <div className="w-full md:w-1/2">
+        <div className="w-full max-w-3xl">
           <PictureScroller screenshots={screenshots} />
         </div>
       </div>

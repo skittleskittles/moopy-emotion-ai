@@ -5,12 +5,7 @@ import {
   useEffect,
   ReactNode,
 } from "react";
-
-interface Question {
-  question: string;
-  options: string[];
-  points: number[];
-}
+import { Question } from "@/models/Survey";
 
 interface State {
   questions: Question[];
@@ -32,7 +27,14 @@ type ActionType =
   | { type: "setQuestions"; payload: Question[] }
   | { type: "setLoading"; payload: boolean }
   | { type: "setError"; payload: string }
-  | { type: "answerQuestion"; payload: number }
+  | {
+      type: "answerQuestion";
+      payload: {
+        index: number; // 当前题目 index
+        selectedIndex: number; // 用户选择的选项 index
+        points: number; // 当前题目该选项的分数
+      };
+    }
   | { type: "nextQuestion" }
   | { type: "restart" };
 
@@ -50,7 +52,16 @@ function surveyReducer(state: State, action: ActionType): State {
     case "setError":
       return { ...state, isLoading: false, error: action.payload };
     case "answerQuestion":
-      return { ...state, score: action.payload + state.score };
+      const updatedQs = [...state.questions];
+      updatedQs[action.payload.index] = {
+        ...updatedQs[action.payload.index],
+        selectedIndex: action.payload.selectedIndex,
+      };
+      return {
+        ...state,
+        questions: updatedQs,
+        score: state.score + action.payload.points,
+      };
     case "nextQuestion":
       return { ...state, currentIndex: state.currentIndex + 1 };
     case "restart":

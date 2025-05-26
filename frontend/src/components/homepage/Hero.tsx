@@ -11,7 +11,7 @@ export const Hero = () => {
   const { user, isLoggedIn } = useAuth();
 
   return (
-    <section className="relative bg-white text-center py-24 md:py-40 overflow-hidden">
+    <section id="about" className="relative bg-white text-center py-24 md:py-40 overflow-hidden">
       {/* 渐变背景 */}
       <div className="absolute inset-0 z-0 flex items-center justify-center">
         <div className="w-[80%] h-[80%] bg-gradient-to-tr from-[#6782B8] via-[#ba839f] to-[#FFC6C6] rounded-full blur-3xl opacity-40"></div>

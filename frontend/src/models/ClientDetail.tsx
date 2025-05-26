@@ -4,11 +4,11 @@ export interface ClientDetailVo {
   userId: number;
   username: string;
   fullName: string;
-  score: number;
   connectedDate: string;
   lastLoginDate: string;
   conversationList: ConversationVo[];
   moodRecordList: MoodRecord[];
+  surveyHistoryList: SurveyHistoryVO[];
 }
 
 export interface ConversationVo {
@@ -28,17 +28,34 @@ export interface ChatVo {
   sensitiveFlag: number;
 }
 
+export interface SurveyHistoryVO {
+  userId: number; // 用户 id
+  scaledScore: number; // 按比例放大的分数
+  originalScore: number; // 原始分数
+  surveyId: number; // 本次 survey 的唯一 id
+  detailList: SurveyDetailVO[]; // 每题详情
+}
+
+export interface SurveyDetailVO {
+  userId: number; // 用户 id
+  surveyId: number; // 当前 survey 的唯一 id
+  questionNumber: number; // 题号，1-20
+  answerIndex: number; // 1-A, 2-B, 3-C, 4-D
+  createdAt: string; // 创建时间 (ISO 格式字符串)
+  modifiedAt: string; // 修改时间
+}
+
 export interface GetClientDetailResponse {
   code: number;
   message: string;
   data: ClientDetailVo;
 }
 
-export interface SurveyRecord {
-  date: string; // e.g. '2025-05-01'
-  score: number;
-  responses: number[]; // index = questionId, value = selectedOptionIndex (0-3)
-}
+// export interface SurveyRecord {
+//   date: string; // e.g. '2025-05-01'
+//   score: number;
+//   responses: number[]; // index = questionId, value = selectedOptionIndex (0-3)
+// }
 
 export const getLevelFromScore = (score: number): number => {
   if (score <= 49) return 1; // Normal
@@ -66,4 +83,14 @@ export const getScoreColor = (score: number) => {
   if (score <= 59) return "text-[#a16207]"; // Mild (yellow-700)
   if (score <= 69) return "text-[#92400e]"; // Moderate (amber-700)
   return "text-[#b91c1c]"; // Severe (red-600)
+};
+
+export const formatDate = (dateString: string) => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString("en-US", {
+    timeZone: "America/Los_Angeles",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
 };

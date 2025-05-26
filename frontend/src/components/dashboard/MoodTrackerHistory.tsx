@@ -1,9 +1,10 @@
 import React from "react";
-import { format, addMonths, subMonths } from "date-fns";
+import { format, addMonths } from "date-fns";
 import {
   MoodRecord,
   MoodTypeLabelMap,
   MoodTypeToEmoji,
+  toDateKey,
 } from "@/models/MoodData";
 import * as Tooltip from "@radix-ui/react-tooltip";
 
@@ -17,7 +18,7 @@ export const ClientMoodTrackerHistory: React.FC<
 > = ({ moodRecordList, expanded }) => {
   /* calculate visible months */
   const sortedDates = moodRecordList
-    .map((r) => new Date(r.createdAt))
+    .map((r) => new Date(r.year, r.month - 1, r.day)) // month 要减 1
     .sort((a, b) => a.getTime() - b.getTime());
 
   const firstRecordDate = sortedDates[0] || new Date();
@@ -28,27 +29,14 @@ export const ClientMoodTrackerHistory: React.FC<
     (lastRecordDate.getFullYear() - firstRecordDate.getFullYear()) * 12 +
     (lastRecordDate.getMonth() - firstRecordDate.getMonth());
 
-  let startFrom: Date;
-  let visibleMonthCount: number;
-
-  if (monthDiff > 11) {
-    // 数据跨度超过 12 个月, 显示完整范围
-    startFrom = new Date(
-      firstRecordDate.getFullYear(),
-      firstRecordDate.getMonth(),
-      1
-    );
-    visibleMonthCount = monthDiff + 1; // +1 因为同年同月 diff 为 0，但要显示当月
-  } else {
-    // 数据跨度较小, 补齐 12 个月，从 firstRecordDate 往前推 1 个月
-    const fallbackStart = subMonths(firstRecordDate, 1);
-    startFrom = new Date(
-      fallbackStart.getFullYear(),
-      fallbackStart.getMonth(),
-      1
-    );
-    visibleMonthCount = 12;
-  }
+  let startFrom = new Date(
+    firstRecordDate.getFullYear(),
+    firstRecordDate.getMonth(),
+    1
+  );
+  let visibleMonthCount = monthDiff > 11 ? monthDiff + 1 : 12;
+  // monthDiff+1: 因为同年同月 diff 为 0，但要显示当月
+  // 12: 数据跨度较小, 补齐 12 个月
 
   // 生成 visibleMonths 列表
   const visibleMonths = Array.from({ length: visibleMonthCount }).map(
@@ -73,7 +61,7 @@ export const ClientMoodTrackerHistory: React.FC<
   } = {};
 
   moodRecordList.forEach((record) => {
-    const dateKey = record.createdAt.split("T")[0]; // yyyy-MM-dd
+    const dateKey = toDateKey(record.year, record.month, record.day); // yyyy-MM-dd
     moodMap[dateKey] = {
       mood: MoodTypeLabelMap[record.moodType] || "",
       emoji: MoodTypeToEmoji[record.moodType] || "",
@@ -103,7 +91,7 @@ export const ClientMoodTrackerHistory: React.FC<
                   const moodData = moodMap[dateKey];
                   const tooltipText =
                     moodData?.emoji && moodData?.diary
-                      ? `Day ${moodData.date}: ${moodData.diary}`
+                      ? `Day ${dayIdx + 1}: ${moodData.diary}`
                       : undefined;
 
                   return (

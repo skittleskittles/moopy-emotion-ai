@@ -67,7 +67,7 @@ const teamList: TeamProps[] = [
       },
       {
         name: "Github",
-        url: "https://github.com/",
+        url: "https://github.com/jasonliu62",
       },
     ],
   },
@@ -83,7 +83,7 @@ const teamList: TeamProps[] = [
       },
       {
         name: "Github",
-        url: "https://github.com/",
+        url: "https://github.com/Alice-Chen37",
       },
     ],
   },

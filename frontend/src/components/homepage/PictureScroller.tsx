@@ -35,13 +35,13 @@ export const PictureScroller: React.FC<Props> = ({ screenshots }) => {
   if (!screenshots.length) return null;
 
   return (
-    <div className="relative group max-w-5xl mx-auto rounded-[30px] overflow-hidden shadow-xl bg-white">
+    <div className="relative group max-w-6xl mx-auto rounded-2xl overflow-hidden shadow-md bg-white">
       {/* Background blur glow */}
       <div className="absolute inset-0 z-0 border border-gray-200 bg-gradient-to-br from-[#fef3c7] via-white to-[#fde68a] blur-2xl opacity-60" />
 
       <button
         onClick={scrollLeft}
-        className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-white p-2 rounded-full shadow-md hidden group-hover:flex"
+        className="absolute left-0 top-1/2 transform -translate-y-1/2 z-50 p-2 bg-white rounded-full shadow-md hidden group-hover:flex"
       >
         ◀
       </button>
@@ -63,13 +63,15 @@ export const PictureScroller: React.FC<Props> = ({ screenshots }) => {
           {screenshots.map((src, i) => (
             <div
               key={i}
-              className="flex items-center justify-center flex-shrink-0"
-              style={{ width: `${100 / screenshots.length}%` }}
+              className="flex items-center justify-center flex-shrink-0 px-4 aspect-[16/9]"
+              style={{
+                width: `${100 / screenshots.length}%`,
+              }}
             >
               <img
                 src={src}
                 alt={`Screenshot ${i + 1}`}
-                className="h-[360px] w-auto object-contain rounded-xl shadow-xl border border-gray-200"
+                className="w-full h-auto object-contain rounded-xl  border border-gray-200"
                 loading="lazy"
               />
             </div>
@@ -79,13 +81,13 @@ export const PictureScroller: React.FC<Props> = ({ screenshots }) => {
 
       <button
         onClick={scrollRight}
-        className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-white p-2 rounded-full shadow-md hidden group-hover:flex"
+        className="absolute right-0 top-1/2 transform -translate-y-1/2 z-50 bg-white p-2 rounded-full shadow-md hidden group-hover:flex"
       >
         ▶
       </button>
 
       {/* Dots */}
-      <div className="mt-4 flex justify-center gap-2 relative z-10">
+      <div className="my-2 flex justify-center gap-2 relative z-10">
         {screenshots.map((_, i) => (
           <button
             key={i}

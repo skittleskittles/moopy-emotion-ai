@@ -1,5 +1,5 @@
 import {
-  SurveyRecord,
+  SurveyHistoryVO,
   getScoreColor,
   getLevelFromScore,
   getScoreCategory,
@@ -7,8 +7,8 @@ import {
 import { ScoreTrendChart } from "./ScoreTrendChart";
 
 interface ClientSurveyScoreSummaryProps {
-  latestRecord: SurveyRecord;
-  scoreHistory: SurveyRecord[];
+  latestRecord: SurveyHistoryVO;
+  scoreHistory: SurveyHistoryVO[];
   expanded: boolean;
 }
 
@@ -79,8 +79,8 @@ export const ClientSurveyScoreSummary: React.FC<
         {/* Signal bars and level display */}
         <div className={`flex items-end mt-1 space-x-3`}>
           {Array.from({ length: 4 }).map((_, idx) => {
-            let filledBars = getLevelFromScore(latestRecord.score);
-            let bgColor = getBarColor(latestRecord.score, idx, filledBars);
+            let filledBars = getLevelFromScore(latestRecord.originalScore);
+            let bgColor = getBarColor(latestRecord.originalScore, idx, filledBars);
 
             let barHeights = ["h-4", "h-6", "h-8", "h-10"]; // increasing height
             if (expanded) {
@@ -100,17 +100,17 @@ export const ClientSurveyScoreSummary: React.FC<
           {expanded ? (
             <p className="font-bold">
               <span className="text-4xl font-bold text-gray-700">
-                {getLevelFromScore(latestRecord.score)}
+                {getLevelFromScore(latestRecord.originalScore)}
               </span>
               <span
-                className={`ml-2 ${getScoreColor(latestRecord.score)} text-lg`}
+                className={`ml-2 ${getScoreColor(latestRecord.originalScore)} text-lg`}
               >
-                ({getScoreCategory(latestRecord.score)})
+                ({getScoreCategory(latestRecord.originalScore)})
               </span>
             </p>
           ) : (
             <div className="ml-2 text-4xl font-bold text-gray-700">
-              {getLevelFromScore(latestRecord.score)}
+              {getLevelFromScore(latestRecord.originalScore)}
             </div>
           )}
         </div>

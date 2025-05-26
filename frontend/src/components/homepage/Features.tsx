@@ -1,8 +1,4 @@
 import { FeatureCard } from "./FeatureCard";
-import client1 from "/assets/product/client_chatbot.png";
-import client2 from "/assets/product/client_chatbot.png";
-import therapist1 from "/assets/product/therapist_dashboard.png";
-import therapist2 from "/assets/product/therapist_dashboard.png";
 
 export const Features = () => {
   return (
@@ -13,7 +9,13 @@ export const Features = () => {
         description="Moopy provides a private space to explore your feelings, track your mood, and chat with a supportive AI companion.
                     You can reflect anytime—whether you’re having a tough day or making progress.
                     Your therapist can see these insights to help guide your in-person sessions."
-        screenshots={[client1, client2]}
+        screenshots={[
+          "/assets/product/client_chatbot1.png",
+          "/assets/product/client_chatbot2.png",
+          "/assets/product/client_survey1.png",
+          "/assets/product/client_mood1.png",
+          "/assets/product/client_mood2.png",
+        ]}
         features={[
           {
             icon: "💬",
@@ -44,7 +46,15 @@ export const Features = () => {
         description="Moopy gives you valuable context between in-person sessions. 
         Access mood trends, AI chat summaries, and client check-in reflections—all in one place. 
         Stay connected while maintaining boundaries and control."
-        screenshots={[therapist1, therapist2]}
+        screenshots={[
+          "/assets/product/therapist_dashboard0.png",
+          "/assets/product/therapist_dashboard1.png",
+          "/assets/product/therapist_dashboard_chat1.png",
+          "/assets/product/therapist_dashboard_chat2.png",
+          "/assets/product/therapist_dashboard_survey1.png",
+          "/assets/product/therapist_dashboard_survey2.png",
+          "/assets/product/therapist_dashboard_mood1.png",
+        ]}
         reverse
         features={[
           {

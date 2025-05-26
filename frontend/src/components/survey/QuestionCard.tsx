@@ -49,7 +49,11 @@ const QuestionCard = (_: Props) => {
             if (selectedIndex !== null) {
               dispatch({
                 type: "answerQuestion",
-                payload: question.points[selectedIndex],
+                payload: {
+                  index: currentIndex,
+                  selectedIndex: selectedIndex, // 用户点了哪个按钮（0-3）
+                  points: question.points[selectedIndex], // 该选项对应的分值
+                },
               });
               setIsSubmitted(true);
               setTimeout(() => {

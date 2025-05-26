@@ -1,4 +1,4 @@
-import { SurveyRecord, getLevelLabel } from "@/models/ClientDetail";
+import { SurveyHistoryVO, getLevelLabel } from "@/models/ClientDetail";
 import {
   ResponsiveContainer,
   LineChart,
@@ -12,20 +12,20 @@ import {
 import { startOfMonth, endOfMonth } from "date-fns";
 
 interface Props {
-  scoreHistory: SurveyRecord[];
+  scoreHistory: SurveyHistoryVO[];
 }
 
 export const ScoreTrendChart: React.FC<Props> = ({ scoreHistory }) => {
   if (scoreHistory.length === 0) return null;
 
-  const firstDate = new Date(scoreHistory[0].date);
+  const firstDate = new Date(scoreHistory[0].detailList[0].createdAt);
   const startDate = startOfMonth(firstDate);
   const endDate = endOfMonth(new Date());
 
   const chartData = scoreHistory.map((item) => {
     return {
-      ...item,
-      date: new Date(item.date).getTime(),
+      score: item.originalScore,
+      date: new Date(item.detailList[0].createdAt).getTime(),
     };
   });
 

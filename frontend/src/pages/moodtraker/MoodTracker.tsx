@@ -43,6 +43,18 @@ function MoodTracker() {
       });
 
       setMoodData(newMoodData);
+
+      // if no mood for today, auto open mood modal
+      const today = new Date();
+      const todayKey = format(today, "yyyy-MM-dd");
+      const isSameMonth =
+        today.getMonth() === currentMonth.getMonth() &&
+        today.getFullYear() === currentMonth.getFullYear();
+
+      if (isSameMonth && !newMoodData[todayKey]) {
+        setSelectedDate(todayKey);
+        setModalOpen(true);
+      }
     } catch (error) {
       console.error("❌ Failed to fetch mood data", error);
     }
@@ -81,6 +93,7 @@ function MoodTracker() {
         {/* 日历主体 */}
         <div className="w-[35%]">
           <CalendarGrid
+            key={format(currentMonth, "yyyy-MM")}
             currentMonth={currentMonth}
             moodData={moodData}
             onDayClick={handleDayClick}

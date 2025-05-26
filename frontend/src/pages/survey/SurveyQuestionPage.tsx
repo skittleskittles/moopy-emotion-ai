@@ -31,11 +31,19 @@ const SurveyQuestionPage = () => {
     setSubmitError("");
 
     try {
-      const res = await surveySaveRecord(user.id, score * 1.25);
+      const detailList = questions.map((q, i) => ({
+        questionNumber: i + 1,
+        answerIndex: (q.selectedIndex ?? 0) + 1, // 1-based: A=1, B=2, ...
+      }));
+
+      const res = await surveySaveRecord({
+        userId: user.id,
+        score: score * 1.25,
+        detailList,
+      });
       if (res.code !== 0) {
         throw new Error("Failed to save score");
       }
-
       await saveBotMsg(); // 确保 bot 消息保存后才跳转
 
       setTimeout(() => {

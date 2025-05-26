@@ -13,7 +13,7 @@ const SurveyPage = () => {
         </h1>
       </div>
 
-      <p className="mx-auto text-lg font-mono text-[#A9A6A6] mb-[10%]">
+      <p className="mx-4 text-lg font-mono text-[#A9A6A6] mb-[10%]">
         Our online mental health tests can help make sense of your feelings and
         could be the first step towards getting the right help.
       </p>

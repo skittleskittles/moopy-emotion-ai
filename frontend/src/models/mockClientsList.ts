@@ -2,18 +2,18 @@ import { ConnectionVO } from "./Connection";
 export const mockConnections: ConnectionVO[] = [
   {
     therapistId: 1,
-    therapistName: "Dr. Emily Carter",
+    therapistName: "Dr. Lisa Chen",
     therapistCode: "THR-1001",
     clientId: 101,
-    clientName: "Alice Johnson",
+    clientName: "Alex M.",
     clientCode: "CLT-2025-A",
-    connectDate: "2025-04-22T08:00:00Z",
-    lastActiveDate: "2025-04-28T08:00:00Z",
+    connectDate: "2025-03-25T08:00:00Z",
+    lastActiveDate: "2025-05-25T08:00:00Z",
     remark: "Needs help managing school stress",
   },
   {
     therapistId: 1,
-    therapistName: "Dr. Emily Carter",
+    therapistName: "Dr. Lisa Chen",
     therapistCode: "THR-1001",
     clientId: 102,
     clientName: "Michael Lee",
@@ -24,7 +24,7 @@ export const mockConnections: ConnectionVO[] = [
   },
   {
     therapistId: 1,
-    therapistName: "Dr. Emily Carter",
+    therapistName: "Dr. Lisa Chen",
     therapistCode: "THR-1001",
     clientId: 103,
     clientName: "Sophia Nguyen",
@@ -35,7 +35,7 @@ export const mockConnections: ConnectionVO[] = [
   },
   {
     therapistId: 1,
-    therapistName: "Dr. Emily Carter",
+    therapistName: "Dr. Lisa Chen",
     therapistCode: "THR-1001",
     clientId: 104,
     clientName: "James Smith",
@@ -46,7 +46,7 @@ export const mockConnections: ConnectionVO[] = [
   },
   {
     therapistId: 1,
-    therapistName: "Dr. Emily Carter",
+    therapistName: "Dr. Lisa Chen",
     therapistCode: "THR-1001",
     clientId: 105,
     clientName: "Lily Chen",

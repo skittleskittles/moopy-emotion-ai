@@ -8,8 +8,8 @@ import { ClientChatHistory } from "../../components/dashboard/ChatHistory";
 import { ClientProfileCard } from "../../components/dashboard/ClientProfileCard";
 import { ClientMoodTrackerHistory } from "../../components/dashboard/MoodTrackerHistory";
 import { ClientSurveyHistory } from "../../components/dashboard/SurveyHistory";
-import { mockMoodRecordList } from "@/models/mockMoodRecordList";
-import { mockSurveyHistory } from "@/models/mockSurveyRecordList";
+// import { mockMoodRecordList } from "@/models/mockMoodRecordList";
+// import { mockSurveyHistory } from "@/models/mockSurveyRecordList";
 
 const ClientDetailPage = () => {
   const location = useLocation();
@@ -76,7 +76,7 @@ const ClientDetailPage = () => {
 
               <div className="flex flex-1 flex-col min-h-0 bg-gray-100 rounded-lg p-2">
                 <ClientSurveyHistory
-                  scoreHistory={mockSurveyHistory}
+                  scoreHistory={clientDetail.surveyHistoryList}
                   expanded={showSurveyModal}
                 />
               </div>
@@ -128,8 +128,7 @@ const ClientDetailPage = () => {
             {/* Mood Tracker Preview */}
             <div className="flex flex-1 flex-col min-h-0 bg-gray-100 rounded-lg p-4">
               <ClientMoodTrackerHistory
-                // moodRecordList={clientDetail.moodRecordList}
-                moodRecordList={mockMoodRecordList}
+                moodRecordList={clientDetail.moodRecordList}
                 expanded={showMoodModal}
               />
             </div>
@@ -176,8 +175,7 @@ const ClientDetailPage = () => {
 
             <div className="h-full bg-gray-100 rounded-lg p-4 overflow-auto">
               <ClientMoodTrackerHistory
-                // moodRecordList={clientDetail.moodRecordList}
-                moodRecordList={mockMoodRecordList}
+                moodRecordList={clientDetail.moodRecordList}
                 expanded={showMoodModal}
               />
             </div>
@@ -200,7 +198,7 @@ const ClientDetailPage = () => {
             </h2>
             <div className="h-full overflow-auto">
               <ClientSurveyHistory
-                scoreHistory={mockSurveyHistory}
+                scoreHistory={clientDetail.surveyHistoryList}
                 expanded={showSurveyModal}
               />
             </div>

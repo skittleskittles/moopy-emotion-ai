@@ -3,6 +3,7 @@ package dev.capstonebackend.capstone_project.vo;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -23,4 +24,6 @@ public class SurveyVO {
     private Long surveyId;
 
     private List<SurveyDetailVO> detailList;
+
+    private Date createdAt;
 }

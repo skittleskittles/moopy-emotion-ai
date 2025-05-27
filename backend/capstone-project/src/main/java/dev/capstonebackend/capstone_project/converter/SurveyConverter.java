@@ -39,6 +39,7 @@ public class SurveyConverter {
                     .surveyId(surveyBO.getSurveyId())
                     .detailList(surveyBO.getDetailList().stream()
                             .map(SurveyConverter::surveyDetailToVO).toList())
+                    .createdAt(surveyBO.getCreatedAt())
                     .build();
             surveyVOList.add(vo);
         }

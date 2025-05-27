@@ -34,6 +34,7 @@ export interface SurveyHistoryVO {
   originalScore: number; // 原始分数
   surveyId: number; // 本次 survey 的唯一 id
   detailList: SurveyDetailVO[]; // 每题详情
+  createdAt: string;
 }
 
 export interface SurveyDetailVO {

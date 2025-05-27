@@ -66,7 +66,7 @@ export const ClientSurveyHistory: React.FC<Props> = ({
                   <div>
                     <p className="font-medium flex items-center gap-2">
                       <FaRegCalendarAlt className="text-gray-600 text-base" />
-                      {formatDate(record.detailList[0].createdAt)}
+                      {formatDate(record.createdAt)}
                     </p>
 
                     <p className="font-medium">

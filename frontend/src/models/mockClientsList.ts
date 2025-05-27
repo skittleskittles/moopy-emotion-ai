@@ -5,7 +5,7 @@ export const mockConnections: ConnectionVO[] = [
     therapistName: "Dr. Lisa Chen",
     therapistCode: "THR-1001",
     clientId: 101,
-    clientName: "Alex M.",
+    clientName: "Emily White",
     clientCode: "CLT-2025-A",
     connectDate: "2025-03-25T08:00:00Z",
     lastActiveDate: "2025-05-25T08:00:00Z",

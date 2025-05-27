@@ -18,14 +18,14 @@ interface Props {
 export const ScoreTrendChart: React.FC<Props> = ({ scoreHistory }) => {
   if (scoreHistory.length === 0) return null;
 
-  const firstDate = new Date(scoreHistory[0].detailList[0].createdAt);
+  const firstDate = new Date(scoreHistory[0].createdAt);
   const startDate = startOfMonth(firstDate);
   const endDate = endOfMonth(new Date());
 
   const chartData = scoreHistory.map((item) => {
     return {
       score: item.originalScore,
-      date: new Date(item.detailList[0].createdAt).getTime(),
+      date: new Date(item.createdAt).getTime(),
     };
   });
 

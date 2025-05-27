@@ -101,7 +101,7 @@ const TherapistCredentialsPage = () => {
       if (res.code !== 0) {
         throw new Error("Failed to insert credentials.");
       }
-      navigate(ROUTE_PATHS.THERAPIST_DASHBOARD);
+      navigate(ROUTE_PATHS.THERAPIST_CREDENTIALS_REVIEW);
     } catch (error) {
       setError("Verification failed");
     } finally {

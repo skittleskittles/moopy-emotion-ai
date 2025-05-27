@@ -20,6 +20,7 @@ import YearTracker from "@/pages/moodtraker/YearTracker";
 
 import TherapistDashboardPage from "@/pages/dashboard/TherapistDashboardPage";
 import ClientDetailPage from "@/pages/dashboard/ClientDetailPage";
+import TherapistCredentialsReviewPage from "@/pages/role/TherapistCredentialsReviewPage";
 
 export const ROUTE_PATHS = {
   HOME: "/",
@@ -31,6 +32,7 @@ export const ROUTE_PATHS = {
   THERAPIST_CREDENTIALS: "/therapist/credentials",
   THERAPIST_DASHBOARD: "/therapist/dashboard",
   THERAPIST_DASHBOARD_CLIENT_DETIAL: "/therapist/dashboard/client/detail",
+  THERAPIST_CREDENTIALS_REVIEW: "/therapist/credentials/review",
 
   SURVEY: "/survey",
   SURVEY_QUESTIONS: "/survey/questions",
@@ -54,6 +56,10 @@ export const router = createBrowserRouter([
       {
         path: ROUTE_PATHS.THERAPIST_CREDENTIALS,
         element: <TherapistCredentialsPage />,
+      },
+      {
+        path: ROUTE_PATHS.THERAPIST_CREDENTIALS_REVIEW,
+        element: <TherapistCredentialsReviewPage />,
       },
       {
         path: ROUTE_PATHS.CLIENT_CONNECT_THERAPIST,
